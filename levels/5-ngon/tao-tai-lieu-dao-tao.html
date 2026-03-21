@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tạo tài liệu đào tạo — Level 5 | BEUP</title>
+  <meta name="description" content="70% AI adoption thất bại do thiếu training. Xây training structure 4 sessions, role-specific guides, cheat sheets cho team của bạn.">
+  <meta property="og:title" content="Bài 5.2: Tạo tài liệu đào tạo | BEUP">
+  <meta property="og:description" content="Claude Code thay đổi cách team làm việc. Không có training = adoption thất bại. Đây là cách xây training đúng.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    :root {
+      --level5-gold: #D4A843;
+      --level5-gold-dark: #B8922E;
+      --level5-gold-light: rgba(212,168,67,0.12);
+      --level5-gold-border: rgba(212,168,67,0.3);
+    }
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-5 {
+      background: var(--level5-gold-light);
+      color: var(--level5-gold-dark);
+      border: 1px solid var(--level5-gold-border);
+    }
+    [data-theme="dark"] .level-badge.level-5 {
+      background: rgba(212,168,67,0.1);
+      color: var(--level5-gold);
+      border-color: rgba(212,168,67,0.3);
+    }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero {
+      padding: var(--prim-space-10) var(--content-padding-x);
+      background: linear-gradient(140deg, var(--level5-gold-light) 0%, rgba(212,168,67,0.03) 100%);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--level5-gold); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    .callout-gold { background: var(--level5-gold-light); border-color: var(--level5-gold); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    [data-theme="dark"] .callout-gold { background: rgba(212,168,67,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-gold .ct { color: var(--level5-gold-dark); }
+    [data-theme="dark"] .callout-gold .ct { color: var(--level5-gold); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--level5-gold); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--level5-gold); color: #1a1208; font-weight: var(--prim-weight-bold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--level5-gold-dark); }
+    .btn-complete.completed { background: var(--color-success); color: var(--prim-white); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .session-grid {
+      display: grid;
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .session-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      display: flex;
+      gap: var(--prim-space-4);
+      align-items: flex-start;
+    }
+    .session-num {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: var(--level5-gold-light);
+      border: 2px solid var(--level5-gold-border);
+      border-radius: var(--prim-radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--prim-weight-bold);
+      color: var(--level5-gold-dark);
+      font-size: var(--prim-text-xs);
+      line-height: 1.2;
+      text-align: center;
+    }
+    [data-theme="dark"] .session-num { color: var(--level5-gold); }
+    .session-num span { font-size: var(--prim-text-lg); }
+    .session-body { flex: 1; }
+    .session-title { font-size: var(--prim-text-md); font-weight: var(--prim-weight-semibold); color: var(--text-primary); margin-bottom: var(--prim-space-1); }
+    .session-time { font-size: var(--prim-text-xs); color: var(--level5-gold-dark); font-weight: var(--prim-weight-medium); margin-bottom: var(--prim-space-2); }
+    [data-theme="dark"] .session-time { color: var(--level5-gold); }
+    .session-items { list-style: none; padding: 0; margin: 0; }
+    .session-items li { font-size: var(--prim-text-sm); color: var(--text-muted); padding: var(--prim-space-1) 0; display: flex; align-items: flex-start; gap: var(--prim-space-2); line-height: 1.5; }
+    .session-items li::before { content: "→"; color: var(--level5-gold); flex-shrink: 0; }
+    .role-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .role-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-5);
+    }
+    .role-card-title {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+    }
+    .role-card ul { list-style: none; padding: 0; margin: 0; }
+    .role-card ul li { font-size: var(--prim-text-sm); color: var(--text-muted); padding: var(--prim-space-1) 0; border-bottom: 1px solid var(--border-default); line-height: 1.5; }
+    .role-card ul li:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-5">Level 5: Ngọn</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="thiet-ke-he-thong.html">5.1 Thiết kế hệ thống</a></li>
+          <li><a href="tao-tai-lieu-dao-tao.html" class="active">5.2 Tài liệu đào tạo</a></li>
+          <li><a href="enterprise-patterns.html">5.3 Enterprise patterns</a></li>
+          <li><a href="dong-gop-cong-dong.html">5.4 Đóng góp cộng đồng</a></li>
+          <li><a href="day-nguoi-khac.html">5.5 Dạy người khác</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 5</a> / Tạo tài liệu đào tạo
+          </nav>
+          <h1>Bài 5.2: Tạo tài liệu đào tạo</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 5</span>
+            <span class="tag">Training</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-gold">
+          <span class="callout-icon">📚</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>70% AI adoption failures không phải do công cụ tệ — mà do thiếu training phù hợp. Claude Code thay đổi căn bản cách làm việc. Nếu không có training structure rõ ràng, mỗi người tự mò theo cách riêng, kết quả không nhất quán, và team nhanh chóng từ bỏ. Tài liệu đào tạo tốt là khoản đầu tư nhân thêm ROI từ công cụ bạn đã chi tiền mua.</p>
+          </div>
+        </div>
+
+        <h2>Tại sao adoption thất bại</h2>
+
+        <p>Kịch bản phổ biến: công ty quyết định dùng Claude Code cho team, mua plan, announce trong Slack "từ tuần sau dùng tool này nhé." Sau 1 tháng, chỉ 20% team dùng thường xuyên, phần còn lại quay về workflow cũ vì "không biết bắt đầu từ đâu" hoặc "thử rồi thấy phức tạp."</p>
+
+        <p>Vấn đề không phải tool — vấn đề là không có pathway rõ ràng từ "chưa biết gì" đến "dùng được hàng ngày." Training docs giải quyết chính xác khoảng trống này.</p>
+
+        <h2>Training structure cho team</h2>
+
+        <p>4 sessions theo tuần, mỗi session có mục tiêu cụ thể và deliverable rõ ràng:</p>
+
+        <div class="session-grid">
+          <div class="session-card">
+            <div class="session-num"><span>S1</span></div>
+            <div class="session-body">
+              <div class="session-title">Session 1: What is Claude Code?</div>
+              <div class="session-time">2 giờ — Giới thiệu &amp; First conversation</div>
+              <ul class="session-items">
+                <li>Claude Code là gì, khác Claude Chat ở điểm nào</li>
+                <li>Live demo: giải quyết vấn đề thực tế của team trước mắt mọi người</li>
+                <li>Everyone installs và chạy được câu lệnh đầu tiên</li>
+                <li>Deliverable: mỗi người có ít nhất 1 conversation thực tế</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="session-card">
+            <div class="session-num"><span>S2</span></div>
+            <div class="session-body">
+              <div class="session-title">Session 2: CLAUDE.md &amp; Basic Prompting</div>
+              <div class="session-time">2 giờ — Setup &amp; Prompting fundamentals</div>
+              <ul class="session-items">
+                <li>Đọc và hiểu CLAUDE.md của project</li>
+                <li>Anatomy của một prompt tốt: context, task, format, constraints</li>
+                <li>File operations: đọc, viết, sửa files với Claude Code</li>
+                <li>Deliverable: viết CLAUDE.md cá nhân với ít nhất 5 preferences</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="session-card">
+            <div class="session-num"><span>S3</span></div>
+            <div class="session-body">
+              <div class="session-title">Session 3: Daily Workflows theo Role</div>
+              <div class="session-time">2 giờ — Role-specific workflows</div>
+              <ul class="session-items">
+                <li>Marketing: content pipeline, social scheduling, SEO analysis</li>
+                <li>Operations: report automation, data cleanup, invoice processing</li>
+                <li>Management: project tracking, meeting notes, decision docs</li>
+                <li>Deliverable: mỗi người chạy xong 1 workflow thực của role mình</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="session-card">
+            <div class="session-num"><span>S4</span></div>
+            <div class="session-body">
+              <div class="session-title">Session 4: Q&amp;A &amp; Advanced Tips</div>
+              <div class="session-time">1 giờ — Troubleshooting &amp; Tips</div>
+              <ul class="session-items">
+                <li>Review vấn đề gặp phải trong tuần qua</li>
+                <li>Advanced prompting: multi-step tasks, context management</li>
+                <li>MCP basics: kết nối Notion, GitHub nếu có nhu cầu</li>
+                <li>Deliverable: mỗi người có kế hoạch dùng hàng ngày</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h2>Role-specific guides</h2>
+
+        <p>Một lỗi phổ biến trong training AI tools: dạy tính năng thay vì dạy workflow. "Đây là cách dùng /plan command" không có giá trị bằng "Đây là cách marketing team dùng Claude Code mỗi sáng để lên lịch content tuần này."</p>
+
+        <div class="role-tabs">
+          <div class="role-card">
+            <div class="role-card-title">📢 Marketing Team</div>
+            <ul>
+              <li>Content pipeline: brief → draft → review → publish</li>
+              <li>Social scheduling: 1 article → 5 platform posts</li>
+              <li>SEO audit: analyze page, suggest improvements</li>
+              <li>Competitor monitoring: weekly report automation</li>
+              <li>Email sequences: nurture campaign drafts</li>
+            </ul>
+          </div>
+
+          <div class="role-card">
+            <div class="role-card-title">⚙️ Operations Team</div>
+            <ul>
+              <li>Report automation: pull data → format → distribute</li>
+              <li>Data cleanup: normalize messy spreadsheets</li>
+              <li>Invoice processing: extract, verify, log</li>
+              <li>SOP documentation: interview team → write SOP</li>
+              <li>Vendor comparison: research → structured summary</li>
+            </ul>
+          </div>
+
+          <div class="role-card">
+            <div class="role-card-title">📊 Management</div>
+            <ul>
+              <li>Project tracking: status updates → exec summary</li>
+              <li>Meeting notes: transcript → action items</li>
+              <li>Decision docs: options analysis, trade-offs</li>
+              <li>Performance reviews: data → structured feedback</li>
+              <li>Board reports: metrics → narrative</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2>Cheat sheets cho mỗi role</h2>
+
+        <p>1-page quick reference — in ra dán bàn làm việc hoặc pin trong Slack. Format chuẩn:</p>
+
+        <ul>
+          <li><strong>5 commands hay dùng nhất</strong> — với ví dụ cụ thể</li>
+          <li><strong>3 prompt templates</strong> — copy-paste được ngay</li>
+          <li><strong>1 workflow step-by-step</strong> — workflow quan trọng nhất của role</li>
+          <li><strong>Khi gặp vấn đề</strong> — 3 troubleshooting steps đầu tiên</li>
+        </ul>
+
+        <p>Cheat sheet phải fit 1 trang A4. Nếu không fit, bạn đang cố nhồi quá nhiều. Edit xuống — người dùng chỉ cần những gì họ thực sự dùng hàng ngày.</p>
+
+        <h2>Internal wiki &amp; knowledge base</h2>
+
+        <p>Sau khi team bắt đầu dùng Claude Code, kiến thức sẽ tích lũy theo thời gian. Cần một nơi lưu trữ có cấu trúc:</p>
+
+        <ul>
+          <li><strong>FAQs</strong>: Những câu hỏi xuất hiện lặp lại trong session → document chúng</li>
+          <li><strong>Troubleshooting guide</strong>: Lỗi phổ biến và cách fix</li>
+          <li><strong>Prompt library</strong>: Prompts tốt nhất của team, categorized by use case</li>
+          <li><strong>Case studies</strong>: "Tuần trước marketing dùng Claude Code để X, tiết kiệm 4 giờ"</li>
+          <li><strong>Changelog</strong>: Khi Claude Code update tính năng mới, ghi lại cái gì thay đổi</li>
+        </ul>
+
+        <p>Notion hoặc Confluence là nơi lý tưởng. Đặt một người làm "Claude Code curator" — người có trách nhiệm cập nhật wiki khi có thông tin mới.</p>
+
+        <h2>Video walkthroughs</h2>
+
+        <p>Text guides tốt cho reference, nhưng video tốt hơn cho learning. Record 5–10 phút screen recording cho mỗi workflow quan trọng. Nguyên tắc:</p>
+
+        <ul>
+          <li>Một video = một workflow cụ thể. Không cố gom nhiều thứ vào.</li>
+          <li>Show real work, không phải toy examples. Dùng task thực tế của team.</li>
+          <li>Talk through your thinking — "Tôi đang prompt như này vì..."</li>
+          <li>Upload lên YouTube unlisted hoặc Loom — dễ share và track views.</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Training docs cũng outdated</b>
+            <p>Claude Code update thường xuyên. UI thay đổi, tính năng mới xuất hiện. Lên lịch review training docs mỗi quý — ít nhất check xem screenshots và commands còn đúng không. Outdated training docs tệ hơn không có — chúng tạo confusion khi reality không khớp với hướng dẫn.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo 1-page cheat sheet cho role bạn đang làm. Bao gồm: 5 commands hay dùng (với ví dụ cụ thể cho công việc thực tế của bạn), 3 prompt templates bạn copy-paste hàng tuần, và 1 workflow step-by-step từ đầu đến cuối. Sau đó share với 1 đồng nghiệp và xem họ có thể dùng được không mà không cần giải thích thêm. Nếu cần giải thích thêm → cheat sheet chưa đủ rõ.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="thiet-ke-he-thong.html" class="nav-prev">← 5.1 Thiết kế hệ thống</a>
+        <button class="btn-complete" data-lesson="5-2-tao-tai-lieu-dao-tao">✓ Hoàn thành bài học</button>
+        <a href="enterprise-patterns.html" class="nav-next">5.3 Enterprise patterns →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

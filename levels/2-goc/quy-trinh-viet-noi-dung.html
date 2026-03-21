@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quy trình viết nội dung | Level 2 | BEUP</title>
+  <meta name="description" content="Content tốt đến từ quy trình 5 bước: Brief → Draft → Review → Revise → Publish. Claude Code hỗ trợ ở mỗi bước — không phải chỉ 1 prompt duy nhất.">
+  <meta property="og:title" content="Quy trình viết nội dung | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .step-flow { display: flex; gap: var(--prim-space-2); align-items: center; flex-wrap: wrap; margin: var(--prim-space-6) 0; }
+    .step-pill { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25); border-radius: var(--prim-radius-full); padding: var(--prim-space-2) var(--prim-space-4); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); color: #7c3aed; white-space: nowrap; }
+    [data-theme="dark"] .step-pill { color: #c084fc; background: rgba(168,85,247,0.1); }
+    .step-arrow { color: var(--text-muted); font-size: var(--prim-text-lg); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html" class="active">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / Quy trình viết nội dung
+          </nav>
+          <h1>Bài 2.6: Quy trình viết nội dung</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Content tốt không đến từ 1 prompt duy nhất. Nó đến từ quy trình: Brief → Draft → Review → Revise → Publish. Giống như may đồ — không ai may xong ngay từ lần đo đầu tiên mà không cần chỉnh sửa. Claude Code giúp bạn ở mỗi bước, không thay thế toàn bộ quy trình.</p>
+          </div>
+        </div>
+
+        <h2>Quy trình 5 bước</h2>
+
+        <div class="step-flow">
+          <span class="step-pill">1. Brief</span>
+          <span class="step-arrow">→</span>
+          <span class="step-pill">2. Draft</span>
+          <span class="step-arrow">→</span>
+          <span class="step-pill">3. Review</span>
+          <span class="step-arrow">→</span>
+          <span class="step-pill">4. Revise</span>
+          <span class="step-arrow">→</span>
+          <span class="step-pill">5. Publish</span>
+        </div>
+
+        <h3>Bước 1: Brief</h3>
+        <p>Xác định rõ ràng trước khi viết bất cứ điều gì. Lưu brief dưới dạng file để CC đọc được:</p>
+        <pre><code># brief-bai-viet-san-pham-moi.md
+
+Audience: Doanh nhân nữ 30–45 tuổi, bận rộn, ít thời gian
+Topic: Ra mắt sản phẩm túi xách handmade từ vải lụa Việt Nam
+Tone: Tự hào về văn hóa Việt, không sính ngoại, gần gũi
+Length: 600–800 chữ
+Format: Blog post (H2 sections, không bullet list nhiều)
+CTA: Đặt hàng trước với giá ưu đãi 20%
+Không dùng: từ "unique", "special", thuật ngữ tiếng Anh không cần thiết</code></pre>
+
+        <h3>Bước 2: Draft</h3>
+        <p>Cho CC đọc brief và viết bản nháp đầu tiên:</p>
+        <pre><code>Đọc file brief-bai-viet-san-pham-moi.md.
+Viết bản nháp đầu tiên theo đúng brief.
+Đây là bản nháp — tôi sẽ review và góp ý sau.</code></pre>
+
+        <h3>Bước 3: Review</h3>
+        <p>Bạn đọc bản nháp và ghi chú những điểm cần sửa. Ghi vào file hoặc nói thẳng với CC:</p>
+        <pre><code>Tôi đã đọc bản nháp. Cần điều chỉnh:
+- Đoạn mở đầu quá chung chung, cần cụ thể hơn
+- Thêm 1 câu chuyện thực tế về người thợ làm túi
+- Paragraph 3 quá dài, chia thành 2 đoạn ngắn hơn
+- CTA ở cuối cần mạnh hơn, tạo cảm giác khan hiếm</code></pre>
+
+        <h3>Bước 4: Revise</h3>
+        <p>CC chỉnh sửa theo feedback. Lặp lại bước 3–4 nếu cần thêm round nữa. Thông thường 2–3 vòng là đủ cho hầu hết nội dung.</p>
+
+        <h3>Bước 5: Publish</h3>
+        <p>Khi hài lòng, yêu cầu CC lưu phiên bản cuối:</p>
+        <pre><code>Bản cuối đã được approve. Lưu vào
+/blog/2026-03-15-tui-xach-lua-viet-nam.md</code></pre>
+
+        <h2>Ví dụ thực tế: Tạo social media content</h2>
+
+        <p>Quy trình nhanh hơn cho social media — thường chỉ cần 3 bước:</p>
+
+        <pre><code># Bước 1: Brief nhanh (inline, không cần file riêng)
+Tạo 5 caption Facebook cho sản phẩm trà sữa mới.
+Tone: vui tươi, dành cho bạn trẻ 18–25.
+Format: mỗi caption 50–80 chữ + 3–5 hashtag phù hợp.
+Không lặp lại ý, mỗi caption một góc độ khác nhau.</code></pre>
+
+        <pre><code># Bước 2: CC tạo 5 bản, bạn chọn và góp ý
+"Bản 2 và bản 4 tốt nhất. Bản 2 sửa câu cuối
+cho kêu hơn. Bản 4 giữ nguyên."</code></pre>
+
+        <pre><code># Bước 3: Lưu và lên lịch
+Lưu 2 bản đã chọn vào /social/facebook/
+tuan-3-thang-3.md, kèm ngày đăng dự kiến.</code></pre>
+
+        <h2>Mẹo viết nội dung cùng Claude Code</h2>
+
+        <ul>
+          <li><strong>Cho CC xem ví dụ nội dung bạn thích.</strong> Paste vào prompt: "Viết theo phong cách này: [ví dụ]." CC học giọng văn từ ví dụ tốt hơn từ mô tả.</li>
+          <li><strong>Lưu style guide vào CLAUDE.md.</strong> Nếu bạn có tone of voice nhất quán, mô tả trong CLAUDE.md một lần — CC sẽ áp dụng mọi lúc.</li>
+          <li><strong>Đừng chấp nhận bản đầu tiên cho content quan trọng.</strong> CC luôn có thể làm tốt hơn sau feedback cụ thể. Bản đầu là điểm bắt đầu, không phải kết thúc.</li>
+          <li><strong>Chia nhỏ task lớn.</strong> Thay vì "Viết 10 bài blog cho tháng 3", hãy làm từng bài: brief → draft → review → publish. Kết quả tốt hơn nhiều.</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chọn 1 nội dung bạn đang cần viết (post mạng xã hội, email, bài blog). Tạo file <code>brief.md</code> theo cấu trúc: Audience, Topic, Tone, Length, Format, CTA, Không dùng. Gửi brief cho CC viết bản nháp. Review và ghi 3–5 điểm cần sửa. Yêu cầu CC revise. Lưu phiên bản cuối vào đúng folder.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="lam-viec-voi-file.html" class="nav-prev">← 2.5 Làm việc với file</a>
+        <button class="btn-complete" data-lesson="2-6-quy-trinh-viet-noi-dung">✓ Hoàn thành bài học</button>
+        <a href="to-chuc-du-lieu.html" class="nav-next">2.7 Tổ chức dữ liệu →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

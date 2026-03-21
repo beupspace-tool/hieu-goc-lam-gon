@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing tự động với Claude Code | Level 3: Thân | BEUP</title>
+  <meta name="description" content="Content pipeline, social media batch, SEO workflow, email campaigns và Buffer MCP. Tiết kiệm 70% thời gian tạo content marketing với Claude Code.">
+  <meta property="og:title" content="Bài 3.7: Marketing tự động | BEUP">
+  <meta property="og:description" content="1 blog post → 5 social posts tự động. SEO workflow đầy đủ. Email campaigns được cá nhân hóa. Marketing automation với Claude Code.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Platform grid */
+    .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--prim-space-3); margin: var(--prim-space-5) 0; }
+    .platform-card { padding: var(--prim-space-4); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-md); }
+    .platform-card .platform-name { font-size: var(--prim-text-sm); font-weight: var(--prim-weight-bold); color: var(--text-primary); margin-bottom: var(--prim-space-1); }
+    .platform-card .platform-spec { font-size: var(--prim-text-xs); color: #16a34a; margin-bottom: var(--prim-space-2); font-family: var(--prim-font-mono); }
+    .platform-card p { font-size: var(--prim-text-sm); color: var(--text-muted); margin: 0; line-height: 1.5; }
+    /* ROI stat */
+    .roi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--prim-space-4); margin: var(--prim-space-6) 0; }
+    .roi-stat { text-align: center; padding: var(--prim-space-5); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); }
+    .roi-stat .roi-number { font-size: var(--prim-text-3xl); font-weight: var(--prim-weight-extrabold); color: #16a34a; line-height: 1; margin-bottom: var(--prim-space-1); }
+    .roi-stat .roi-label { font-size: var(--prim-text-sm); color: var(--text-muted); line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html" class="active">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / Marketing tự động
+          </nav>
+          <h1>Bài 3.7: Marketing tự động</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Marketing content không thiếu ý tưởng — thiếu thời gian thực thi. Claude Code giải quyết phần thực thi: từ brief đến draft đến nhiều format khác nhau, trong một workflow liên tục. Bạn vẫn cần judgment về strategy và approval cuối — nhưng thời gian bạn thực sự ngồi gõ giảm 70-80%.</p>
+          </div>
+        </div>
+
+        <h2>Content pipeline cơ bản</h2>
+
+        <p>Pipeline hiệu quả nhất cho content marketing với Claude Code:</p>
+
+        <pre><code>Brief → Draft → Review → Revise → Publish-ready → Distribution</code></pre>
+
+        <p>Mỗi bước có prompt template riêng. Đây không phải một mega-prompt — đó là chuỗi conversations có cấu trúc, mỗi bước build on kết quả bước trước.</p>
+
+        <p><strong>Bước 1 — Brief:</strong></p>
+        <pre><code>Viết blog post về [chủ đề].
+Target audience: [mô tả khách hàng]
+Mục tiêu: [awareness/conversion/retention]
+Key message: [1-2 câu]
+Tone: [professional/casual/educational]
+Word count: ~1000-1200 từ
+SEO keyword chính: [keyword]
+CTA cuối bài: [action bạn muốn reader làm]</code></pre>
+
+        <p><strong>Bước 2 — Sau khi nhận outline:</strong> Review, approve hoặc feedback, rồi "Viết full draft dựa trên outline đã approved."</p>
+
+        <p><strong>Bước 3 — Sau khi nhận draft:</strong> "Review draft này về: (1) flow, (2) factual accuracy, (3) SEO on-page, (4) missing points. Đề xuất revisions cụ thể."</p>
+
+        <h2>1 blog → 5 social posts tự động</h2>
+
+        <p>Đây là workflow tiết kiệm thời gian nhiều nhất cho hầu hết SME. Một bài blog tốt có đủ content cho cả tuần social media nếu bạn biết adapt đúng cách.</p>
+
+        <pre><code>Dựa trên blog post này [paste nội dung hoặc link file],
+tạo 5 social posts tối ưu cho từng platform:
+
+1. FACEBOOK
+   - 800-1200 ký tự
+   - Mở đầu bằng hook mạnh (không phải "Xin chào!")
+   - Include 1-2 câu hỏi để kích thích comment
+   - 3-5 hashtags relevant
+
+2. LINKEDIN
+   - 600-900 ký tự
+   - Tập trung vào business insight từ bài
+   - Professional tone, ít hashtags hơn (tối đa 3)
+   - CTA: "Comment your thoughts" hoặc "Connect if relevant"
+
+3. INSTAGRAM
+   - Caption 150-300 ký tự (phần hiển thị trước "more")
+   - 10-15 hashtags trong comment đầu tiên (tôi sẽ tự add)
+   - Visual description: describe the ideal image for this post
+
+4. X (TWITTER)
+   - Tối đa 280 ký tự
+   - Có thể là counter-intuitive take
+   - 1-2 hashtags max
+
+5. THREADS
+   - 300-500 ký tự
+   - Conversational, informal hơn LinkedIn
+   - Không cần hashtags</code></pre>
+
+        <p>Claude sẽ tạo 5 posts trong một lần. Bạn review, tinh chỉnh tone nếu cần, rồi schedule.</p>
+
+        <h2>Đặc điểm từng platform</h2>
+
+        <div class="platform-grid">
+          <div class="platform-card">
+            <div class="platform-name">Facebook</div>
+            <div class="platform-spec">800-1200 ký tự</div>
+            <p>Storytelling, câu hỏi kích thích discussion, hook mạnh đầu bài.</p>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">LinkedIn</div>
+            <div class="platform-spec">600-900 ký tự</div>
+            <p>Professional insights, industry perspective, minimal hashtags.</p>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">Instagram</div>
+            <div class="platform-spec">150-300 ký tự visible</div>
+            <p>Visual-first caption, hook trong 2 câu đầu, hashtag strategy riêng.</p>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">X (Twitter)</div>
+            <div class="platform-spec">≤280 ký tự</div>
+            <p>Concise, punchy, often counter-intuitive. Thread nếu cần nhiều hơn.</p>
+          </div>
+          <div class="platform-card">
+            <div class="platform-name">Threads</div>
+            <div class="platform-spec">300-500 ký tự</div>
+            <p>Conversational, informal, real-time feel. No hashtag needed.</p>
+          </div>
+        </div>
+
+        <h2>SEO workflow với Claude Code</h2>
+
+        <p>SEO đầy đủ thường mất 3-4 giờ mỗi bài. Với Claude Code, workflow có thể xuống còn 45-60 phút:</p>
+
+        <pre><code># Bước 1: Keyword research
+"Tôi muốn viết về [chủ đề].
+Suggest 10 long-tail keywords tiếng Việt với search intent rõ ràng.
+Format: keyword | search intent | estimated difficulty (low/medium/high)"
+
+# Bước 2: Content outline tối ưu SEO
+"Tạo outline cho bài về [primary keyword].
+Bao gồm: H1, H2s, H3s, và note về internal linking opportunities.
+Dựa trên people also ask patterns cho keyword này."
+
+# Bước 3: On-page optimization
+"Review bài này về SEO on-page:
+1. Meta title (tối đa 60 ký tự, chứa primary keyword)
+2. Meta description (tối đa 160 ký tự, có CTA)
+3. H1 → chỉ 1, chứa keyword
+4. H2s → có keyword variations?
+5. Image alt texts
+6. Internal linking suggestions
+Trả về revisions cụ thể, không phải general advice."</code></pre>
+
+        <h2>Email campaigns được cá nhân hóa</h2>
+
+        <p>Claude Code đặc biệt hiệu quả cho email campaigns khi bạn có segment data:</p>
+
+        <pre><code># Tạo email variations cho 3 segments
+Dựa trên data trong segments.csv (cột: segment, company_size, industry, last_purchase):
+
+Tạo 3 phiên bản email về [campaign topic]:
+- Segment A (startup, <20 người): tập trung cost-efficiency
+- Segment B (SME, 20-100 người): tập trung scaling
+- Segment C (mid-market, 100+): tập trung enterprise features
+
+Mỗi email: subject line (có A/B variant), preheader, body (~200 từ), CTA.
+Tone: professional nhưng approachable. Không generic.</code></pre>
+
+        <p>Claude tạo 3 versions khác biệt thực sự, không chỉ thay tên. Personalization ở mức này thường tăng open rate 15-25% và click rate 30-40%.</p>
+
+        <h2>Buffer MCP — từ draft đến scheduled</h2>
+
+        <p>Khi setup Buffer MCP, Claude Code có thể schedule posts trực tiếp vào Buffer queue mà không cần bạn copy-paste thủ công:</p>
+
+        <pre><code># .mcp.json — thêm Buffer server
+{
+  "mcpServers": {
+    "buffer": {
+      "command": "npx",
+      "args": ["-y", "@bufferapp/mcp-server"],
+      "env": { "BUFFER_ACCESS_TOKEN": "${BUFFER_TOKEN}" }
+    }
+  }
+}</code></pre>
+
+        <p>Sau khi Claude tạo social posts và bạn approve, thay vì copy-paste vào Buffer, chỉ cần nói: "Schedule các posts này vào Buffer: Facebook thứ 2 lúc 9h, LinkedIn thứ 3 lúc 8h, Instagram thứ 4 lúc 19h." Claude thực hiện qua Buffer API.</p>
+
+        <h2>Analytics → Insights → Actions</h2>
+
+        <p>Claude Code đọc Google Analytics data (qua MCP hoặc exported CSV) và tạo recommendations actionable:</p>
+
+        <pre><code>Đây là GA4 report tháng này [dán data].
+Phân tích:
+1. Top 5 pages theo traffic và engagement
+2. Traffic sources nào đang tăng/giảm
+3. Bounce rate pattern — pages nào cần cải thiện
+4. Conversion funnel — bước nào đang drop off
+5. Đề xuất 3 actions cụ thể cho tháng tới, mỗi action estimate impact</code></pre>
+
+        <h2>ROI thực tế</h2>
+
+        <div class="roi-grid">
+          <div class="roi-stat">
+            <div class="roi-number">70%</div>
+            <div class="roi-label">Giảm thời gian tạo content</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-number">5x</div>
+            <div class="roi-label">Nhiều content format hơn từ cùng một brief</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-number">1 người</div>
+            <div class="roi-label">Có thể run content engine mà trước cần 3 người</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-number">~2h/tuần</div>
+            <div class="roi-label">Review và approve, thay vì 8-10h tạo content</div>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo 1 blog post outline về chủ đề quan trọng cho business bạn. Yêu cầu Claude viết full post (~800 từ). Sau đó dùng prompt social batch để tạo 5 posts cho 5 platforms. Đo thời gian từ lúc bắt đầu đến khi có 5 posts ready-to-post. So sánh với thời gian bạn thường tốn để tự viết. Ghi lại con số — đây là ROI thực tế của Level 3.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="cong-tac-nhom.html" class="nav-prev">← 3.6 Cộng tác nhóm</a>
+        <button class="btn-complete" data-lesson="3-7-marketing-tu-dong">✓ Hoàn thành bài học</button>
+        <a href="backoffice-workflows.html" class="nav-next">3.8 Backoffice workflows →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

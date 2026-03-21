@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cài đặt & Xác thực Claude Code — Level 1: Rễ | BEUP</title>
+  <meta name="description" content="Hướng dẫn từng bước cài đặt Claude Code: kiểm tra Node.js, cài CC, xác thực tài khoản. Làm đúng một lần, dùng mãi mãi.">
+  <meta property="og:title" content="Cài đặt & Xác thực Claude Code — Level 1: Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-1 { background: rgba(167,139,250,0.18); color: #6d28d9; border: 1px solid rgba(167,139,250,0.4); }
+    [data-theme="dark"] .level-badge.level-1 { background: rgba(167,139,250,0.12); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Install step */
+    .install-step {
+      margin: var(--prim-space-6) 0;
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+    }
+    .install-step-header {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .install-step-num {
+      width: 28px;
+      height: 28px;
+      background: rgba(167,139,250,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: #6d28d9;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .install-step-num { background: rgba(167,139,250,0.15); color: #c4b5fd; }
+    .install-step-title { font-weight: var(--prim-weight-semibold); color: var(--text-primary); }
+    .install-step-body { padding: var(--prim-space-4) var(--prim-space-5); }
+    .install-step-body p { margin: 0 0 var(--prim-space-3); font-size: var(--prim-text-sm); line-height: 1.7; color: var(--text-secondary); }
+    .install-step-body p:last-child { margin-bottom: 0; }
+    /* Error handling */
+    .error-list { margin: var(--prim-space-4) 0; }
+    .error-item { margin-bottom: var(--prim-space-4); padding: var(--prim-space-4); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-md); }
+    .error-item-title { font-family: var(--prim-font-mono); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); color: #dc2626; margin-bottom: var(--prim-space-2); }
+    [data-theme="dark"] .error-item-title { color: #f87171; }
+    .error-item-fix { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html" class="active">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Cài đặt &amp; Xác thực
+          </nav>
+          <h1>Bài 1.3: Cài đặt &amp; Xác thực</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 1</span>
+            <span class="tag">🖥️ Cần thực hành trên máy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Cài đặt phần mềm giống như lắp ráp dụng cụ trước khi bắt đầu công việc. Làm đúng một lần, dùng mãi. Bài này có 4 bước — hãy làm theo thứ tự, đừng bỏ qua bước nào.</p>
+          </div>
+        </div>
+
+        <p>Trước khi bắt đầu, hãy mở Terminal trên máy bạn. Nếu bạn chưa quen Terminal, hãy quay lại Bài 0.4 để ôn lại. Đây là bước duy nhất trong Level 1 mà bạn phải làm trên máy thật.</p>
+
+        <div class="install-step">
+          <div class="install-step-header">
+            <div class="install-step-num">1</div>
+            <div class="install-step-title">Kiểm tra Node.js</div>
+          </div>
+          <div class="install-step-body">
+            <p>Claude Code chạy trên nền tảng Node.js — một "môi trường chạy" cho phép các chương trình JavaScript hoạt động ngoài trình duyệt. Hãy nghĩ Node.js như động cơ xe: CC là chiếc xe, Node.js là động cơ bên trong.</p>
+            <p>Mở Terminal và gõ lệnh sau, rồi nhấn Enter:</p>
+            <pre><code>node --version</code></pre>
+            <p>Nếu bạn thấy kết quả như <code>v20.11.0</code> hoặc số phiên bản tương tự, Node.js đã được cài. Bước 1 hoàn thành.</p>
+            <p>Nếu terminal báo <code>command not found</code>, bạn cần cài Node.js:</p>
+            <ol>
+              <li>Vào <strong>nodejs.org</strong> bằng trình duyệt</li>
+              <li>Tải về phiên bản <strong>LTS</strong> (Long-Term Support) — ổn định nhất</li>
+              <li>Cài đặt như phần mềm bình thường (Next → Next → Install)</li>
+              <li>Mở Terminal mới, kiểm tra lại bằng <code>node --version</code></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-header">
+            <div class="install-step-num">2</div>
+            <div class="install-step-title">Cài Claude Code</div>
+          </div>
+          <div class="install-step-body">
+            <p>Khi đã có Node.js, cài Claude Code chỉ cần một lệnh. Gõ vào Terminal:</p>
+            <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
+            <p>Giải thích từng phần:</p>
+            <ul>
+              <li><code>npm</code> — Node Package Manager, công cụ quản lý phần mềm đi kèm Node.js (như App Store cho phần mềm dòng lệnh)</li>
+              <li><code>install</code> — lệnh cài đặt</li>
+              <li><code>-g</code> — "global", cài đặt toàn hệ thống (dùng được từ bất kỳ thư mục nào)</li>
+              <li><code>@anthropic-ai/claude-code</code> — tên chính xác của gói phần mềm Claude Code</li>
+            </ul>
+            <p>Quá trình cài mất khoảng 1-2 phút. Terminal sẽ hiển thị các dòng log — đó là bình thường. Chờ cho đến khi terminal trở lại hiện dấu nhắc <code>$</code>.</p>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-header">
+            <div class="install-step-num">3</div>
+            <div class="install-step-title">Xác thực tài khoản</div>
+          </div>
+          <div class="install-step-body">
+            <p>Sau khi cài xong, khởi động Claude Code bằng lệnh:</p>
+            <pre><code>claude</code></pre>
+            <p>Lần đầu tiên chạy, Claude Code sẽ yêu cầu xác thực. Có hai cách:</p>
+            <p><strong>Cách 1 (Đơn giản hơn): Đăng nhập qua trình duyệt</strong></p>
+            <p>Terminal sẽ hiển thị một URL. Copy URL đó, dán vào trình duyệt, đăng nhập bằng tài khoản Anthropic của bạn (tài khoản bạn dùng cho claude.ai). Sau khi đăng nhập thành công trên trình duyệt, quay lại Terminal.</p>
+            <p><strong>Cách 2: Dùng API Key</strong></p>
+            <p>Nếu bạn có API Key từ console.anthropic.com, bạn có thể nhập trực tiếp khi được hỏi. API Key có dạng <code>sk-ant-...</code>.</p>
+            <p>Sau khi xác thực thành công, bạn sẽ thấy giao diện chào mừng của Claude Code trong Terminal.</p>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-header">
+            <div class="install-step-num">4</div>
+            <div class="install-step-title">Kiểm tra hoạt động</div>
+          </div>
+          <div class="install-step-body">
+            <p>Kiểm tra phiên bản Claude Code đã cài:</p>
+            <pre><code>claude --version</code></pre>
+            <p>Bạn sẽ thấy số phiên bản như <code>1.x.x</code>. Sau đó, khởi động một phiên làm việc:</p>
+            <pre><code>claude</code></pre>
+            <p>Claude sẽ chào bạn và sẵn sàng nhận lệnh. Thử gõ một câu đơn giản:</p>
+            <pre><code>Xin chào! Hãy nói cho tôi biết bạn là ai.</code></pre>
+            <p>Nếu Claude trả lời, cài đặt thành công hoàn toàn. Nhấn <kbd>Ctrl+C</kbd> (hoặc gõ <code>/exit</code>) để thoát khi xong.</p>
+          </div>
+        </div>
+
+        <h2>Xử lý lỗi thường gặp</h2>
+        <div class="error-list">
+          <div class="error-item">
+            <div class="error-item-title">npm: command not found</div>
+            <div class="error-item-fix">Node.js chưa cài hoặc chưa được nhận dạng. Giải pháp: Cài Node.js từ nodejs.org, sau đó mở Terminal mới (đóng cửa sổ cũ, mở lại). Terminal cũ không nhận cập nhật PATH.</div>
+          </div>
+          <div class="error-item">
+            <div class="error-item-title">EACCES: permission denied</div>
+            <div class="error-item-fix">Không đủ quyền cài ở cấp global. Giải pháp trên Mac/Linux: thêm <code>sudo</code> trước lệnh: <code>sudo npm install -g @anthropic-ai/claude-code</code>. Nhập mật khẩu máy tính của bạn khi được hỏi (mật khẩu không hiển thị khi gõ — bình thường).</div>
+          </div>
+          <div class="error-item">
+            <div class="error-item-title">Authentication failed / Unauthorized</div>
+            <div class="error-item-fix">Tài khoản chưa được xác thực đúng. Giải pháp: Chạy <code>claude</code> lại, chọn phương thức đăng nhập qua trình duyệt (Browser login), đảm bảo bạn đăng nhập đúng tài khoản Anthropic. Nếu dùng API Key, kiểm tra key có bắt đầu bằng <code>sk-ant-</code> không.</div>
+          </div>
+          <div class="error-item">
+            <div class="error-item-title">claude: command not found (sau khi cài xong)</div>
+            <div class="error-item-fix">PATH chưa cập nhật. Giải pháp: Đóng Terminal và mở lại. Trên một số máy Mac, bạn cần thêm <code>export PATH="$HOME/.npm-global/bin:$PATH"</code> vào file <code>~/.zshrc</code> hoặc <code>~/.bash_profile</code>.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lưu ý về chi phí</b>
+            <p>Claude Code sử dụng API tokens và tính phí theo lượng sử dụng. Kiểm tra pricing tại <strong>anthropic.com/pricing</strong>. Với plan Pro ($20/tháng), bạn được credit đủ cho hầu hết công việc thông thường. Nếu bạn chỉ thử nghiệm học tập, chi phí sẽ rất thấp — thường dưới $5/tháng ở giai đoạn đầu.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Hoàn thành cả 4 bước trên. Khi bạn thấy Claude chào bạn trong Terminal và trả lời câu hỏi đầu tiên — chụp ảnh màn hình lại. Đó là khoảnh khắc bắt đầu hành trình mới. Không phải mỗi ngày bạn có một "lần đầu tiên" như thế này.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="cc-vs-chat-vs-api.html" class="nav-prev">← 1.2 CC vs Chat vs API</a>
+        <button class="btn-complete" data-lesson="1-3-cai-dat-xac-thuc">✓ Hoàn thành bài học</button>
+        <a href="khai-niem-cot-loi.html" class="nav-next">1.4 Khái niệm cốt lõi →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

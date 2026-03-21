@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sai lầm thường gặp khi dùng Claude Code — Level 1: Rễ | BEUP</title>
+  <meta name="description" content="6 sai lầm phổ biến nhất của người dùng mới. Người dùng thất vọng không phải vì CC kém — mà vì kỳ vọng sai và thói quen sai.">
+  <meta property="og:title" content="Sai lầm thường gặp khi dùng Claude Code — Level 1: Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-1 { background: rgba(167,139,250,0.18); color: #6d28d9; border: 1px solid rgba(167,139,250,0.4); }
+    [data-theme="dark"] .level-badge.level-1 { background: rgba(167,139,250,0.12); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Mistake card */
+    .mistake-card {
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+      margin: var(--prim-space-6) 0;
+    }
+    .mistake-header {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: rgba(220,38,38,0.05);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .mistake-num {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #dc2626;
+      background: rgba(220,38,38,0.1);
+      padding: 2px 8px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+    [data-theme="dark"] .mistake-num { color: #f87171; background: rgba(220,38,38,0.15); }
+    .mistake-title { font-weight: var(--prim-weight-bold); color: var(--text-primary); font-size: var(--prim-text-md); }
+    .mistake-body { padding: var(--prim-space-5); }
+    .mistake-body > p { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.7; margin: 0 0 var(--prim-space-4); }
+    .example-comparison { display: grid; gap: var(--prim-space-3); }
+    @media (min-width: 640px) { .example-comparison { grid-template-columns: 1fr 1fr; } }
+    .example-bad, .example-good {
+      padding: var(--prim-space-3) var(--prim-space-4);
+      border-radius: var(--prim-radius-md);
+      font-size: var(--prim-text-sm);
+      line-height: 1.6;
+    }
+    .example-bad {
+      background: rgba(220,38,38,0.06);
+      border: 1px solid rgba(220,38,38,0.2);
+    }
+    .example-good {
+      background: rgba(22,163,74,0.06);
+      border: 1px solid rgba(22,163,74,0.2);
+    }
+    .example-label {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-2);
+    }
+    .example-bad .example-label { color: #dc2626; }
+    .example-good .example-label { color: #16a34a; }
+    [data-theme="dark"] .example-bad .example-label { color: #f87171; }
+    [data-theme="dark"] .example-good .example-label { color: #4ade80; }
+    .example-text { color: var(--text-secondary); font-style: italic; }
+    .fix-tip {
+      margin-top: var(--prim-space-4);
+      padding: var(--prim-space-3) var(--prim-space-4);
+      background: rgba(59,130,246,0.06);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: var(--prim-radius-md);
+      font-size: var(--prim-text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .fix-tip strong { color: #1d4ed8; }
+    [data-theme="dark"] .fix-tip strong { color: #93c5fd; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html" class="active">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Sai lầm thường gặp
+          </nav>
+          <h1>Bài 1.7: Sai lầm thường gặp</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Người dùng mới thường thất bại không phải vì Claude Code kém — mà vì kỳ vọng sai và thói quen sử dụng sai. Hiểu 11 sai lầm phổ biến này trước = tránh được 80% frustration trong 3 tháng đầu.</p>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 1</span>
+            <div class="mistake-title">Prompt quá mơ hồ</div>
+          </div>
+          <div class="mistake-body">
+            <p>CC không thể đọc suy nghĩ của bạn. Khi bạn đưa ra yêu cầu chung chung, CC phải tự "điền vào chỗ trống" — và thường nó điền không đúng ý bạn.</p>
+            <div class="example-comparison">
+              <div class="example-bad">
+                <div class="example-label">Mơ hồ</div>
+                <p class="example-text">"Làm cho tôi một cái web đẹp để bán hàng."</p>
+              </div>
+              <div class="example-good">
+                <div class="example-label">Cụ thể</div>
+                <p class="example-text">"Tạo landing page cho shop mỹ phẩm thiên nhiên nhắm đến phụ nữ 25-40 tuổi. Có hero section với headline hấp dẫn, 4 sản phẩm nổi bật với giá, testimonial từ 3 khách hàng, và nút 'Mua ngay' màu hồng pastel."</p>
+              </div>
+            </div>
+            <div class="fix-tip"><strong>Cách sửa:</strong> Trước khi gõ, hãy trả lời 3 câu hỏi: (1) Output cuối là gì? (2) Dành cho ai? (3) Phong cách/yêu cầu cụ thể là gì? Rồi đưa tất cả vào prompt.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 2</span>
+            <div class="mistake-title">Hỏi quá nhiều thứ cùng một lúc</div>
+          </div>
+          <div class="mistake-body">
+            <p>Nhồi 5 yêu cầu vào một tin nhắn nghe có vẻ hiệu quả, nhưng thực ra làm CC bị phân tán và thường chỉ làm tốt được 2-3 trong số đó, phần còn lại làm qua loa.</p>
+            <div class="example-comparison">
+              <div class="example-bad">
+                <div class="example-label">Quá nhiều</div>
+                <p class="example-text">"Tạo website + viết email + phân tích data CSV + tạo báo cáo + sắp xếp folder ảnh cho tôi nhé."</p>
+              </div>
+              <div class="example-good">
+                <div class="example-label">Tập trung</div>
+                <p class="example-text">"Tạo website trước. [Xong xem kết quả] Bây giờ viết email chào hàng dựa trên nội dung website vừa tạo."</p>
+              </div>
+            </div>
+            <div class="fix-tip"><strong>Quy tắc:</strong> Một cuộc hội thoại = một dự án. Một tin nhắn = một tác vụ. Khi xong việc này, mới giao việc tiếp theo.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 3</span>
+            <div class="mistake-title">Không cung cấp ngữ cảnh</div>
+          </div>
+          <div class="mistake-body">
+            <p>CC không biết bạn là ai, doanh nghiệp bạn làm gì, hay file này dùng để làm gì. Khi thiếu context, CC tạo ra output generic không phù hợp với thực tế của bạn.</p>
+            <div class="example-comparison">
+              <div class="example-bad">
+                <div class="example-label">Thiếu context</div>
+                <p class="example-text">"Viết email báo giá cho khách."</p>
+              </div>
+              <div class="example-good">
+                <div class="example-label">Đủ context</div>
+                <p class="example-text">"Tôi làm dịch vụ thiết kế nội thất cao cấp ở TP.HCM. Khách hàng tên Chị Mai, hỏi báo giá thiết kế phòng khách 30m2. Viết email báo giá chuyên nghiệp, có breakdown chi phí: phí tư vấn, phí thiết kế bản vẽ, và timeline dự kiến 4 tuần."</p>
+              </div>
+            </div>
+            <div class="fix-tip"><strong>Thói quen tốt:</strong> Bắt đầu mỗi phiên làm việc mới bằng cách mô tả ngắn: bạn là ai, làm gì, và task hôm nay là gì. 3 câu đó thay đổi hoàn toàn chất lượng output.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 4</span>
+            <div class="mistake-title">Không kiểm tra kết quả</div>
+          </div>
+          <div class="mistake-body">
+            <p>CC có thể mắc lỗi. Nó có thể tạo code có bug, đưa ra số liệu sai, hay hiểu nhầm yêu cầu. Dùng kết quả của CC mà không kiểm tra là cách tạo ra rủi ro không đáng có.</p>
+            <p>Đặc biệt nguy hiểm khi: CC xử lý dữ liệu tài chính, tạo nội dung để publish ngay, hay thực thi lệnh có thể ảnh hưởng đến file quan trọng.</p>
+            <div class="fix-tip"><strong>Nguyên tắc:</strong> Trust but verify. Luôn đọc qua output trước khi dùng. Với file quan trọng, backup trước khi cho CC xử lý. Kiểm tra kết quả số học bằng tay nếu số liệu quan trọng.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 5</span>
+            <div class="mistake-title">Cuộc hội thoại quá dài</div>
+          </div>
+          <div class="mistake-body">
+            <p>Context Window có giới hạn (nhớ lại Bài 1.4). Khi bạn dùng một cuộc hội thoại cho cả ngày làm việc — sáng bàn về website, chiều chuyển sang phân tích data, tối hỏi về email — CC bắt đầu "quên" những gì nói từ đầu.</p>
+            <p>Dấu hiệu nhận biết: CC bắt đầu hỏi lại những thứ bạn đã giải thích trước đó, hoặc đưa ra kết quả không nhất quán với hướng dẫn ban đầu.</p>
+            <div class="fix-tip"><strong>Giải pháp:</strong> Một phiên = một project hoặc một ngày làm việc. Khi chuyển sang task mới hoặc topic mới, gõ <code>/exit</code> và mở Claude Code lại. Bắt đầu mới với context đầy đủ.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 6</span>
+            <div class="mistake-title">Sợ Terminal và quay về Claude Chat</div>
+          </div>
+          <div class="mistake-body">
+            <p>Sau khi học được Level 0, nhiều người vẫn có xu hướng quay về Claude Chat vì "quen hơn". Nhưng như đã học ở Bài 1.2, nếu bạn cần kết quả cụ thể — file, website, báo cáo — Claude Chat không thể thay thế Claude Code.</p>
+            <p>Terminal trông đáng sợ nhưng bạn chỉ cần biết 3 lệnh để bắt đầu: <code>cd</code> (di chuyển thư mục), <code>ls</code> (xem file), và <code>claude</code> (khởi động CC). Đó là đủ.</p>
+            <div class="fix-tip"><strong>Lời khuyên:</strong> Mỗi khi cảm thấy muốn quay về Chat, hãy tự hỏi: "Tôi cần câu trả lời hay cần file thật?" Nếu cần file thật — kiên nhẫn với Terminal, đó là đầu tư đáng giá.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 7</span>
+            <div class="mistake-title">Không dùng /plan trước khi code</div>
+          </div>
+          <div class="mistake-body">
+            <p>Nhiều người nhảy thẳng vào "Hãy tạo cho tôi..." mà không xem Claude dự định làm gì. Kết quả: Claude giải quyết sai vấn đề, hoặc tạo ra thứ gần đúng nhưng không đúng ý — và bạn mất thêm 3-4 vòng chỉnh sửa.</p>
+            <div class="example-comparison">
+              <div class="example-bad">
+                <div class="example-label">Không plan</div>
+                <p class="example-text">"Refactor toàn bộ code trong folder src của tôi." → Claude bắt đầu sửa luôn, theo cách nó nghĩ là đúng.</p>
+              </div>
+              <div class="example-good">
+                <div class="example-label">Plan trước</div>
+                <p class="example-text">Shift+Tab → "/plan Refactor toàn bộ code trong folder src" → Claude liệt kê kế hoạch → bạn review và approve → Claude mới thực thi.</p>
+              </div>
+            </div>
+            <div class="fix-tip"><strong>Community consensus:</strong> Plan Mode First — luôn dùng <code>/plan</code> hoặc Shift+Tab trước khi giao task quan trọng. Nhất là khi task liên quan đến sửa nhiều file hoặc thao tác không thể hoàn tác.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 8</span>
+            <div class="mistake-title">CLAUDE.md quá dài hoặc không có</div>
+          </div>
+          <div class="mistake-body">
+            <p>Hai thái cực đều gây vấn đề. Không có CLAUDE.md = Claude không biết gì về bạn và project, phải giải thích lại mỗi session. CLAUDE.md quá dài = lãng phí token + Claude bị overwhelmed bởi quá nhiều instructions.</p>
+            <p>Frontier LLMs bắt đầu degrade sau ~150 instructions. Nhồi 300+ rules vào CLAUDE.md không giúp ích thêm — nó còn làm Claude khó tuân thủ hơn vì conflict giữa các rules.</p>
+            <div class="fix-tip"><strong>Budget hợp lý:</strong> 100–150 instructions là đủ cho CLAUDE.md. Giữ dưới 300 dòng tổng cộng. Xóa rules không còn áp dụng. Ưu tiên rules quan trọng nhất lên đầu file.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 9</span>
+            <div class="mistake-title">Không dùng /compact khi conversation dài</div>
+          </div>
+          <div class="mistake-body">
+            <p>Conversation càng dài, Claude càng phải "mang theo" nhiều token từ lịch sử — ngay cả những thứ không còn relevant. Kết quả: context đầy → Claude bắt đầu hallucinate, quên instructions ban đầu, output kém dần.</p>
+            <p>Dấu hiệu nhận biết: Claude trả lời không nhất quán, bắt đầu hỏi lại những gì bạn đã giải thích, hoặc <code>/cost</code> cho thấy token usage tăng nhanh mà output không tăng chất lượng.</p>
+            <div class="fix-tip"><strong>Khi nào dùng /compact:</strong> Sau 10–15 tin nhắn, khi context &gt; 50% đầy, hoặc khi bạn cảm thấy Claude đang "quên" điều gì đó. <code>/compact</code> giảm 60–80% tokens trong khi vẫn giữ ngữ cảnh quan trọng.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 10</span>
+            <div class="mistake-title">Dùng Opus cho mọi thứ</div>
+          </div>
+          <div class="mistake-body">
+            <p>Nhiều người nghĩ "Opus mạnh nhất = dùng Opus cho tất cả = kết quả tốt nhất". Sai. Opus đắt gấp 5x Sonnet. Với task đơn giản như viết email, format data, hay trả lời câu hỏi factual, Sonnet cho kết quả tương đương với chi phí thấp hơn 5 lần.</p>
+            <div class="example-comparison">
+              <div class="example-bad">
+                <div class="example-label">Lãng phí</div>
+                <p class="example-text">Dùng Opus để viết email cảm ơn khách hàng, format file CSV, hay dịch đoạn văn ngắn. Chi phí cao gấp 5x mà output không khác biệt.</p>
+              </div>
+              <div class="example-good">
+                <div class="example-label">Hợp lý</div>
+                <p class="example-text">Sonnet cho 90% tác vụ hàng ngày. Opus chỉ khi cần: phân tích chiến lược phức tạp, debug lỗi khó, hay reasoning nhiều bước liên kết nhau.</p>
+              </div>
+            </div>
+            <div class="fix-tip"><strong>Rule of thumb:</strong> Bắt đầu bằng Sonnet. Nếu kết quả chưa đủ tốt sau 2 lần retry, thử chuyển sang Opus bằng <code>/model</code>. Dùng Haiku cho tác vụ cực đơn giản và lặp lại nhiều lần.</div>
+          </div>
+        </div>
+
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-num">Sai lầm 11</span>
+            <div class="mistake-title">Không verify output — Accept ngay lần đầu</div>
+          </div>
+          <div class="mistake-body">
+            <p>"First attempt is 95% garbage" — đây là quote thực từ các engineering team dùng Claude Code trong production. Không phải vì Claude kém — mà vì output đầu tiên thường là rough draft cần được refine.</p>
+            <p>Nguy hiểm đặc biệt khi: code được deploy lên production ngay, số liệu tài chính không được kiểm tra, hay email được gửi đi mà không đọc lại.</p>
+            <div class="fix-tip"><strong>Workflow đúng:</strong> Generate → Review kỹ → Chỉnh sửa/Yêu cầu refine → Generate lại → Review lần nữa → Sử dụng. Trung bình 2–3 vòng iterate cho ra kết quả tốt. Đây không phải điểm yếu của CC — đây là cách làm việc đúng với AI.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chọn một yêu cầu thực tế từ công việc của bạn. Viết 2 phiên bản prompt: (1) phiên bản mơ hồ như bạn thường hay gõ, (2) phiên bản cụ thể với đầy đủ context. Gõ cả hai vào Claude Code (trong 2 phiên riêng biệt) và so sánh chất lượng kết quả. Nhớ kiểm tra <code>/cost</code> sau mỗi phiên — bạn sẽ thấy prompt tốt hơn không chỉ cho kết quả tốt hơn mà còn tốn ít token hơn vì cần ít vòng iterate hơn.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="tro-ly-van-hanh.html" class="nav-prev">← 1.6 Trợ lý vận hành</a>
+        <button class="btn-complete" data-lesson="1-7-sai-lam-thuong-gap">✓ Hoàn thành bài học</button>
+        <a href="bai-tap-thuc-hanh.html" class="nav-next">1.8 Bài tập thực hành →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

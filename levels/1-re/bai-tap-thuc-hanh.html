@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài tập thực hành Level 1 — Rễ | BEUP</title>
+  <meta name="description" content="3 bài tập có hướng dẫn để củng cố toàn bộ Level 1: tổ chức folder, viết email chào hàng, và phân tích tài liệu với Claude Code.">
+  <meta property="og:title" content="Bài tập thực hành Level 1 — Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-1 { background: rgba(167,139,250,0.18); color: #6d28d9; border: 1px solid rgba(167,139,250,0.4); }
+    [data-theme="dark"] .level-badge.level-1 { background: rgba(167,139,250,0.12); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Exercise layout */
+    .exercise-full {
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-xl);
+      overflow: hidden;
+      margin: var(--prim-space-8) 0;
+    }
+    .exercise-full-header {
+      padding: var(--prim-space-5) var(--prim-space-6);
+      background: rgba(167,139,250,0.08);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .exercise-badge {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6d28d9;
+      margin-bottom: var(--prim-space-2);
+    }
+    [data-theme="dark"] .exercise-badge { color: #c4b5fd; }
+    .exercise-full-title { font-size: var(--prim-text-xl); font-weight: var(--prim-weight-bold); color: var(--text-primary); margin-bottom: var(--prim-space-1); }
+    .exercise-full-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .exercise-full-meta span { font-size: var(--prim-text-xs); color: var(--text-muted); }
+    .exercise-sections { padding: var(--prim-space-6); display: grid; gap: var(--prim-space-6); }
+    .exercise-section-title {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+    }
+    .exercise-section-body { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.7; }
+    .exercise-section-body p { margin: 0 0 var(--prim-space-2); }
+    .exercise-section-body ol, .exercise-section-body ul { margin: 0; padding-left: var(--prim-space-5); }
+    .exercise-section-body li { margin-bottom: var(--prim-space-2); }
+    .result-check {
+      background: rgba(22,163,74,0.06);
+      border: 1px solid rgba(22,163,74,0.2);
+      border-radius: var(--prim-radius-md);
+      padding: var(--prim-space-3) var(--prim-space-4);
+      font-size: var(--prim-text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .hint-box {
+      background: rgba(59,130,246,0.05);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: var(--prim-radius-md);
+      padding: var(--prim-space-3) var(--prim-space-4);
+      font-size: var(--prim-text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .hint-box strong { color: #1d4ed8; }
+    [data-theme="dark"] .hint-box strong { color: #93c5fd; }
+    /* CTA to Level 2 */
+    .level-cta {
+      margin: var(--prim-space-10) 0;
+      padding: var(--prim-space-8) var(--prim-space-8);
+      background: linear-gradient(135deg, rgba(167,139,250,0.12) 0%, var(--bg-card) 100%);
+      border: 1px solid rgba(167,139,250,0.3);
+      border-radius: var(--prim-radius-xl);
+      text-align: center;
+    }
+    .level-cta h3 { font-size: var(--prim-text-2xl); font-weight: var(--prim-weight-bold); color: var(--text-primary); margin-bottom: var(--prim-space-3); }
+    .level-cta p { color: var(--text-muted); max-width: 50ch; margin: 0 auto var(--prim-space-6); line-height: 1.65; }
+    .btn-level-next {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-7);
+      height: 48px;
+      background: #6d28d9;
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--prim-text-md);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+    }
+    .btn-level-next:hover { background: #5b21b6; box-shadow: var(--shadow-md); text-decoration: none; color: var(--prim-white); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html" class="active">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Bài tập thực hành
+          </nav>
+          <h1>Bài 1.8: Bài tập thực hành</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 1</span>
+            <span class="tag">🖥️ Cần thực hành trên máy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Đọc lý thuyết giúp bạn hiểu. Thực hành giúp bạn nhớ. 3 bài tập dưới đây được thiết kế để củng cố những gì bạn học trong Level 1 — đồng thời tạo ra kết quả thực tế có thể dùng được trong công việc.</p>
+          </div>
+        </div>
+
+        <p>Mỗi bài tập có mục tiêu rõ ràng, bước thực hiện chi tiết, và tiêu chí kiểm tra kết quả. Hãy làm đúng thứ tự — bài sau xây dựng trên bài trước.</p>
+
+        <!-- Exercise 1 -->
+        <div class="exercise-full">
+          <div class="exercise-full-header">
+            <div class="exercise-badge">Bài tập 1</div>
+            <div class="exercise-full-title">Tổ chức folder dự án</div>
+            <div class="exercise-full-meta">
+              <span>⏱ ~15 phút</span>
+              <span>🎯 Kỹ năng: Quản lý file, Prompt cụ thể</span>
+            </div>
+          </div>
+          <div class="exercise-sections">
+            <div>
+              <div class="exercise-section-title">🎯 Mục tiêu</div>
+              <div class="exercise-section-body">
+                <p>Tạo cấu trúc folder chuẩn cho một dự án website — đồng thời thực hành cách mô tả yêu cầu cụ thể cho Claude Code.</p>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">📋 Bước thực hiện</div>
+              <div class="exercise-section-body">
+                <ol>
+                  <li>Mở Terminal, tạo folder mới và vào trong đó:
+                    <pre><code>mkdir ~/du-an-website && cd ~/du-an-website && claude</code></pre>
+                  </li>
+                  <li>Khi Claude Code khởi động, gõ prompt sau (thay tên công ty bằng tên thật của bạn):
+                    <pre><code>Tạo cấu trúc folder hoàn chỉnh cho dự án website công ty [TÊN CÔNG TY].
+Cần có các thư mục:
+- docs/ (chứa tài liệu dự án)
+- images/ (ảnh sản phẩm và banner)
+- reports/ (báo cáo hàng tháng)
+- templates/ (template email và tài liệu)
+Sau đó tạo file README.md trong thư mục gốc với nội dung giới thiệu ngắn về dự án và mô tả mục đích của từng thư mục.</code></pre>
+                  </li>
+                  <li>Sau khi CC tạo xong, mở Finder/File Explorer và kiểm tra cấu trúc thực tế.</li>
+                  <li>Mở file README.md và đọc nội dung — điều chỉnh nếu chưa phù hợp bằng cách yêu cầu CC sửa.</li>
+                </ol>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">✅ Kết quả mong đợi</div>
+              <div class="exercise-section-body">
+                <div class="result-check">
+                  Bạn có folder <code>du-an-website</code> với 4 thư mục con và 1 file README.md. Mở README.md — nội dung phải mô tả đúng mục đích từng thư mục. Nếu nội dung quá generic, thử thêm context: "Đây là website bán [sản phẩm của bạn] cho [đối tượng khách hàng]."
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">💬 Gợi ý nếu gặp khó khăn</div>
+              <div class="exercise-section-body">
+                <div class="hint-box">
+                  <strong>CC không tạo thư mục?</strong> Hãy kiểm tra bạn đang ở đúng thư mục bằng lệnh <code>pwd</code>. Sau đó thử lại với prompt đơn giản hơn: "Tạo thư mục docs, images, reports, templates trong thư mục hiện tại."<br><br>
+                  <strong>README.md nội dung không đúng?</strong> Yêu cầu CC sửa với nhiều context hơn: "Sửa lại README.md. Tôi là [nghề nghiệp], công ty [tên], dự án này để [mục đích]."
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exercise 2 -->
+        <div class="exercise-full">
+          <div class="exercise-full-header">
+            <div class="exercise-badge">Bài tập 2</div>
+            <div class="exercise-full-title">Viết email chào hàng</div>
+            <div class="exercise-full-meta">
+              <span>⏱ ~20 phút</span>
+              <span>🎯 Kỹ năng: Tạo nội dung, So sánh output</span>
+            </div>
+          </div>
+          <div class="exercise-sections">
+            <div>
+              <div class="exercise-section-title">🎯 Mục tiêu</div>
+              <div class="exercise-section-body">
+                <p>Tạo 3 phiên bản email chào hàng với tone khác nhau, lưu thành file riêng biệt. Thực hành cung cấp context cụ thể và so sánh chất lượng output.</p>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">📋 Bước thực hiện</div>
+              <div class="exercise-section-body">
+                <ol>
+                  <li>Tiếp tục trong phiên Claude Code đang mở, hoặc mở mới trong folder <code>du-an-website/templates</code>.</li>
+                  <li>Gõ prompt sau — điền đầy đủ thông tin thật của bạn:
+                    <pre><code>Tôi là [tên bạn], [chức danh] tại [tên công ty].
+Chúng tôi cung cấp [mô tả sản phẩm/dịch vụ ngắn gọn].
+Tôi muốn gửi email chào hàng đến [mô tả khách hàng mục tiêu].
+
+Viết 3 phiên bản email chào hàng khác nhau:
+1. email-trang-trong.txt — phong cách trang trọng, chuyên nghiệp
+2. email-than-thien.txt — phong cách thân thiện, gần gũi
+3. email-ngan-gon.txt — rất ngắn, dưới 100 chữ, thẳng vào vấn đề
+
+Lưu mỗi phiên bản thành file riêng trong thư mục templates/.</code></pre>
+                  </li>
+                  <li>Sau khi CC tạo xong, mở từng file và đọc kỹ.</li>
+                  <li>Chọn phiên bản bạn thích nhất. Yêu cầu CC tinh chỉnh: "Tinh chỉnh email-than-thien.txt: thêm câu hỏi cuối email để khuyến khích phản hồi."</li>
+                </ol>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">✅ Kết quả mong đợi</div>
+              <div class="exercise-section-body">
+                <div class="result-check">
+                  Bạn có 3 file email trong thư mục templates. Mỗi file có tone rõ ràng khác nhau. File "ngắn gọn" phải dưới 100 chữ thực sự. Nội dung phải đề cập đúng sản phẩm/dịch vụ của bạn — không phải nội dung generic.
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">💬 Gợi ý nếu gặp khó khăn</div>
+              <div class="exercise-section-body">
+                <div class="hint-box">
+                  <strong>Email quá generic không liên quan đến business?</strong> Thêm nhiều context hơn: đối thủ của bạn là ai, điểm khác biệt của bạn là gì, pain point của khách hàng là gì.<br><br>
+                  <strong>3 phiên bản trông giống nhau?</strong> Yêu cầu cụ thể hơn về sự khác biệt: "Phiên bản thân thiện: dùng từ ngữ đời thường, kể một câu chuyện ngắn, không có bullet points."
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exercise 3 -->
+        <div class="exercise-full">
+          <div class="exercise-full-header">
+            <div class="exercise-badge">Bài tập 3</div>
+            <div class="exercise-full-title">Tóm tắt &amp; phân tích tài liệu</div>
+            <div class="exercise-full-meta">
+              <span>⏱ ~20 phút</span>
+              <span>🎯 Kỹ năng: Phân tích dữ liệu, Đọc file</span>
+            </div>
+          </div>
+          <div class="exercise-sections">
+            <div>
+              <div class="exercise-section-title">🎯 Mục tiêu</div>
+              <div class="exercise-section-body">
+                <p>Thực hành khả năng đọc và phân tích tài liệu của Claude Code. Tạo báo cáo tóm tắt từ dữ liệu có sẵn.</p>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">📋 Bước thực hiện</div>
+              <div class="exercise-section-body">
+                <ol>
+                  <li>Đầu tiên, tạo tài liệu mẫu để CC phân tích. Bạn có thể dùng nội dung thật từ doanh nghiệp (báo cáo doanh thu, mô tả sản phẩm, feedback khách hàng) hoặc dùng ví dụ sau. Yêu cầu CC tạo file mẫu:
+                    <pre><code>Tạo file bao-cao-quy3.txt trong thư mục reports/ với nội dung báo cáo kinh doanh quý 3 giả định cho một công ty dịch vụ thiết kế. Bao gồm: doanh thu 3 tháng (7, 8, 9), số dự án hoàn thành, top 3 loại dịch vụ, và 2-3 thách thức gặp phải trong quý.</code></pre>
+                  </li>
+                  <li>Sau khi file được tạo, yêu cầu CC phân tích:
+                    <pre><code>Đọc file reports/bao-cao-quy3.txt và tạo file reports/tom-tat-quy3.txt với nội dung:
+1. Tóm tắt tình hình kinh doanh trong 3 gạch đầu dòng
+2. Điểm mạnh nhất trong quý (với số liệu cụ thể)
+3. Vấn đề cần chú ý nhất
+4. 2 đề xuất hành động cho quý 4</code></pre>
+                  </li>
+                  <li>Mở file <code>tom-tat-quy3.txt</code> và đọc bản tóm tắt.</li>
+                  <li>Thử thêm một bước nâng cao: "Dựa trên file báo cáo này, viết thêm vào cuối file tom-tat-quy3.txt một đoạn ngắn dự báo quý 4 nếu xu hướng hiện tại tiếp tục."</li>
+                </ol>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">✅ Kết quả mong đợi</div>
+              <div class="exercise-section-body">
+                <div class="result-check">
+                  Bạn có 2 file trong thư mục reports: file báo cáo gốc và file tóm tắt. File tóm tắt phải rõ ràng hơn, dễ đọc hơn, và có 4 phần đúng như yêu cầu. Nếu CC phân tích đúng dữ liệu trong báo cáo — điểm mạnh nổi bật là thành công.
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="exercise-section-title">💬 Gợi ý nếu gặp khó khăn</div>
+              <div class="exercise-section-body">
+                <div class="hint-box">
+                  <strong>Muốn thử với dữ liệu thật?</strong> Copy nội dung từ báo cáo thật của bạn vào một file .txt trong thư mục reports, sau đó yêu cầu CC tóm tắt file đó. CC sẽ phân tích dữ liệu thật của bạn.<br><br>
+                  <strong>Bản tóm tắt quá ngắn hoặc quá dài?</strong> Chỉ định rõ: "Mỗi phần không quá 3 câu" hoặc "Gạch đầu dòng, không viết paragraph."
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Bonus Challenge</b>
+            <p>Nếu bạn hoàn thành cả 3 bài tập, hãy thử thêm: yêu cầu CC tạo một file <code>ket-qua-level-1.md</code> tóm tắt những gì bạn đã làm được trong 3 bài tập — bao gồm danh sách file đã tạo, kỹ năng đã thực hành, và một điều bạn muốn học thêm. Đây là cách dùng CC để ghi lại hành trình học của chính bạn.</p>
+          </div>
+        </div>
+
+        <!-- Level 2 CTA -->
+        <div class="level-cta">
+          <h3>Bạn đã có nền tảng vững chắc!</h3>
+          <p>Bạn hiểu chu kỳ phát triển, đã cài đặt CC, nắm 4 khái niệm cốt lõi, và hoàn thành 3 bài tập thực tế. Đây là nền tảng thực sự — không phải lý thuyết suông.</p>
+          <p>Level 2 sẽ dạy bạn kỹ năng cốt lõi để vận hành hiệu quả hàng ngày: viết prompt masterclass, quản lý project phức tạp, và bắt đầu tự động hóa quy trình kinh doanh.</p>
+          <a href="../2-goc/" class="btn-level-next">Tiếp tục Level 2: Gốc →</a>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="sai-lam-thuong-gap.html" class="nav-prev">← 1.7 Sai lầm thường gặp</a>
+        <button class="btn-complete" data-lesson="1-8-bai-tap-thuc-hanh">✓ Hoàn thành Level 1!</button>
+        <span style="flex:1;max-width:48%;"></span>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

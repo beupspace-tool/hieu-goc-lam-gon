@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal — Công cụ giao tiếp bằng chữ | Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="Terminal là cửa sổ đen với con trỏ nhấp nháy. Đừng sợ — đây chỉ là cách nói chuyện trực tiếp với máy tính bằng chữ, mạnh mẽ hơn click chuột nhiều lần.">
+  <meta property="og:title" content="Terminal — Công cụ giao tiếp bằng chữ | Hiểu Gốc Làm Gọn | BEUP">
+  <meta property="og:description" content="Terminal là cửa sổ đen với con trỏ nhấp nháy. Đừng sợ — đây chỉ là cách nói chuyện trực tiếp với máy tính bằng chữ.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-0 { background: rgba(127,212,211,0.18); color: var(--prim-teal-700); border: 1px solid var(--prim-teal-200); }
+    [data-theme="dark"] .level-badge.level-0 { background: rgba(127,212,211,0.12); color: var(--prim-teal-300); border-color: rgba(127,212,211,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(127,212,211,0.12) 0%, rgba(63,183,182,0.05) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+
+    /* Terminal mockup */
+    .terminal-mockup {
+      background: #1a1a2e;
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+      margin: var(--prim-space-5) 0;
+      box-shadow: var(--shadow-lg);
+    }
+    .terminal-titlebar {
+      background: #2d2d44;
+      padding: var(--prim-space-3) var(--prim-space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+    }
+    .terminal-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+    .terminal-title {
+      font-size: var(--prim-text-xs);
+      color: rgba(255,255,255,0.5);
+      margin-left: var(--prim-space-2);
+    }
+    .terminal-body {
+      padding: var(--prim-space-5) var(--prim-space-6);
+      font-family: var(--prim-font-mono);
+      font-size: var(--prim-text-sm);
+      line-height: 1.8;
+    }
+    .terminal-prompt { color: #3fb7b6; }
+    .terminal-cmd { color: #e2e8f0; }
+    .terminal-output { color: rgba(255,255,255,0.6); }
+    .terminal-cursor {
+      display: inline-block;
+      width: 8px; height: 1em;
+      background: #3fb7b6;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* Comparison table */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-5) 0;
+    }
+    .compare-card {
+      padding: var(--prim-space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+      background: var(--bg-card);
+    }
+    .compare-card h4 {
+      font-size: var(--prim-text-md);
+      margin-bottom: var(--prim-space-3);
+      color: var(--text-primary);
+    }
+    .compare-card ul {
+      margin: 0;
+      padding-left: var(--prim-space-5);
+    }
+    .compare-card li {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-2);
+    }
+    @media (max-width: 640px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html" class="active">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 0</a> / Terminal
+          </nav>
+          <h1>Bài 0.4: Terminal — Công cụ giao tiếp bằng chữ</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~5 phút đọc</span>
+            <span class="tag">Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>GUI (giao diện đồ hoạ) giới hạn bạn vào những gì nhà thiết kế đã lường trước. CLI (command line) không có giới hạn đó — bạn có thể làm bất cứ điều gì hệ thống cho phép. Claude Code chạy trong terminal vì đó là môi trường cho phép nó thực sự <em>làm việc</em> thay vì chỉ tư vấn: đọc file, viết file, chạy script, gọi API, quản lý dự án — tất cả trong một phiên làm việc duy nhất.</p>
+          </div>
+        </div>
+
+        <h2>GUI bị thiết kế để giới hạn — đó là ưu điểm và nhược điểm cùng lúc</h2>
+
+        <p>Giao diện đồ hoạ tốt vì nó giúp người dùng mới bắt đầu nhanh — bạn thấy nút, bạn nhấn, bạn có kết quả. Nhưng mọi hành động trong GUI đều phải được lập trình viên <em>dự đoán trước</em> và tạo ra nút bấm cho nó.</p>
+
+        <p>Terminal không có giới hạn đó. Khi bạn cần xử lý 10.000 dòng dữ liệu, đổi tên 500 file theo pattern, hoặc kết nối với API bên ngoài — GUI của hầu hết phần mềm không có tính năng đó. Terminal có.</p>
+
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h4>🖱️ GUI — Giao diện đồ hoạ</h4>
+            <ul>
+              <li>Tốt cho: tác vụ thường gặp, người dùng mới</li>
+              <li>Giới hạn bởi những gì nhà thiết kế tạo ra</li>
+              <li>Khó tự động hoá và script hoá</li>
+              <li>Không thể kết nối với công cụ khác dễ dàng</li>
+            </ul>
+          </div>
+          <div class="compare-card">
+            <h4>⌨️ CLI — Dòng lệnh</h4>
+            <ul>
+              <li>Tốt cho: tự động hoá, tác vụ phức tạp, tích hợp hệ thống</li>
+              <li>Không giới hạn — làm được bất cứ gì hệ thống cho phép</li>
+              <li>Scriptable: viết một lần, chạy ngàn lần</li>
+              <li>Kết nối dễ với Git, databases, APIs, cloud services</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2>Terminal trong thực tế</h2>
+
+        <p>Đây là terminal điển hình — môi trường Claude Code chạy trong đó:</p>
+
+        <div class="terminal-mockup">
+          <div class="terminal-titlebar">
+            <div class="terminal-dot dot-red"></div>
+            <div class="terminal-dot dot-yellow"></div>
+            <div class="terminal-dot dot-green"></div>
+            <span class="terminal-title">Terminal — bash</span>
+          </div>
+          <div class="terminal-body">
+            <div><span class="terminal-prompt">user@macbook ~ $</span> <span class="terminal-cmd">pwd</span></div>
+            <div class="terminal-output">/Users/user</div>
+            <div><span class="terminal-prompt">user@macbook ~ $</span> <span class="terminal-cmd">ls Documents/</span></div>
+            <div class="terminal-output">bao-cao-q1-2026.xlsx  hop-dong/  marketing/</div>
+            <div><span class="terminal-prompt">user@macbook ~ $</span> <span class="terminal-cmd">mkdir projects/landing-page</span></div>
+            <div><span class="terminal-prompt">user@macbook ~ $</span> <span class="terminal-cmd">cat brief-cong-ty.txt</span></div>
+            <div class="terminal-output">Tên công ty: ABC Consulting. Dịch vụ: tư vấn...</div>
+            <div><span class="terminal-prompt">user@macbook ~ $</span> <span class="terminal-cursor"></span></div>
+          </div>
+        </div>
+
+        <h2>Năm lệnh đủ để làm việc với Claude Code</h2>
+
+        <p>Bạn không cần học terminal từ đầu. Năm lệnh sau đủ để điều hướng và làm việc cơ bản:</p>
+
+        <ul>
+          <li><code><strong>pwd</strong></code> — "print working directory" — bạn đang ở thư mục nào. Dùng khi bị lạc.</li>
+          <li><code><strong>ls</strong></code> — liệt kê file và thư mục trong vị trí hiện tại. <code>ls -la</code> hiển thị thêm chi tiết bao gồm file ẩn.</li>
+          <li><code><strong>cd tên-thư-mục</strong></code> — di chuyển vào thư mục. <code>cd ..</code> lùi lại một cấp.</li>
+          <li><code><strong>mkdir tên-thư-mục</strong></code> — tạo thư mục mới.</li>
+          <li><code><strong>cat tên-file</strong></code> — xem nội dung file văn bản ngay trong terminal.</li>
+        </ul>
+
+        <h2>Environment variables và paths — biết để không bị bối rối</h2>
+
+        <p><strong>Path</strong> là địa chỉ đầy đủ của file hoặc thư mục. <code>/Users/user/Documents/bao-cao.xlsx</code> là path tuyệt đối. <code>./Documents/bao-cao.xlsx</code> là path tương đối từ vị trí hiện tại. Claude Code thường làm việc với path tương đối trong project của bạn.</p>
+
+        <p><strong>Environment variables</strong> là biến hệ thống lưu thông tin cấu hình — API keys, đường dẫn quan trọng, settings. Ví dụ: <code>ANTHROPIC_API_KEY=sk-ant-...</code> là environment variable chứa key để Claude Code xác thực với Anthropic. Bạn không nhập key trực tiếp vào code — bạn lưu vào environment variable, an toàn hơn và dễ quản lý hơn.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành — 3 phút</b>
+            <p>Mở Terminal (Mac: <kbd>Cmd+Space</kbd> → "Terminal" | Windows: tìm "Windows Terminal" hoặc "PowerShell"). Gõ từng lệnh và quan sát kết quả: (1) <code>pwd</code> — xem bạn đang ở đâu; (2) <code>ls</code> — xem có gì trong thư mục; (3) <code>cd Desktop</code> rồi <code>ls</code> lại — xem file trên màn hình Desktop của bạn. Bạn vừa điều hướng hệ thống file bằng command line. Claude Code sẽ làm điều này hàng trăm lần trong một phiên làm việc điển hình.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lệnh không thể hoàn tác</b>
+            <p>Một số lệnh terminal không có "undo". <code>rm -rf</code> xóa file vĩnh viễn, không qua Trash. Claude Code biết điều này và sẽ luôn xin phép trước khi thực thi lệnh có tác động không thể đảo ngược. Nguyên tắc quan trọng: đọc kỹ trước khi nhấn Enter, đặc biệt với lệnh xóa hoặc ghi đè file.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="ai-va-llm.html" class="nav-prev">← 0.3 AI &amp; LLM</a>
+        <button class="btn-complete" data-lesson="0-4-terminal">✓ Hoàn thành bài học</button>
+        <a href="code-la-gi.html" class="nav-next">0.5 "Code" là gì? →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chu kỳ phát triển phần mềm — Level 1: Rễ | BEUP</title>
+  <meta name="description" content="Mọi phần mềm đều trải qua cùng một chu kỳ. Hiểu 6 bước này giúp bạn biết Claude Code đang hỗ trợ bạn ở đâu trong quá trình tạo sản phẩm.">
+  <meta property="og:title" content="Chu kỳ phát triển phần mềm — Level 1: Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-1 {
+      background: rgba(167,139,250,0.18);
+      color: #6d28d9;
+      border: 1px solid rgba(167,139,250,0.4);
+    }
+    [data-theme="dark"] .level-badge.level-1 {
+      background: rgba(167,139,250,0.12);
+      color: #c4b5fd;
+      border-color: rgba(167,139,250,0.25);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero {
+      padding: var(--prim-space-10) var(--content-padding-x);
+      background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-4);
+    }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 {
+      font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl));
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--text-primary);
+      margin: var(--prim-space-3) 0 var(--prim-space-3);
+      letter-spacing: -0.025em;
+    }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-medium);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-full);
+      color: var(--text-muted);
+    }
+    .callout {
+      display: flex;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border-radius: var(--callout-radius);
+      border-left: var(--callout-border-width) solid;
+      margin: var(--prim-space-6) 0;
+    }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct {
+      display: block;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-1);
+    }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-8) var(--content-padding-x);
+      border-top: 1px solid var(--border-default);
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+    }
+    .nav-prev, .nav-next {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--card-radius);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+      flex: 1;
+      max-width: 48%;
+    }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-5);
+      height: var(--btn-height);
+      background: var(--color-primary);
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      border: none;
+      cursor: pointer;
+      transition: background var(--prim-transition-fast);
+      white-space: nowrap;
+    }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Cycle steps */
+    .cycle-steps {
+      display: grid;
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .cycle-step {
+      display: flex;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: rgba(167,139,250,0.15);
+      border: 2px solid rgba(167,139,250,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: #6d28d9;
+    }
+    [data-theme="dark"] .step-num { background: rgba(167,139,250,0.1); color: #c4b5fd; }
+    .step-body { flex: 1; }
+    .step-title { font-weight: var(--prim-weight-semibold); color: var(--text-primary); margin-bottom: var(--prim-space-1); }
+    .step-desc { font-size: var(--prim-text-sm); color: var(--text-muted); margin: 0; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html" class="active">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Chu kỳ phát triển phần mềm
+          </nav>
+          <h1>Bài 1.1: Chu kỳ phát triển phần mềm</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Mọi phần mềm đều trải qua cùng một chu kỳ: Ý tưởng → Thiết kế → Phát triển → Kiểm thử → Triển khai → Bảo trì. Hiểu chu kỳ này giúp bạn biết Claude Code đang hỗ trợ bạn ở bước nào — và bước nào vẫn cần bạn dẫn dắt.</p>
+          </div>
+        </div>
+
+        <h2>6 bước tạo ra phần mềm</h2>
+        <p>Hãy tưởng tượng bạn muốn mở một chi nhánh mới. Bạn sẽ không thuê mặt bằng trước khi nghiên cứu thị trường, không xây dựng trước khi có bản vẽ, không khai trương trước khi thử nghiệm vận hành. Phần mềm cũng vậy — có một trình tự logic mà nếu bỏ qua, bạn sẽ trả giá sau này.</p>
+
+        <div class="cycle-steps">
+          <div class="cycle-step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Ý tưởng (Ideation)</div>
+              <p class="step-desc">Xác định vấn đề cần giải quyết, ai là người dùng, và giải pháp trông như thế nào. Giống như nghiên cứu thị trường trước khi mở cửa hàng — bạn cần biết người ta muốn gì trước khi bắt tay làm.</p>
+            </div>
+          </div>
+          <div class="cycle-step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Thiết kế (Design)</div>
+              <p class="step-desc">Vẽ ra giao diện, luồng người dùng, và cấu trúc dữ liệu. Như bản vẽ kiến trúc cho ngôi nhà — chỉnh sửa trên giấy rẻ hơn chỉnh sửa sau khi đã xây xong.</p>
+            </div>
+          </div>
+          <div class="cycle-step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Phát triển (Development)</div>
+              <p class="step-desc">Lập trình viên (hoặc Claude Code!) viết code để biến thiết kế thành thực tế. Đây là bước xây dựng thực sự — từng gạch, từng dòng code.</p>
+            </div>
+          </div>
+          <div class="cycle-step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <div class="step-title">Kiểm thử (Testing)</div>
+              <p class="step-desc">Chạy thử để tìm lỗi trước khi người dùng thật gặp phải. Như diễn tập vận hành cửa hàng với nhân viên trước ngày khai trương chính thức.</p>
+            </div>
+          </div>
+          <div class="cycle-step">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <div class="step-title">Triển khai (Deployment)</div>
+              <p class="step-desc">Đưa phần mềm lên server để người dùng thật có thể truy cập. Như ngày khai trương — mở cửa đón khách hàng đầu tiên.</p>
+            </div>
+          </div>
+          <div class="cycle-step">
+            <div class="step-num">6</div>
+            <div class="step-body">
+              <div class="step-title">Bảo trì (Maintenance)</div>
+              <p class="step-desc">Vá lỗi, thêm tính năng, cập nhật theo phản hồi người dùng. Như vận hành cửa hàng hàng ngày — không bao giờ thực sự "xong".</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Bạn đang ở đâu trong chu kỳ này?</h2>
+        <p>Khi bạn — một chủ doanh nghiệp — sử dụng Claude Code, bạn thường đang đứng ở đâu trong chu kỳ này? Câu trả lời ngắn gọn: <strong>bạn dẫn đầu ở phần đầu, CC hỗ trợ ở phần giữa</strong>.</p>
+
+        <p>Cụ thể:</p>
+        <ul>
+          <li><strong>Ý tưởng:</strong> Bạn. Chỉ bạn mới hiểu doanh nghiệp, khách hàng, và vấn đề thực sự cần giải quyết. CC không thể thay thế sự hiểu biết này.</li>
+          <li><strong>Thiết kế:</strong> Hợp tác. Bạn mô tả, CC gợi ý cấu trúc, bạn quyết định cuối cùng.</li>
+          <li><strong>Phát triển:</strong> CC. Đây là sức mạnh chính của Claude Code — viết code nhanh và chính xác.</li>
+          <li><strong>Kiểm thử:</strong> CC + bạn. CC chạy test tự động, bạn kiểm tra bằng mắt thật.</li>
+          <li><strong>Triển khai:</strong> Hợp tác. CC hướng dẫn từng bước, bạn thực thi và xác nhận.</li>
+          <li><strong>Bảo trì:</strong> Ongoing — CC luôn sẵn sàng khi bạn cần thêm hoặc sửa.</li>
+        </ul>
+
+        <h2>Tại sao quy trình quan trọng hơn kết quả?</h2>
+        <p>Nhiều người mới dùng CC có xu hướng muốn "ra sản phẩm ngay" — bỏ qua thiết kế, bỏ qua kiểm thử, chỉ muốn deploy càng nhanh càng tốt. Đây là sai lầm kinh điển.</p>
+
+        <p>Phần mềm thiếu kiểm thử sẽ vỡ ngay khi gặp người dùng thật. Website không có thiết kế trông như bản thảo. Ứng dụng không có kế hoạch bảo trì sẽ thối rữa theo thời gian. <strong>Quy trình không phải là overhead — quy trình là bảo hiểm chất lượng.</strong></p>
+
+        <p>Một ví dụ từ thực tế kinh doanh: bạn có thể mở tiệm cà phê mà không nghiên cứu thị trường, không thử menu trước, không huấn luyện nhân viên — và bạn sẽ mở được. Nhưng tỉ lệ thành công sẽ thấp hơn rất nhiều so với người đã làm đúng quy trình. Phần mềm cũng vậy.</p>
+
+        <h2>Claude Code trong chu kỳ phát triển</h2>
+        <p>Điểm mạnh của Claude Code là nó có thể hỗ trợ ở <em>mọi bước</em> trong chu kỳ — nhưng hiệu quả nhất khi bạn biết mình đang ở bước nào và cần gì:</p>
+
+        <ul>
+          <li><strong>Brainstorm ý tưởng:</strong> "Tôi muốn giải quyết vấn đề X cho khách hàng Y. CC có thể giúp tôi suy nghĩ các hướng tiếp cận không?"</li>
+          <li><strong>Thiết kế cấu trúc:</strong> "Tôi cần website giới thiệu sản phẩm với 5 section. Đề xuất cấu trúc trang?"</li>
+          <li><strong>Viết code:</strong> "Tạo landing page theo cấu trúc này với HTML và CSS."</li>
+          <li><strong>Kiểm thử:</strong> "Kiểm tra xem form liên hệ này có hoạt động đúng không."</li>
+          <li><strong>Deploy:</strong> "Hướng dẫn tôi đưa file này lên Netlify."</li>
+          <li><strong>Cập nhật:</strong> "Thêm section testimonials vào cuối trang."</li>
+        </ul>
+
+        <p>Tuy nhiên, <strong>bạn luôn là người quyết định</strong>. CC thực thi — bạn lãnh đạo. Nếu bạn không rõ mình muốn gì (bước Ý tưởng), CC sẽ tạo ra thứ kỹ thuật đúng nhưng sai về kinh doanh.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Nghĩ về 1 vấn đề trong doanh nghiệp bạn muốn giải quyết bằng công nghệ. Viết ra: (1) Vấn đề là gì? (2) Giải pháp bạn hình dung trông như thế nào? (3) Ai sẽ dùng nó hàng ngày? Đây chính là bước "Ý tưởng" trong chu kỳ — bước mà không AI nào có thể làm thay bạn.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lưu ý</b>
+            <p>Claude Code rất giỏi ở bước Phát triển, nhưng nếu bạn không có bước Thiết kế rõ ràng trước đó, bạn sẽ mất nhiều thời gian sửa đi sửa lại. Đầu tư 10 phút thiết kế trên giấy = tiết kiệm 1 giờ chỉnh sửa code sau đó.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="./" class="nav-prev">← Về Level 1</a>
+        <button class="btn-complete" data-lesson="1-1-chu-ky-phat-trien">✓ Hoàn thành bài học</button>
+        <a href="cc-vs-chat-vs-api.html" class="nav-next">1.2 CC vs Chat vs API →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

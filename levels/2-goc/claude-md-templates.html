@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLAUDE.md Templates | Level 2 | BEUP</title>
+  <meta name="description" content="Không cần bắt đầu từ zero. Template CLAUDE.md cho team, marketing, backoffice — điền chi tiết là xong. Học cách tùy chỉnh template cho doanh nghiệp của bạn.">
+  <meta property="og:title" content="CLAUDE.md Templates | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html" class="active">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / CLAUDE.md Templates
+          </nav>
+          <h1>Bài 2.2: CLAUDE.md Templates</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Không cần bắt đầu từ zero. Template cho bạn khung chuẩn — bạn chỉ cần điền chi tiết vào chỗ trống. Giống như hợp đồng mẫu: luật sư đã soạn sẵn điều khoản tiêu chuẩn, bạn chỉ điền tên và số tiền.</p>
+          </div>
+        </div>
+
+        <h2>Template cơ bản — Cho bất kỳ dự án nhỏ nào</h2>
+        <p>Nếu bạn chưa biết bắt đầu từ đâu, hãy dùng template này. Phù hợp cho folder làm việc cá nhân, dự án một người, hoặc bất kỳ dự án nhỏ nào chưa có quy trình rõ ràng.</p>
+
+        <pre><code># CLAUDE.md
+
+## Dự án
+[Tên dự án] — [Mô tả 1–2 câu: dự án này làm gì, ai dùng nó]
+
+## Ngôn ngữ & Tone
+- Ngôn ngữ làm việc: [Tiếng Việt / Tiếng Anh / Song ngữ]
+- Tone: [Thân thiện / Chuyên nghiệp / Kỹ thuật]
+- Đơn vị: [VND / USD], định dạng ngày: [DD/MM/YYYY]
+
+## Cấu trúc folder
+[Mô tả ngắn gọn các folder chính]
+/docs/         — Tài liệu
+/data/         — Dữ liệu và file CSV
+/templates/    — Template tái sử dụng
+/reports/      — Báo cáo xuất ra
+
+## Quy ước
+- Tên file: [kebab-case / snake_case / PascalCase]
+- [Quy tắc quan trọng khác của bạn]
+
+## Ngữ cảnh
+[Ai dùng? Vấn đề gì cần giải quyết? Ưu tiên gì?]</code></pre>
+
+        <h2>Template cho team — Khi làm việc nhóm</h2>
+        <p>Khi có nhiều người cùng dùng Claude Code trong một dự án, CLAUDE.md cần nêu rõ quy ước chung để CC không làm khác nhau cho từng người.</p>
+
+        <pre><code># CLAUDE.md — [Tên dự án team]
+
+## Dự án
+[Mô tả dự án] — Team [X] người, [mục tiêu]
+
+## Team & Phân quyền
+- Lead: [Tên] — quyết định kiến trúc, code review
+- Developer: [Tên] — implement features
+- Content: [Tên] — nội dung, copywriting
+
+## Tech Stack
+- [Ngôn ngữ/Framework chính]
+- [Database nếu có]
+- [Tools CI/CD, hosting]
+
+## Quy ước code
+- Tên biến: camelCase
+- Tên file: kebab-case
+- Commit message: [feat/fix/docs/chore]: mô tả ngắn
+- Branch: feature/[tên], fix/[tên]
+
+## Quy trình làm việc
+1. Tạo branch từ main
+2. Implement và test
+3. Tạo Pull Request → lead review
+4. Merge sau khi được approve
+
+## Lệnh thường dùng
+- Chạy local: [lệnh]
+- Chạy test: [lệnh]
+- Build: [lệnh]
+- Deploy: [lệnh]
+
+## Không được làm
+- Commit trực tiếp vào main
+- Push code chưa qua test
+- Xóa file mà không backup</code></pre>
+
+        <h2>Template cho marketing — Nội dung & truyền thông</h2>
+        <p>Dành cho team marketing, content creator, hoặc chủ doanh nghiệp tự làm content. Template này tập trung vào brand voice và quy trình nội dung.</p>
+
+        <pre><code># CLAUDE.md — Marketing & Content
+
+## Thương hiệu
+- Tên: [Tên thương hiệu]
+- Slogan: [Slogan]
+- Ngành: [Ngành kinh doanh]
+- Khách hàng mục tiêu: [Mô tả: độ tuổi, giới tính, vấn đề họ có]
+
+## Brand Voice
+- Tone: [Thân thiện / Chuyên nghiệp / Hài hước / Truyền cảm hứng]
+- Tránh: [Từ ngữ hoặc phong cách KHÔNG dùng]
+- Ví dụ giọng văn tốt: "[Câu ví dụ theo phong cách đúng]"
+
+## Kênh truyền thông
+- Facebook: [Link page, tần suất đăng]
+- Instagram: [Link, tần suất]
+- Email: [Nền tảng, tần suất gửi]
+- Blog: [Link, tần suất]
+
+## Content Calendar
+- Thứ 2: [Loại nội dung]
+- Thứ 4: [Loại nội dung]
+- Thứ 6: [Loại nội dung]
+
+## Cấu trúc folder
+/content/
+  /social/      — Bài đăng mạng xã hội
+  /emails/      — Email campaigns
+  /blog/        — Bài viết
+  /briefs/      — Brief cho từng chiến dịch
+/assets/
+  /images/      — Hình ảnh thương hiệu
+  /templates/   — Template tái sử dụng
+
+## Hashtags thường dùng
+[Danh sách hashtag theo ngành]
+
+## Từ khóa SEO quan trọng
+[Danh sách từ khóa]</code></pre>
+
+        <h2>Template cho backoffice — Quản lý nội bộ</h2>
+        <p>Dành cho các dự án xử lý dữ liệu nội bộ: quản lý đơn hàng, kho, khách hàng, tài chính. Không cần kỹ năng kỹ thuật — chỉ cần mô tả rõ bạn đang quản lý gì.</p>
+
+        <pre><code># CLAUDE.md — Backoffice [Tên công ty]
+
+## Tổng quan
+Quản lý dữ liệu nội bộ cho [Tên công ty].
+Bao gồm: [đơn hàng / khách hàng / kho / tài chính / nhân sự].
+
+## Dữ liệu đang quản lý
+- customers.csv: Danh sách khách hàng (email, tên, điện thoại, địa chỉ)
+- orders.csv: Đơn hàng (mã đơn, ngày, khách hàng, sản phẩm, giá trị)
+- products.csv: Catalog sản phẩm (mã, tên, giá, tồn kho, danh mục)
+- [File khác nếu có]
+
+## Cấu trúc folder
+/data/          — File CSV chính
+/reports/       — Báo cáo đã tạo
+/backups/       — Backup trước khi sửa
+/templates/     — Template báo cáo
+
+## Quy ước dữ liệu
+- Ngày: DD/MM/YYYY
+- Tiền: VND, không dấu chấm phân cách nghìn trong CSV
+- Tên: Họ tên đầy đủ, không viết tắt
+- Email: chữ thường
+
+## Báo cáo cần tạo thường xuyên
+- Báo cáo tuần: doanh thu, đơn hàng mới, tồn kho thấp
+- Báo cáo tháng: tổng doanh thu, top sản phẩm, khách hàng mới
+
+## Lưu ý an toàn dữ liệu
+- Luôn backup trước khi sửa file CSV lớn
+- Không xóa dữ liệu cũ — archive vào /backups thay thế
+- [Quy tắc bảo mật cụ thể của công ty]</code></pre>
+
+        <h2>Template cho dự án Claude Code — Meta-template</h2>
+        <p>Dành cho ai dùng Claude Code để phát triển phần mềm, website, hoặc bất kỳ dự án có code. Đây là template tối giản nhất — mọi dòng đều thiết yếu, không có gì thừa. Được tạo tự động khi bạn chạy <code>/init</code>, nhưng biết cấu trúc này giúp bạn tùy chỉnh tốt hơn.</p>
+
+        <pre><code># CLAUDE.md
+
+## Project
+- Name: [project name]
+- Stack: [tech stack — framework, database, language, versions]
+- URL: [nếu đã deploy]
+
+## Commands
+- `npm run dev` — start dev server
+- `npm test` — run tests
+- `npm run build` — production build
+- `npm run lint` — check code style
+
+## Structure
+[brief folder map — 5–8 dòng, chỉ folder quan trọng]
+src/
+  components/   — UI components
+  pages/        — page routes
+  utils/        — helper functions
+public/         — static assets
+
+## Conventions
+- Tên file: kebab-case
+- Tên component: PascalCase
+- Commit: feat/fix/docs/chore: mô tả ngắn
+- [Quy tắc quan trọng khác]
+
+## Context
+- [Ai dùng sản phẩm này?]
+- [Vấn đề gì đang giải quyết?]
+- [Phase hiện tại / priority?]</code></pre>
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên tắc sizing</b>
+            <p>Anthropic khuyến nghị CLAUDE.md dưới 300 dòng tổng. Cộng đồng power users nhận thấy <strong>dưới 150 dòng hướng dẫn</strong> cho kết quả tốt nhất — Claude tập trung hơn, ít bị "scatter" hơn. Chạy <code>/init</code> để tạo file khởi đầu, rồi dọn dẹp xuống dưới 150 dòng. Mỗi dòng phải kiếm được chỗ của nó.</p>
+          </div>
+        </div>
+
+        <h2>Cách sử dụng template</h2>
+
+        <ol>
+          <li><strong>Chọn template phù hợp nhất</strong> với loại công việc của bạn (hoặc kết hợp 2 template nếu cần).</li>
+          <li><strong>Copy nội dung template</strong> vào file mới tên <code>CLAUDE.md</code>.</li>
+          <li><strong>Điền thông tin thực tế</strong> vào tất cả chỗ có dấu <code>[...]</code>. Xóa phần nào không liên quan.</li>
+          <li><strong>Đặt file vào thư mục gốc dự án</strong> — cùng cấp với folder con, không phải trong subfolder.</li>
+          <li><strong>Mở Claude Code</strong> và thực hiện yêu cầu đầu tiên. Quan sát xem CC có đọc và áp dụng context không.</li>
+        </ol>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Cảnh báo</b>
+            <p>Template là điểm khởi đầu, không phải đích đến. Một CLAUDE.md tốt là file được cập nhật thường xuyên — khi dự án thay đổi, khi bạn phát hiện CC hiểu sai điều gì đó, hoặc khi bạn muốn thêm quy tắc mới. Đừng bao giờ copy template rồi không chỉnh sửa gì cả.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chọn 1 template phù hợp nhất với công việc của bạn. Tùy chỉnh bằng cách điền thông tin thực tế vào tất cả phần <code>[...]</code>. Đặt vào folder dự án và mở Claude Code. Thực hiện 2–3 yêu cầu khác nhau và quan sát xem CC có áp dụng đúng ngữ cảnh từ CLAUDE.md không.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="claude-md-so-tay.html" class="nav-prev">← 2.1 CLAUDE.md</a>
+        <button class="btn-complete" data-lesson="2-2-claude-md-templates">✓ Hoàn thành bài học</button>
+        <a href="cau-truc-du-an.html" class="nav-next">2.3 Cấu trúc dự án →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

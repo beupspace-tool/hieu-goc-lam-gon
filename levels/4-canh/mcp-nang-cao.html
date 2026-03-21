@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4.2: MCP nâng cao — Level 4 Cành | BEUP</title>
+  <meta name="description" content="Multi-server MCP setup, build custom MCP server cho internal API, authentication patterns, và security best practices cho production.">
+  <meta property="og:title" content="Bài 4.2: MCP nâng cao | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-4 { background: rgba(22,163,74,0.12); color: #15803d; border: 1px solid rgba(22,163,74,0.3); }
+    [data-theme="dark"] .level-badge.level-4 { background: rgba(22,163,74,0.15); color: #4ade80; border-color: rgba(22,163,74,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(22,163,74,0.08) 0%, rgba(22,163,74,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--prim-space-4); margin: var(--prim-space-4) 0; }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+    .compare-box { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-md); padding: var(--prim-space-4); }
+    .compare-box h4 { font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); margin-bottom: var(--prim-space-2); }
+    .compare-box ul { margin: 0; padding-left: var(--prim-space-4); font-size: var(--prim-text-sm); color: var(--text-muted); }
+    .compare-box ul li { margin-bottom: var(--prim-space-1); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-4">Level 4: Cành</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="skill-tu-chinh.html">4.1 Skill tùy chỉnh</a></li>
+          <li><a href="mcp-nang-cao.html" class="active">4.2 MCP nâng cao</a></li>
+          <li><a href="hooks-tu-dong-hoa.html">4.3 Hooks &amp; tự động hóa</a></li>
+          <li><a href="multi-agent.html">4.4 Multi-agent</a></li>
+          <li><a href="prompt-nang-cao.html">4.5 Prompt nâng cao</a></li>
+          <li><a href="marketing-stack.html">4.6 Marketing stack</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 4</a> / MCP nâng cao
+          </nav>
+          <h1>Bài 4.2: MCP nâng cao</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 4</span>
+            <span class="tag">Power user</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>MCP (Model Context Protocol) là cầu nối giữa Claude và hệ thống ngoài. Ở Level 2 bạn dùng MCP servers sẵn có. Ở Level 4, bạn build MCP server riêng để Claude trực tiếp access internal API, database, hay bất kỳ hệ thống nào của doanh nghiệp — mà không cần copy-paste data thủ công.</p>
+          </div>
+        </div>
+
+        <h2>Multi-server setup: Chạy nhiều MCP cùng lúc</h2>
+
+        <p>Claude Code có thể kết nối với nhiều MCP servers đồng thời. Mỗi server phục vụ một mục đích khác nhau, Claude tự chọn server phù hợp dựa trên task.</p>
+
+        <p>File <code>.mcp.json</code> trong project root định nghĩa tất cả servers:</p>
+
+        <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/you/projects"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-notion"],
+      "env": {
+        "NOTION_API_KEY": "${NOTION_API_KEY}"
+      }
+    },
+    "internal-crm": {
+      "command": "python3",
+      "args": ["/path/to/crm-mcp-server/server.py"],
+      "env": {
+        "CRM_API_URL": "https://api.yourcrm.internal",
+        "CRM_API_KEY": "${CRM_API_KEY}"
+      }
+    }
+  }
+}</code></pre>
+
+        <p>Khi bạn hỏi Claude "lấy thông tin khách hàng Nguyễn Văn A", Claude nhận ra cần dùng <code>internal-crm</code> server. Khi hỏi "tạo PR trên GitHub", Claude dùng <code>github</code> server. Routing tự động — bạn không cần chỉ định.</p>
+
+        <h2>MCP resources vs tools: Phân biệt quan trọng</h2>
+
+        <div class="two-col">
+          <div class="compare-box">
+            <h4>Tools — Thực hiện actions</h4>
+            <ul>
+              <li>Create, update, delete data</li>
+              <li>Send messages, emails</li>
+              <li>Trigger workflows</li>
+              <li>Query với side effects</li>
+              <li>Ví dụ: <code>create_ticket()</code>, <code>update_status()</code></li>
+            </ul>
+          </div>
+          <div class="compare-box">
+            <h4>Resources — Đọc data</h4>
+            <ul>
+              <li>Read-only access</li>
+              <li>Structured data sources</li>
+              <li>No side effects</li>
+              <li>Cacheable</li>
+              <li>Ví dụ: <code>customer_list</code>, <code>product_catalog</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <p>Nguyên tắc thiết kế: expose Resources cho dữ liệu đọc thường xuyên (Claude cache được, tiết kiệm token), Tools cho actions cần xác nhận hoặc có side effects.</p>
+
+        <h2>Build custom MCP server với Python (FastMCP)</h2>
+
+        <p>FastMCP là framework Python đơn giản nhất để build MCP server. Ví dụ dưới đây tạo server cho internal CRM:</p>
+
+        <pre><code># crm-mcp-server/server.py
+from fastmcp import FastMCP
+import requests
+import os
+
+mcp = FastMCP("Internal CRM")
+
+CRM_URL = os.environ["CRM_API_URL"]
+CRM_KEY = os.environ["CRM_API_KEY"]
+HEADERS = {"Authorization": f"Bearer {CRM_KEY}"}
+
+@mcp.tool()
+def get_customer(customer_id: str) -> dict:
+    """Lấy thông tin chi tiết của một khách hàng theo ID."""
+    response = requests.get(
+        f"{CRM_URL}/customers/{customer_id}",
+        headers=HEADERS,
+        timeout=10
+    )
+    response.raise_for_status()
+    return response.json()
+
+@mcp.tool()
+def search_customers(query: str, limit: int = 10) -> list:
+    """Tìm kiếm khách hàng theo tên, email hoặc số điện thoại."""
+    response = requests.get(
+        f"{CRM_URL}/customers/search",
+        params={"q": query, "limit": limit},
+        headers=HEADERS,
+        timeout=10
+    )
+    response.raise_for_status()
+    return response.json()["results"]
+
+@mcp.tool()
+def update_customer_status(customer_id: str, status: str) -> dict:
+    """Cập nhật trạng thái khách hàng (active/inactive/vip)."""
+    response = requests.patch(
+        f"{CRM_URL}/customers/{customer_id}",
+        json={"status": status},
+        headers=HEADERS,
+        timeout=10
+    )
+    response.raise_for_status()
+    return {"success": True, "customer_id": customer_id, "new_status": status}
+
+@mcp.resource("crm://customers/list")
+def customer_list() -> str:
+    """Danh sách tất cả khách hàng active — read-only resource."""
+    response = requests.get(
+        f"{CRM_URL}/customers?status=active&limit=500",
+        headers=HEADERS,
+        timeout=15
+    )
+    return response.text
+
+if __name__ == "__main__":
+    mcp.run()
+</code></pre>
+
+        <p>Cài FastMCP và chạy:</p>
+        <pre><code>pip install fastmcp requests
+python3 server.py</code></pre>
+
+        <p>Sau đó thêm vào <code>.mcp.json</code> như ví dụ ở trên. Restart Claude Code. Bây giờ bạn có thể nói "tìm khách hàng tên Minh" và Claude sẽ gọi <code>search_customers("Minh")</code>.</p>
+
+        <h2>TypeScript MCP server (MCP SDK)</h2>
+
+        <p>Nếu team bạn dùng Node.js, TypeScript SDK sẽ phù hợp hơn:</p>
+
+        <pre><code>// inventory-mcp/index.ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const server = new McpServer({ name: "Inventory System", version: "1.0.0" });
+
+server.tool(
+  "check_stock",
+  "Kiểm tra tồn kho của sản phẩm theo SKU",
+  { sku: z.string().describe("Mã sản phẩm SKU") },
+  async ({ sku }) => {
+    const stock = await fetchStockFromDB(sku);
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ sku, quantity: stock.quantity, warehouse: stock.location })
+      }]
+    };
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+</code></pre>
+
+        <h2>Authentication patterns</h2>
+
+        <p><strong>API Key (đơn giản nhất):</strong> Truyền qua environment variable trong <code>.mcp.json</code>. Dùng <code>${ENV_VAR_NAME}</code> syntax — Claude Code sẽ resolve từ shell environment của bạn. Không bao giờ hardcode key trong file JSON.</p>
+
+        <p><strong>OAuth2:</strong> Cho APIs cần token refresh (Google, Microsoft). Build token refresh logic trong server, lưu refresh token vào file local (không trong source code):</p>
+        <pre><code># Trong MCP server Python
+def get_access_token():
+    """Tự động refresh nếu token hết hạn."""
+    token_data = load_token_from_file("~/.crm-tokens.json")
+    if is_expired(token_data):
+        token_data = refresh_oauth_token(token_data["refresh_token"])
+        save_token_to_file(token_data, "~/.crm-tokens.json")
+    return token_data["access_token"]</code></pre>
+
+        <h2>Performance và production considerations</h2>
+
+        <p>MCP servers chạy local trên máy bạn — latency rất thấp so với APIs qua internet. Nhưng khi đưa vào production:</p>
+
+        <ul>
+          <li><strong>Health checks:</strong> Add <code>/health</code> endpoint. Nếu server crash, Claude nhận được lỗi rõ ràng thay vì timeout.</li>
+          <li><strong>Retry logic:</strong> Network errors xảy ra. Implement exponential backoff cho tất cả HTTP calls.</li>
+          <li><strong>Timeout:</strong> Set timeout cho mọi request. Default là vô hạn — một query chậm sẽ block Claude.</li>
+          <li><strong>Logging:</strong> Log mọi tool call với timestamp. Khi debug, bạn cần biết Claude đã gọi gì và nhận được gì.</li>
+        </ul>
+
+        <h2>Security best practices</h2>
+
+        <p><strong>Principle of least privilege:</strong> MCP server cho marketing team không cần access vào finance data. Tạo separate servers với separate API keys có permissions phù hợp — đừng dùng một master key cho tất cả.</p>
+
+        <p><strong>Audit logs:</strong> Log mọi mutation (create, update, delete) với: timestamp, tool được gọi, parameters, user context (nếu có). Khi xảy ra sự cố, bạn cần trace được Claude đã làm gì.</p>
+
+        <p><strong>Separate environments:</strong> Server dev dùng staging database, server production dùng production database. Đừng test với production data.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lưu ý quan trọng</b>
+            <p>MCP servers với destructive tools (delete, update) cần confirmation flow. Thêm parameter <code>confirm: bool = False</code> vào tools nguy hiểm — nếu <code>confirm=False</code>, trả về preview thay vì execute. Claude sẽ hỏi bạn xác nhận trước khi thực sự xóa data.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo file <code>.mcp.json</code> trong một project folder với 3 servers: <code>filesystem</code> (trỏ vào thư mục project), <code>github</code> (cần GitHub token), và một server khác bạn tự chọn từ <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">MCP servers registry</a>. Restart Claude Code và thử query mỗi server bằng câu hỏi tự nhiên — quan sát Claude chọn đúng server cho mỗi loại query.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="skill-tu-chinh.html" class="nav-prev">← 4.1 Skill tùy chỉnh</a>
+        <button class="btn-complete" data-lesson="4-2-mcp-nang-cao">✓ Hoàn thành bài học</button>
+        <a href="hooks-tu-dong-hoa.html" class="nav-next">4.3 Hooks &amp; tự động hóa →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

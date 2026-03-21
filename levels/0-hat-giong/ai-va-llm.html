@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI là gì? LLM là gì? — Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="AI không phải robot biết suy nghĩ. Tìm hiểu cách LLM hoạt động, Claude là ai, tokens và context window là gì — và tại sao AI hữu ích nhưng không hoàn hảo.">
+  <meta property="og:title" content="AI là gì? LLM là gì? — Hiểu Gốc Làm Gọn | BEUP">
+  <meta property="og:description" content="AI không phải robot biết suy nghĩ. Tìm hiểu cách LLM hoạt động, Claude là ai, và tại sao AI hữu ích nhưng không hoàn hảo.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge {
+      display: inline-flex; align-items: center;
+      font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .level-badge.level-0 { background: rgba(127,212,211,0.18); color: var(--prim-teal-700); border: 1px solid var(--prim-teal-200); }
+    [data-theme="dark"] .level-badge.level-0 { background: rgba(127,212,211,0.12); color: var(--prim-teal-300); border-color: rgba(127,212,211,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(127,212,211,0.12) 0%, rgba(63,183,182,0.05) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+
+    /* Term card */
+    .term-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--prim-space-3);
+      margin: var(--prim-space-5) 0;
+    }
+    .term-card {
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+    }
+    .term-card-word {
+      font-size: var(--prim-text-lg);
+      font-weight: var(--prim-weight-bold);
+      color: var(--color-primary);
+      margin-bottom: var(--prim-space-1);
+    }
+    .term-card-def {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html" class="active">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 0</a> / AI &amp; LLM
+          </nav>
+          <h1>Bài 0.3: AI là gì? LLM là gì?</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>AI không phải phép màu — nó là công cụ thống kê cực mạnh. LLM hoạt động bằng cách dự đoán xác suất cao nhất của từ tiếp theo, dựa trên pattern từ hàng nghìn tỷ từ dữ liệu huấn luyện. Hiểu cơ chế này giúp bạn biết khi nào dùng AI hiệu quả, khi nào cần kiểm chứng, và khi nào không nên dùng — đặc biệt với dữ liệu tài chính và pháp lý.</p>
+          </div>
+        </div>
+
+        <h2>LLM hoạt động như thế nào — đủ để ra quyết định</h2>
+
+        <p>LLM (Large Language Model) là mô hình toán học được huấn luyện để dự đoán: <em>cho ngữ cảnh này, từ tiếp theo nên là gì?</em> Đó là tất cả những gì nó làm — nhưng làm ở quy mô và độ tinh vi đến mức kết quả trông như thể "suy nghĩ."</p>
+
+        <p>Quá trình huấn luyện: mô hình tiêu thụ hàng nghìn tỷ từ văn bản — sách, bài báo, code, trang web, diễn đàn — và học pattern: sau cụm từ X, thường xuất hiện Y. Sau hàng tháng chạy trên hàng nghìn GPU, mô hình có thể tạo ra văn bản thuyết phục trên hầu hết mọi chủ đề.</p>
+
+        <p><strong>Điều này có nghĩa gì trong thực tế:</strong> khi Claude trả lời câu hỏi của bạn, nó không "tra cứu sự thật" — nó tạo ra câu trả lời có xác suất cao nhất là đúng. Trong hầu hết trường hợp, hai thứ này trùng khớp. Nhưng không phải luôn luôn.</p>
+
+        <h2>Chi phí AI — token-based pricing và khi nào dùng model nào</h2>
+
+        <p>Các model AI thương mại tính phí theo token. Khoảng 1 token ≈ 0.75 từ tiếng Anh (tiếng Việt thường nhiều token hơn do ký tự phức tạp hơn). Bạn trả cho cả input (những gì bạn gửi) và output (những gì AI trả về).</p>
+
+        <div class="term-cards">
+          <div class="term-card">
+            <div class="term-card-word">Claude Haiku</div>
+            <p class="term-card-def">Model nhanh, rẻ nhất. Phù hợp: tóm tắt, phân loại, câu hỏi đơn giản. Chi phí thấp cho tác vụ lặp đi lặp lại.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-card-word">Claude Sonnet</div>
+            <p class="term-card-def">Cân bằng tốt giữa chất lượng và chi phí. Model mặc định cho hầu hết tác vụ kinh doanh — viết, phân tích, code.</p>
+          </div>
+          <div class="term-card">
+            <div class="term-card-word">Claude Opus</div>
+            <p class="term-card-def">Model mạnh nhất, đắt nhất. Dùng cho tác vụ phức tạp: phân tích chiến lược, code phức tạp, lý luận nhiều bước.</p>
+          </div>
+        </div>
+
+        <p>Nguyên tắc tiết kiệm chi phí: dùng model rẻ hơn cho tác vụ đơn giản, chuyển sang model đắt hơn khi thực sự cần. Đừng dùng Opus để viết email xác nhận đơn hàng — đó là lãng phí ngân sách AI.</p>
+
+        <h2>Claude vs GPT vs Gemini — định vị thực tế cho doanh nghiệp</h2>
+
+        <p><strong>GPT-4o (OpenAI)</strong>: Model mạnh, ecosystem rộng, nhiều plugin tích hợp. Phù hợp nếu bạn cần tích hợp với nhiều công cụ bên thứ ba qua ChatGPT plugins.</p>
+
+        <p><strong>Gemini (Google)</strong>: Tích hợp sâu với Google Workspace (Docs, Sheets, Gmail). Nếu công ty bạn đang dùng Google Workspace, Gemini có lợi thế về tích hợp native.</p>
+
+        <p><strong>Claude (Anthropic)</strong>: Context window lớn nhất trong nhóm (200K token — tương đương ~150.000 từ), thường được đánh giá cao về chất lượng viết và lý luận phức tạp. Claude Code đặc biệt mạnh cho tác vụ lập trình và làm việc với file.</p>
+
+        <p>Thực tế: hầu hết doanh nghiệp dùng 2–3 model tùy tác vụ. Không có model nào "tốt nhất" tuyệt đối — chỉ có model phù hợp cho từng use case cụ thể.</p>
+
+        <h2>Bốn giới hạn nghiêm trọng cần biết trước khi dùng AI cho kinh doanh</h2>
+
+        <ol>
+          <li><strong>Hallucination với số liệu và tên cụ thể</strong> — LLM có thể tạo ra số liệu thị trường, tên luật, điều khoản hợp đồng nghe rất thuyết phục nhưng sai hoàn toàn. Không bao giờ dùng số liệu từ AI trực tiếp vào báo cáo tài chính hoặc tài liệu pháp lý mà không kiểm chứng từ nguồn gốc.</li>
+          <li><strong>Không có kiến thức real-time</strong> — Dữ liệu huấn luyện của Claude có điểm cắt (training cutoff). Tỷ giá, giá hàng hoá, chính sách thuế mới nhất — không hỏi AI, hỏi nguồn chính thức.</li>
+          <li><strong>Privacy và dữ liệu nhạy cảm</strong> — Những gì bạn gửi vào AI đi qua server của nhà cung cấp. Không nhập thông tin khách hàng, dữ liệu tài chính nội bộ, hay bí mật kinh doanh vào AI chat công cộng trừ khi bạn hiểu chính sách dữ liệu của họ.</li>
+          <li><strong>Bias từ dữ liệu huấn luyện</strong> — AI học từ văn bản do con người viết — kể cả những văn bản có thiên kiến. Kết quả phân tích thị trường hoặc đánh giá nhân viên từ AI có thể phản ánh bias, không phải thực tế khách quan.</li>
+        </ol>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Kiểm tra thực tế</b>
+            <p>Mở <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> và thử yêu cầu: <em>"Cho tôi số liệu thị trường bán lẻ Việt Nam năm 2025 và tốc độ tăng trưởng."</em> Nhận kết quả, rồi kiểm chứng với Statista, GSO, hoặc báo cáo ngành. Quan sát xem có sự sai lệch không. Đây là bài tập quan trọng nhất trước khi dùng AI trong quyết định kinh doanh.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">AI trong quy trình tài chính và pháp lý</b>
+            <p>Dùng AI để soạn thảo, tóm tắt, hoặc gợi ý cấu trúc — không dùng để xác nhận số liệu hoặc tư vấn pháp lý cuối cùng. Luật sư và kế toán kiểm tra bằng nguồn chính thức; AI là công cụ tăng tốc bản nháp, không phải chuyên gia thay thế. Điều này không phủ nhận giá trị của AI — mà là xác định đúng vị trí của nó trong quy trình làm việc.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="internet-va-web.html" class="nav-prev">← 0.2 Internet &amp; Web</a>
+        <button class="btn-complete" data-lesson="0-3-ai-va-llm">✓ Hoàn thành bài học</button>
+        <a href="terminal.html" class="nav-next">0.4 Terminal →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

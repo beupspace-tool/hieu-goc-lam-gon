@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary meta -->
+  <title>Hiểu Gốc — Làm Gọn | Claude Code cho người vận hành</title>
+  <meta name="description" content="Giáo trình thực hành Claude Code thiết kế theo nguyên lý first-principles. Từ người chưa biết gì về công nghệ đến thành thạo vận hành doanh nghiệp với AI.">
+  <meta name="keywords" content="Claude Code, AI, hướng dẫn, tiếng Việt, BEUP, vận hành, doanh nghiệp">
+  <meta name="author" content="BEUP Learning Solutions">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://guide.beup.space/">
+  <meta property="og:title" content="Hiểu Gốc — Làm Gọn | Claude Code cho người vận hành">
+  <meta property="og:description" content="Giáo trình thực hành Claude Code thiết kế theo nguyên lý first-principles. Từ người chưa biết gì đến thành thạo vận hành doanh nghiệp với AI.">
+  <meta property="og:image" content="https://guide.beup.space/assets/images/og-cover.png">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:site_name" content="BEUP Learning Solutions">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hiểu Gốc — Làm Gọn | Claude Code cho người vận hành">
+  <meta name="twitter:description" content="Giáo trình thực hành Claude Code — học từ nguyên lý, không học mẹo.">
+  <meta name="twitter:image" content="https://guide.beup.space/assets/images/og-cover.png">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://guide.beup.space/">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="alternate icon" href="assets/images/favicon.ico">
+
+  <!-- Fonts: Inter for UI + Merriweather for display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+
+  <!-- External stylesheets (loaded in dependency order) -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/tree-navigation.css">
+  <link rel="stylesheet" href="assets/css/utilities.css">
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://guide.beup.space/#website",
+        "url": "https://guide.beup.space/",
+        "name": "Hiểu Gốc — Làm Gọn",
+        "description": "Claude Code cho người vận hành",
+        "publisher": {
+          "@type": "Organization",
+          "name": "BEUP Learning Solutions",
+          "url": "https://beup.space",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png"
+          }
+        },
+        "inLanguage": "vi"
+      },
+      {
+        "@type": "Course",
+        "@id": "https://guide.beup.space/#course",
+        "name": "Hiểu Gốc — Làm Gọn: Claude Code cho người vận hành",
+        "description": "Giáo trình thực hành Claude Code thiết kế theo nguyên lý first-principles. Từ người chưa biết gì về công nghệ đến thành thạo vận hành doanh nghiệp với AI.",
+        "url": "https://guide.beup.space/",
+        "provider": {
+          "@type": "Organization",
+          "name": "BEUP Learning Solutions",
+          "url": "https://beup.space"
+        },
+        "educationalLevel": "Beginner to Advanced",
+        "inLanguage": "vi",
+        "isAccessibleForFree": true,
+        "numberOfCredits": 6,
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "online"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body class="theme-light" data-page="home">
+
+<div class="layout">
+
+  <!-- =============================================
+       SIDEBAR: Navigation + Controls
+       ============================================= -->
+  <nav class="sidebar" id="sidebar" aria-label="Điều hướng chính">
+
+    <!-- Sidebar header: logo + tagline -->
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo" aria-label="Về trang chủ">
+        <img
+          src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png"
+          alt="BEUP"
+          style="max-width: 120px; height: auto; display: block;"
+          loading="eager"
+        >
+      </a>
+      <p class="sidebar-tagline">Hiểu Gốc — Làm Gọn</p>
+    </div>
+
+    <!-- Language switch -->
+    <div class="lang-switch" role="group" aria-label="Chọn ngôn ngữ">
+      <button class="lang-btn active" aria-current="true" aria-label="Tiếng Việt (đang chọn)">VI</button>
+      <span class="lang-divider" aria-hidden="true">/</span>
+      <a href="en/index.html" class="lang-btn" aria-label="Switch to English">EN</a>
+    </div>
+
+    <!-- Table of contents navigation -->
+    <div class="sidebar-toc" aria-label="Mục lục">
+      <p class="toc-section-label">Nội dung khoá học</p>
+      <ul class="toc-list" role="list">
+
+        <li class="toc-item">
+          <a href="levels/0-hat-giong/index.html" data-level="0">
+            <span aria-hidden="true">🌱</span>
+            Level 0 — Hạt Giống
+          </a>
+        </li>
+
+        <li class="toc-item">
+          <a href="levels/1-re/index.html" data-level="1">
+            <span aria-hidden="true">🌿</span>
+            Level 1 — Rễ
+          </a>
+        </li>
+
+        <li class="toc-item">
+          <a href="levels/2-goc/index.html" data-level="2">
+            <span aria-hidden="true">🌳</span>
+            Level 2 — Gốc
+          </a>
+        </li>
+
+        <li class="toc-item">
+          <a href="levels/3-than/index.html" data-level="3">
+            <span aria-hidden="true">🪵</span>
+            Level 3 — Thân
+          </a>
+        </li>
+
+        <li class="toc-item">
+          <a href="levels/4-canh/index.html" data-level="4">
+            <span aria-hidden="true">🌲</span>
+            Level 4 — Cành
+          </a>
+        </li>
+
+        <li class="toc-item">
+          <a href="levels/5-ngon/index.html" data-level="5">
+            <span aria-hidden="true">🏔️</span>
+            Level 5 — Ngọn
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- Sidebar footer: brand + theme toggle -->
+    <footer class="sidebar-footer">
+      <span class="sidebar-footer-icon" aria-hidden="true">🦫</span>
+      <div class="sidebar-footer-brand">
+        <strong>BEUP Learning Solutions</strong><br>
+        <a href="https://beup.space" target="_blank" rel="noopener noreferrer">beup.space</a>
+      </div>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Chuyển sang chế độ tối"
+        title="Chuyển chế độ sáng/tối"
+      >☀️</button>
+    </footer>
+
+  </nav>
+
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- Mobile hamburger button -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Mở menu điều hướng" aria-expanded="false" aria-controls="sidebar">
+    <span class="sidebar-toggle__bar" aria-hidden="true"></span>
+    <span class="sidebar-toggle__bar" aria-hidden="true"></span>
+    <span class="sidebar-toggle__bar" aria-hidden="true"></span>
+  </button>
+
+
+  <!-- =============================================
+       MAIN CONTENT
+       ============================================= -->
+  <main class="main" id="main">
+
+    <!-- ==========================================
+         SECTION 1: Hero
+         ========================================== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+
+        <p class="hero-eyebrow">Khoá học miễn phí · Claude Code</p>
+
+        <h1 class="hero-title" id="hero-title">
+          Hiểu Gốc — Làm Gọn
+        </h1>
+
+        <p class="hero-subtitle">
+          Giáo trình thực hành Claude Code thiết kế theo nguyên lý
+          <strong>first-principles</strong>. Từ người chưa biết gì về công nghệ
+          đến thành thạo vận hành doanh nghiệp với AI. Dành cho chủ doanh nghiệp
+          nhỏ, freelancer, và team vận hành.
+        </p>
+
+        <!-- Meta badges -->
+        <div class="hero-meta" role="list" aria-label="Thông tin khoá học">
+          <div class="hero-meta-item" role="listitem">
+            <span aria-hidden="true">📚</span> 6 Levels
+          </div>
+          <div class="hero-meta-item" role="listitem">
+            <span aria-hidden="true">📝</span> 43 Bài học
+          </div>
+          <div class="hero-meta-item" role="listitem">
+            <span aria-hidden="true">🎁</span> Miễn phí
+          </div>
+          <div class="hero-meta-item" role="listitem">
+            <span aria-hidden="true">🌱</span> Từ zero
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div style="display:flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+          <a href="levels/0-hat-giong/index.html" class="btn-primary">
+            Bắt đầu từ đầu →
+          </a>
+          <a href="#tree-navigation" class="btn-secondary">
+            Xem toàn bộ lộ trình
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 2: Tree Navigation
+         ========================================== -->
+    <section class="section section--tree" id="tree-navigation" aria-labelledby="tree-title">
+
+      <div class="container">
+        <header class="section__header">
+          <h2 class="section__title" id="tree-title">Lộ trình học tập</h2>
+          <p class="section__subtitle">Sáu tầng bậc — như cây mọc từ hạt giống đến ngọn cao nhất</p>
+        </header>
+
+        <!-- Tree navigation component (enhanced by tree-navigation.js) -->
+        <div class="tree-nav" id="treeNavigation" role="navigation" aria-label="Cây lộ trình học tập">
+
+          <!-- SVG vertical connector line (decorative, handled by CSS/JS) -->
+          <div class="tree-nav__spine" aria-hidden="true"></div>
+
+          <!-- Level 5: Ngọn — top of tree -->
+          <article class="tree-node tree-node--right" data-level="5" data-href="levels/5-ngon/index.html">
+            <a href="levels/5-ngon/index.html" class="tree-node__link" aria-label="Level 5: Ngọn — Thành thạo và chia sẻ">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🏔️</span>
+                <span class="tree-node__number">5</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 5</div>
+              <h3 class="tree-node__name">Ngọn</h3>
+              <p class="tree-node__en">Mastery &amp; Teaching</p>
+              <p class="tree-node__desc">Thiết kế hệ thống cho team, enterprise patterns, và dạy người khác.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 5">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="5" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="5">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 4: Cành -->
+          <article class="tree-node tree-node--left" data-level="4" data-href="levels/4-canh/index.html">
+            <a href="levels/4-canh/index.html" class="tree-node__link" aria-label="Level 4: Cành — Mở rộng và tùy chỉnh">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🌲</span>
+                <span class="tree-node__number">4</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 4</div>
+              <h3 class="tree-node__name">Cành</h3>
+              <p class="tree-node__en">Expand &amp; Customize</p>
+              <p class="tree-node__desc">Custom skills, hooks, multi-agent, và marketing stack đầy đủ.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 4">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="4" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="4">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 3: Thân -->
+          <article class="tree-node tree-node--right" data-level="3" data-href="levels/3-than/index.html">
+            <a href="levels/3-than/index.html" class="tree-node__link" aria-label="Level 3: Thân — Xây dựng quy trình">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🪵</span>
+                <span class="tree-node__number">3</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 3</div>
+              <h3 class="tree-node__name">Thân</h3>
+              <p class="tree-node__en">Build Workflows</p>
+              <p class="tree-node__desc">MCP, Git, Skills, và xây dựng quy trình tự động cho team.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 3">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="3" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="3">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 2: Gốc -->
+          <article class="tree-node tree-node--left" data-level="2" data-href="levels/2-goc/index.html">
+            <a href="levels/2-goc/index.html" class="tree-node__link" aria-label="Level 2: Gốc — Thực hành cốt lõi">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🌳</span>
+                <span class="tree-node__number">2</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 2</div>
+              <h3 class="tree-node__name">Gốc</h3>
+              <p class="tree-node__en">Core Practice</p>
+              <p class="tree-node__desc">CLAUDE.md, prompt hiệu quả, quản lý file, và quy trình viết nội dung.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 2">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="2" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="2">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 1: Rễ -->
+          <article class="tree-node tree-node--right" data-level="1" data-href="levels/1-re/index.html">
+            <a href="levels/1-re/index.html" class="tree-node__link" aria-label="Level 1: Rễ — Hiểu nền tảng">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🌿</span>
+                <span class="tree-node__number">1</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 1</div>
+              <h3 class="tree-node__name">Rễ</h3>
+              <p class="tree-node__en">Foundations</p>
+              <p class="tree-node__desc">Cài đặt, khái niệm cốt lõi, và cuộc hội thoại đầu tiên với Claude Code.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 1">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="1" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="1">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 0: Hạt Giống — root of tree -->
+          <article class="tree-node tree-node--left tree-node--seed" data-level="0" data-href="levels/0-hat-giong/index.html">
+            <a href="levels/0-hat-giong/index.html" class="tree-node__link" aria-label="Level 0: Hạt Giống — Bắt đầu từ đây">
+              <div class="tree-node__circle tree-node__circle--seed" aria-hidden="true">
+                <span class="tree-node__emoji">🌱</span>
+                <span class="tree-node__number">0</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge tree-node__level-badge--start">Bắt đầu tại đây</div>
+              <h3 class="tree-node__name">Hạt Giống</h3>
+              <p class="tree-node__en">The Seed</p>
+              <p class="tree-node__desc">Hiểu khái niệm phần mềm, AI, và Claude Code — không cần biết code.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 0">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="0" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="0">0%</span>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /.tree-nav -->
+      </div><!-- /.container -->
+
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 3: Level Cards Grid
+         ========================================== -->
+    <section class="section section--cards" id="levels" aria-labelledby="levels-title">
+
+      <div class="container">
+        <header class="section__header">
+          <h2 class="section__title" id="levels-title">Khám phá các cấp độ</h2>
+          <p class="section__subtitle">Mỗi cấp độ là một hành trình — từ hiểu đến làm được</p>
+        </header>
+
+        <div class="level-cards" role="list" aria-label="Danh sách các cấp độ">
+
+          <!-- Level 0: Hạt Giống -->
+          <a class="level-card" href="levels/0-hat-giong/index.html" data-level="0" role="listitem" aria-label="Level 0 Hạt Giống — 7 bài học, khoảng 30 phút">
+            <div class="level-card-number">Level 0</div>
+            <div class="level-card-name">🌱 Hạt Giống</div>
+            <p class="level-card-subtitle">Người mới hoàn toàn</p>
+            <p class="level-card-desc">
+              Hiểu khái niệm phần mềm, AI, và Claude Code — không cần biết code.
+            </p>
+            <div class="level-card-meta">
+              <span><span aria-hidden="true">📝</span> 7 bài học</span>
+              <span><span aria-hidden="true">⏱️</span> ~30 phút</span>
+            </div>
+            <div class="level-card-progress">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" data-progress-level="0" style="width: 0%"></div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Level 1: Rễ -->
+          <a class="level-card" href="levels/1-re/index.html" data-level="1" role="listitem" aria-label="Level 1 Rễ — 8 bài học, khoảng 45 phút">
+            <div class="level-card-number">Level 1</div>
+            <div class="level-card-name">🌿 Rễ</div>
+            <p class="level-card-subtitle">Hiểu nền tảng</p>
+            <p class="level-card-desc">
+              Cài đặt, khái niệm cốt lõi, và cuộc hội thoại đầu tiên với Claude Code.
+            </p>
+            <div class="level-card-meta">
+              <span><span aria-hidden="true">📝</span> 8 bài học</span>
+              <span><span aria-hidden="true">⏱️</span> ~45 phút</span>
+            </div>
+            <div class="level-card-progress">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" data-progress-level="1" style="width: 0%"></div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Level 2: Gốc -->
+          <a class="level-card" href="levels/2-goc/index.html" data-level="2" role="listitem" aria-label="Level 2 Gốc — 9 bài học, khoảng 60 phút">
+            <div class="level-card-number">Level 2</div>
+            <div class="level-card-name">🌳 Gốc</div>
+            <p class="level-card-subtitle">Thực hành cốt lõi</p>
+            <p class="level-card-desc">
+              CLAUDE.md, prompt hiệu quả, quản lý file, và quy trình viết nội dung.
+            </p>
+            <div class="level-card-meta">
+              <span><span aria-hidden="true">📝</span> 9 bài học</span>
+              <span><span aria-hidden="true">⏱️</span> ~60 phút</span>
+            </div>
+            <div class="level-card-progress">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" data-progress-level="2" style="width: 0%"></div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Level 3: Thân -->
+          <a class="level-card" href="levels/3-than/index.html" data-level="3" role="listitem" aria-label="Level 3 Thân — 8 bài học, khoảng 60 phút">
+            <div class="level-card-number">Level 3</div>
+            <div class="level-card-name">🪵 Thân</div>
+            <p class="level-card-subtitle">Xây dựng quy trình</p>
+            <p class="level-card-desc">
+              MCP, Git, Skills, và xây dựng quy trình tự động cho team.
+            </p>
+            <div class="level-card-meta">
+              <span><span aria-hidden="true">📝</span> 8 bài học</span>
+              <span><span aria-hidden="true">⏱️</span> ~60 phút</span>
+            </div>
+            <div class="level-card-progress">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" data-progress-level="3" style="width: 0%"></div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Level 4: Cành -->
+          <a class="level-card" href="levels/4-canh/index.html" data-level="4" role="listitem" aria-label="Level 4 Cành — 6 bài học, khoảng 45 phút">
+            <div class="level-card-number">Level 4</div>
+            <div class="level-card-name">🌲 Cành</div>
+            <p class="level-card-subtitle">Mở rộng &amp; tùy chỉnh</p>
+            <p class="level-card-desc">
+              Custom skills, hooks, multi-agent, và marketing stack đầy đủ.
+            </p>
+            <div class="level-card-meta">
+              <span><span aria-hidden="true">📝</span> 6 bài học</span>
+              <span><span aria-hidden="true">⏱️</span> ~45 phút</span>
+            </div>
+            <div class="level-card-progress">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" data-progress-level="4" style="width: 0%"></div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Level 5: Ngọn -->
+          <a class="level-card" href="levels/5-ngon/index.html" data-level="5" role="listitem" aria-label="Level 5 Ngọn — 5 bài học, khoảng 30 phút">
+            <div class="level-card-number">Level 5</div>
+            <div class="level-card-name">🏔️ Ngọn</div>
+            <p class="level-card-subtitle">Thành thạo &amp; chia sẻ</p>
+            <p class="level-card-desc">
+              Thiết kế hệ thống cho team, enterprise patterns, và dạy người khác.
+            </p>
+            <div class="level-card-meta">
+              <span><span aria-hidden="true">📝</span> 5 bài học</span>
+              <span><span aria-hidden="true">⏱️</span> ~30 phút</span>
+            </div>
+            <div class="level-card-progress">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" data-progress-level="5" style="width: 0%"></div>
+              </div>
+            </div>
+          </a>
+
+        </div><!-- /.level-cards -->
+      </div><!-- /.container -->
+
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 4: Triết lý — Learning Philosophy
+         ========================================== -->
+    <section class="section section--philosophy" id="triet-ly" aria-labelledby="philosophy-title">
+
+      <div class="container container--narrow">
+
+        <header class="section__header section__header--centered">
+          <h2 class="section__title" id="philosophy-title">Học từ nguyên lý, hiểu từ gốc rễ</h2>
+          <p class="section__subtitle">
+            Ba nguyên tắc định hình cách học trong giáo trình này
+          </p>
+        </header>
+
+        <div class="principles-grid" role="list">
+
+          <!-- Principle 1 -->
+          <article class="principle-card" role="listitem">
+            <div class="principle-card__icon" aria-hidden="true">🎯</div>
+            <h3 class="principle-card__title">Nguyên lý trước, công cụ sau</h3>
+            <p class="principle-card__body">
+              Hiểu <strong>TẠI SAO</strong> trước khi học <strong>CÁCH LÀM</strong>.
+              Khi bạn hiểu nguyên lý, bạn tự tìm được cách — dù công cụ có thay đổi.
+            </p>
+          </article>
+
+          <!-- Principle 2 -->
+          <article class="principle-card" role="listitem">
+            <div class="principle-card__icon" aria-hidden="true">💼</div>
+            <h3 class="principle-card__title">Business use case thực tế</h3>
+            <p class="principle-card__body">
+              Mỗi bài học gắn với tình huống kinh doanh thực. Không lý thuyết viển vông —
+              chỉ những gì bạn có thể áp dụng ngay ngày mai.
+            </p>
+          </article>
+
+          <!-- Principle 3 -->
+          <article class="principle-card" role="listitem">
+            <div class="principle-card__icon" aria-hidden="true">🌱</div>
+            <h3 class="principle-card__title">Tiến bộ từng bước</h3>
+            <p class="principle-card__body">
+              Như cây mọc từ hạt giống. Không nhảy cóc, không vội vàng —
+              mỗi bước xây nền cho bước tiếp theo.
+            </p>
+          </article>
+
+        </div><!-- /.principles-grid -->
+
+        <!-- Secondary CTA -->
+        <div class="section__cta-wrap">
+          <a href="levels/0-hat-giong/index.html" class="btn btn--primary btn--md">
+            Trồng hạt giống đầu tiên
+            <span class="btn__arrow" aria-hidden="true">🌱</span>
+          </a>
+        </div>
+
+      </div><!-- /.container -->
+
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 5: Overall Progress Bar (for returning learners)
+         ========================================== -->
+    <section class="section section--progress" id="progress-overview" aria-labelledby="progress-title">
+      <div class="container container--narrow">
+        <header class="section__header section__header--centered">
+          <h2 class="section__title section__title--sm" id="progress-title">Tiến độ của bạn</h2>
+        </header>
+        <div class="overall-progress" aria-label="Tiến độ tổng thể">
+          <div class="overall-progress__bar">
+            <div class="overall-progress__fill" id="overallProgressFill" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p class="overall-progress__label" id="overallProgressLabel">
+            Bạn chưa bắt đầu — <a href="levels/0-hat-giong/index.html">bắt đầu ngay từ Level 0</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /#main -->
+
+</div><!-- /.layout -->
+
+
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
+  <footer class="site-footer" role="contentinfo">
+
+    <div class="container">
+      <div class="site-footer__inner">
+
+        <!-- Footer brand block -->
+        <div class="site-footer__brand">
+          <a href="https://beup.space" target="_blank" rel="noopener noreferrer" class="site-footer__logo-link">
+            <img
+              src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png"
+              alt="BEUP Learning Solutions"
+              class="site-footer__logo"
+              loading="lazy"
+              width="140"
+              height="48"
+            >
+          </a>
+          <p class="site-footer__tagline">Một sản phẩm của BEUP Learning Solutions</p>
+          <p class="site-footer__mission">
+            Trao quyền vận hành cho mọi doanh nghiệp Việt với công nghệ AI.
+          </p>
+        </div>
+
+        <!-- Footer nav links -->
+        <nav class="site-footer__nav" aria-label="Footer navigation">
+          <div class="site-footer__nav-group">
+            <h4 class="site-footer__nav-title">Khoá học</h4>
+            <ul class="site-footer__nav-list">
+              <li><a href="levels/0-hat-giong/index.html">Level 0 — Hạt Giống</a></li>
+              <li><a href="levels/1-re/index.html">Level 1 — Rễ</a></li>
+              <li><a href="levels/2-goc/index.html">Level 2 — Gốc</a></li>
+              <li><a href="levels/3-than/index.html">Level 3 — Thân</a></li>
+              <li><a href="levels/4-canh/index.html">Level 4 — Cành</a></li>
+              <li><a href="levels/5-ngon/index.html">Level 5 — Ngọn</a></li>
+            </ul>
+          </div>
+          <div class="site-footer__nav-group">
+            <h4 class="site-footer__nav-title">BEUP</h4>
+            <ul class="site-footer__nav-list">
+              <li><a href="https://beup.space" target="_blank" rel="noopener noreferrer">beup.space</a></li>
+              <li><a href="en/index.html">English Version</a></li>
+              <li><a href="cheatsheets/index.html">Cheatsheets</a></li>
+            </ul>
+          </div>
+        </nav>
+
+      </div><!-- /.site-footer__inner -->
+
+      <!-- Footer bottom bar -->
+      <div class="site-footer__bottom">
+        <p class="site-footer__copyright">
+          &copy; 2026 <a href="https://beup.space" target="_blank" rel="noopener noreferrer">BEUP Learning Solutions</a>.
+          Nội dung chia sẻ tự do cho mục đích học tập.
+        </p>
+        <p class="site-footer__beaver" aria-hidden="true">🦫</p>
+      </div>
+
+    </div><!-- /.container -->
+
+  </footer>
+
+
+  <!-- =============================================
+       JAVASCRIPT (deferred, non-blocking)
+       ============================================= -->
+  <script src="assets/js/theme-toggle.js" defer></script>
+  <script src="assets/js/progress-tracker.js" defer></script>
+  <script src="assets/js/tree-navigation.js" defer></script>
+
+  <!-- Inline bootstrap: mobile sidebar toggle (minimal, no deps) -->
+  <script>
+    // Mobile sidebar toggle — runs before deferred scripts
+    (function () {
+      var btn = document.getElementById('sidebarToggle');
+      var sidebar = document.getElementById('sidebar');
+      var overlay = document.getElementById('sidebarOverlay');
+
+      if (!btn || !sidebar || !overlay) return;
+
+      function openSidebar() {
+        sidebar.classList.add('sidebar--open');
+        overlay.classList.add('sidebar-overlay--visible');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', 'Đóng menu điều hướng');
+        document.body.classList.add('sidebar-is-open');
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove('sidebar--open');
+        overlay.classList.remove('sidebar-overlay--visible');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Mở menu điều hướng');
+        document.body.classList.remove('sidebar-is-open');
+      }
+
+      btn.addEventListener('click', function () {
+        var isOpen = sidebar.classList.contains('sidebar--open');
+        if (isOpen) { closeSidebar(); } else { openSidebar(); }
+      });
+
+      overlay.addEventListener('click', closeSidebar);
+
+      // Close on Escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('sidebar--open')) {
+          closeSidebar();
+          btn.focus();
+        }
+      });
+    }());
+  </script>
+
+</body>
+</html>

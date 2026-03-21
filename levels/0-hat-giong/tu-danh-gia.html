@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tự đánh giá — Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="Kiểm tra xem bạn đã nắm vững 6 khái niệm nền tảng của Level 0 chưa. 6/6 thì sẵn sàng sang Level 1 — Rễ.">
+  <meta property="og:title" content="Tự đánh giá Level 0 — Hiểu Gốc Làm Gọn | BEUP">
+  <meta property="og:description" content="Kiểm tra xem bạn đã nắm vững 6 khái niệm nền tảng của Level 0 chưa. 6/6 thì sẵn sàng sang Level 1.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-0 { background: rgba(127,212,211,0.18); color: var(--prim-teal-700); border: 1px solid var(--prim-teal-200); }
+    [data-theme="dark"] .level-badge.level-0 { background: rgba(127,212,211,0.12); color: var(--prim-teal-300); border-color: rgba(127,212,211,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(127,212,211,0.12) 0%, rgba(63,183,182,0.05) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+
+    /* Self-assessment styles */
+    .assessment-intro {
+      max-width: var(--content-max-width);
+      padding: var(--prim-space-6) 0 var(--prim-space-4);
+      font-size: var(--prim-text-md);
+      color: var(--text-secondary);
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: var(--prim-space-3);
+      margin: var(--prim-space-6) 0;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-card);
+      border: 2px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+      cursor: pointer;
+      transition: border-color var(--prim-transition-fast),
+                  background var(--prim-transition-fast);
+      user-select: none;
+    }
+    .check-item:hover {
+      border-color: var(--border-brand);
+      background: var(--bg-hover);
+    }
+    .check-item.checked {
+      border-color: var(--color-success);
+      background: var(--prim-green-50);
+    }
+    [data-theme="dark"] .check-item.checked {
+      background: rgba(0,208,132,0.08);
+    }
+    .check-box {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      border: 2px solid var(--border-strong);
+      border-radius: var(--prim-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: bold;
+      transition: border-color var(--prim-transition-fast),
+                  background var(--prim-transition-fast);
+      margin-top: 2px;
+    }
+    .check-item.checked .check-box {
+      background: var(--color-success);
+      border-color: var(--color-success);
+      color: white;
+    }
+    .check-item:not(.checked) .check-box::after {
+      content: '';
+    }
+    .check-item.checked .check-box::after {
+      content: '✓';
+    }
+    .check-label {
+      flex: 1;
+      font-size: var(--prim-text-md);
+      font-weight: var(--prim-weight-medium);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .check-item.checked .check-label {
+      color: var(--prim-green-600);
+    }
+    [data-theme="dark"] .check-item.checked .check-label {
+      color: var(--prim-green-400);
+    }
+    .check-link {
+      flex-shrink: 0;
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: var(--prim-space-1) var(--prim-space-2);
+      border-radius: var(--prim-radius-sm);
+      background: var(--bg-secondary);
+      margin-top: 2px;
+      white-space: nowrap;
+      transition: color var(--prim-transition-fast), background var(--prim-transition-fast);
+    }
+    .check-link:hover {
+      color: var(--color-primary);
+      background: var(--bg-hover);
+      text-decoration: none;
+    }
+
+    /* Score display */
+    .score-display {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-lg);
+      border: 1px solid var(--border-default);
+      margin: var(--prim-space-6) 0;
+    }
+    .score-number {
+      font-size: var(--prim-text-4xl);
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--color-primary);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .score-label {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+    }
+    .score-label strong { color: var(--text-primary); }
+    .score-bar-wrap {
+      flex: 1;
+    }
+    .score-bar-track {
+      height: 8px;
+      background: var(--border-default);
+      border-radius: var(--prim-radius-full);
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--prim-radius-full);
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* Result message */
+    .result-message {
+      padding: var(--prim-space-5) var(--prim-space-6);
+      border-radius: var(--prim-radius-lg);
+      border-left: 4px solid;
+      display: none;
+      margin: var(--prim-space-4) 0;
+    }
+    .result-message.visible { display: block; }
+    .result-message.result-perfect {
+      background: var(--prim-green-50);
+      border-color: var(--prim-green-500);
+    }
+    .result-message.result-almost {
+      background: var(--prim-yellow-50);
+      border-color: var(--prim-yellow-500);
+    }
+    .result-message.result-retry {
+      background: var(--prim-blue-50);
+      border-color: var(--prim-blue-500);
+    }
+    [data-theme="dark"] .result-message.result-perfect { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .result-message.result-almost { background: rgba(245,158,11,0.08); }
+    [data-theme="dark"] .result-message.result-retry { background: rgba(59,130,246,0.08); }
+    .result-message h3 {
+      font-size: var(--prim-text-lg);
+      margin-bottom: var(--prim-space-2);
+      margin-top: 0;
+      border: none;
+    }
+    .result-message.result-perfect h3 { color: var(--prim-green-600); }
+    .result-message.result-almost h3 { color: var(--prim-yellow-500); }
+    .result-message.result-retry h3 { color: var(--prim-blue-500); }
+    .result-message p { margin: 0; font-size: var(--prim-text-sm); color: var(--text-secondary); }
+
+    /* CTA button */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-6);
+      height: var(--btn-height);
+      background: var(--color-primary);
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+      margin-top: var(--prim-space-4);
+    }
+    .btn-primary:hover { background: var(--color-primary-dark); box-shadow: var(--shadow-md); text-decoration: none; color: var(--prim-white); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-5);
+      height: var(--btn-height);
+      background: transparent;
+      color: var(--color-primary);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      border: 1px solid var(--border-brand);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast);
+      margin-top: var(--prim-space-4);
+      margin-right: var(--prim-space-3);
+    }
+    .btn-secondary:hover { background: var(--bg-hover); text-decoration: none; }
+
+    .congrats-area {
+      text-align: center;
+      padding: var(--prim-space-10) 0;
+    }
+    .congrats-icon {
+      font-size: 4rem;
+      margin-bottom: var(--prim-space-4);
+    }
+    .congrats-area h2 {
+      border: none;
+      font-size: var(--prim-text-2xl);
+      margin-bottom: var(--prim-space-3);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html" class="active">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 0</a> / Tự đánh giá
+          </nav>
+          <h1>Bài 0.7: Tự đánh giá</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~3 phút</span>
+            <span class="tag">Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <h2>Kiểm tra nhanh — bạn đã sẵn sàng sang Level 1?</h2>
+        <p class="assessment-intro">Sáu câu hỏi dưới đây không hỏi bạn có <em>nhớ</em> định nghĩa không — chúng hỏi bạn có <em>hiểu đủ để áp dụng</em> không. Tự đánh giá thành thật: nếu bạn có thể giải thích điều đó cho đồng nghiệp trong 2 phút, đánh dấu là hiểu. Nếu chưa tự tin, nhấn "Ôn lại" và quay lại bài đó.</p>
+
+        <!-- Score display -->
+        <div class="score-display">
+          <div>
+            <div class="score-number"><span id="score-num">0</span><span style="font-size:var(--prim-text-2xl);color:var(--text-muted)">/6</span></div>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-label"><strong id="score-label">Bắt đầu kiểm tra</strong> — nhấn vào từng câu bên dưới để đánh dấu</div>
+            <div class="score-bar-track" style="margin-top: var(--prim-space-2);">
+              <div class="score-bar-fill" id="score-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checklist items -->
+        <div class="checklist" id="checklist">
+
+          <div class="check-item" data-id="1" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-label">Tôi có thể giải thích tại sao SaaS thường có tổng chi phí sở hữu cao hơn on-premise sau 3–5 năm, và tại sao vendor lock-in là rủi ro cần xem xét trước khi ký hợp đồng phần mềm.</div>
+            <a href="phan-mem-la-gi.html" class="check-link" onclick="event.stopPropagation()">Ôn lại →</a>
+          </div>
+
+          <div class="check-item" data-id="2" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-label">Tôi hiểu mô hình client-server — dữ liệu của tôi nằm ở đâu khi dùng dịch vụ cloud, và tại sao website chậm có thể do hosting, CDN, hoặc code chứ không phải lúc nào cũng cần "làm lại từ đầu".</div>
+            <a href="internet-va-web.html" class="check-link" onclick="event.stopPropagation()">Ôn lại →</a>
+          </div>
+
+          <div class="check-item" data-id="3" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-label">Tôi hiểu tại sao không nên dùng AI để xác nhận số liệu tài chính hoặc điều khoản pháp lý, và tôi biết sự khác nhau giữa token-based pricing (trả theo dùng) và subscription (trả cố định).</div>
+            <a href="ai-va-llm.html" class="check-link" onclick="event.stopPropagation()">Ôn lại →</a>
+          </div>
+
+          <div class="check-item" data-id="4" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-label">Tôi hiểu tại sao Claude Code dùng Terminal thay vì giao diện đồ hoạ — CLI không bị giới hạn bởi những gì nhà thiết kế tạo ra, cho phép tự động hoá và tích hợp hệ thống mà GUI không thể.</div>
+            <a href="terminal.html" class="check-link" onclick="event.stopPropagation()">Ôn lại →</a>
+          </div>
+
+          <div class="check-item" data-id="5" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-label">Tôi có thể đọc một câu SQL đơn giản và hiểu nó đang hỏi gì, và tôi biết tại sao yêu cầu bàn giao source code trong hợp đồng với agency là điều bắt buộc, không phải tùy chọn.</div>
+            <a href="code-la-gi.html" class="check-link" onclick="event.stopPropagation()">Ôn lại →</a>
+          </div>
+
+          <div class="check-item" data-id="6" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-label">Tôi có thể nêu ít nhất hai tình huống cụ thể trong doanh nghiệp mình mà Claude Code có thể tiết kiệm chi phí hoặc thời gian đáng kể — và tôi hiểu mô hình bảo mật: CC cần quyền truy cập file để hoạt động, và dữ liệu nhạy cảm không nên đưa vào.</div>
+            <a href="claude-code-gioi-thieu.html" class="check-link" onclick="event.stopPropagation()">Ôn lại →</a>
+          </div>
+
+        </div>
+
+        <!-- Result messages -->
+        <div class="result-message result-perfect" id="result-perfect">
+          <h3>Sẵn sàng. Bạn đã có nền tảng để thực hành.</h3>
+          <p>Sáu khái niệm nền tảng đã rõ — không chỉ biết định nghĩa mà hiểu đủ để áp dụng vào quyết định kinh doanh thực tế. Level 1 sẽ đưa bạn từ hiểu lý thuyết sang vận hành thực tế: cài đặt Claude Code, làm việc với file thực, và xây dựng thứ gì đó có giá trị ngay trong buổi đầu tiên.</p>
+          <a href="../1-re/" class="btn-primary">Bắt đầu Level 1: Rễ →</a>
+        </div>
+
+        <div class="result-message result-almost" id="result-almost">
+          <h3>Gần xong — một vài điểm cần củng cố thêm.</h3>
+          <p>Bạn đã nắm phần lớn. Những mục chưa đánh dấu thường chỉ cần 5–10 phút đọc lại để rõ hơn. Nền tảng chắc quan trọng hơn tốc độ — Level 1 sẽ dễ hơn nhiều khi bạn thực sự hiểu tại sao mọi thứ hoạt động như vậy.</p>
+          <a href="./" class="btn-secondary">Ôn lại Level 0</a>
+          <a href="../1-re/" class="btn-primary">Sang Level 1 →</a>
+        </div>
+
+        <div class="result-message result-retry" id="result-retry">
+          <h3>Hãy dành thêm thời gian cho nền tảng.</h3>
+          <p>Không có áp lực thời gian ở đây. Đọc lại những bài chưa rõ — tập trung vào phần "tại sao điều này quan trọng với doanh nghiệp bạn" thay vì thuộc định nghĩa. Mục tiêu là hiểu đủ để ra quyết định tốt hơn, không phải qua bài kiểm tra.</p>
+          <a href="phan-mem-la-gi.html" class="btn-primary">Đọc lại từ Bài 0.1</a>
+        </div>
+
+        <!-- Congrats section (hidden until 6/6) -->
+        <div id="congrats-section" style="display:none;">
+          <hr>
+          <div class="congrats-area">
+            <div class="congrats-icon">🌱</div>
+            <h2>Hạt Giống đã nảy mầm.</h2>
+            <p>Bạn đã hoàn thành Level 0 với sự hiểu biết thực chất — không chỉ biết thuật ngữ mà hiểu cơ chế đằng sau. Đây là sự khác biệt giữa người dùng công cụ và người làm chủ công cụ.</p>
+            <p style="margin-top: var(--prim-space-3);">Level 1 — <strong>Rễ</strong> — bắt đầu bằng thực hành: cài đặt Claude Code, làm việc với cấu trúc file và dự án thực, và hoàn thành tác vụ kinh doanh đầu tiên có giá trị thực sự.</p>
+            <a href="../1-re/" class="btn-primary" style="margin-top: var(--prim-space-5);">Bắt đầu Level 1: Rễ →</a>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="claude-code-gioi-thieu.html" class="nav-prev">← 0.6 Claude Code</a>
+        <button class="btn-complete" data-lesson="0-7-tu-danh-gia">✓ Hoàn thành Level 0</button>
+        <a href="../1-re/" class="nav-next">Level 1: Rễ →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+  <script>
+    // Self-assessment interactive logic
+    var checkedItems = new Set();
+    var totalItems = 6;
+
+    function toggleCheck(el) {
+      var id = el.getAttribute('data-id');
+      if (checkedItems.has(id)) {
+        checkedItems.delete(id);
+        el.classList.remove('checked');
+      } else {
+        checkedItems.add(id);
+        el.classList.add('checked');
+      }
+      updateScore();
+    }
+
+    function updateScore() {
+      var count = checkedItems.size;
+      var pct = Math.round((count / totalItems) * 100);
+
+      document.getElementById('score-num').textContent = count;
+      document.getElementById('score-bar').style.width = pct + '%';
+
+      // Update bar color
+      var bar = document.getElementById('score-bar');
+      if (count === totalItems) {
+        bar.style.background = 'var(--color-success)';
+      } else if (count >= 4) {
+        bar.style.background = 'var(--prim-yellow-500)';
+      } else {
+        bar.style.background = 'var(--color-primary)';
+      }
+
+      // Update label
+      var label = document.getElementById('score-label');
+      if (count === 0) {
+        label.textContent = 'Bắt đầu kiểm tra';
+      } else if (count === totalItems) {
+        label.textContent = 'Hoàn hảo! Sẵn sàng sang Level 1';
+      } else {
+        label.textContent = count + ' / ' + totalItems + ' khái niệm đã nắm';
+      }
+
+      // Show result messages
+      var perfect = document.getElementById('result-perfect');
+      var almost = document.getElementById('result-almost');
+      var retry = document.getElementById('result-retry');
+      var congrats = document.getElementById('congrats-section');
+
+      perfect.classList.remove('visible');
+      almost.classList.remove('visible');
+      retry.classList.remove('visible');
+      congrats.style.display = 'none';
+
+      if (count === totalItems) {
+        perfect.classList.add('visible');
+        congrats.style.display = 'block';
+      } else if (count >= 4) {
+        almost.classList.add('visible');
+      } else if (count > 0) {
+        retry.classList.add('visible');
+      }
+    }
+
+    // Initialize
+    updateScore();
+  </script>
+</body>
+</html>

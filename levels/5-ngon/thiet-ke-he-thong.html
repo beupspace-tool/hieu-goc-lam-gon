@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiết kế hệ thống cho team — Level 5 | BEUP</title>
+  <meta name="description" content="CLAUDE.md = Team DNA. 3-tier architecture, skills library, MCP infrastructure, permission model. Onboarding trong 1 ngày thay vì 1 tháng.">
+  <meta property="og:title" content="Bài 5.1: Thiết kế hệ thống cho team | BEUP">
+  <meta property="og:description" content="CLAUDE.md không chỉ hướng dẫn Claude — nó encode cách team làm việc. Từ user thành architect.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    :root {
+      --level5-gold: #D4A843;
+      --level5-gold-dark: #B8922E;
+      --level5-gold-light: rgba(212,168,67,0.12);
+      --level5-gold-border: rgba(212,168,67,0.3);
+    }
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-5 {
+      background: var(--level5-gold-light);
+      color: var(--level5-gold-dark);
+      border: 1px solid var(--level5-gold-border);
+    }
+    [data-theme="dark"] .level-badge.level-5 {
+      background: rgba(212,168,67,0.1);
+      color: var(--level5-gold);
+      border-color: rgba(212,168,67,0.3);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero {
+      padding: var(--prim-space-10) var(--content-padding-x);
+      background: linear-gradient(140deg, var(--level5-gold-light) 0%, rgba(212,168,67,0.03) 100%);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .lesson-hero-inner {
+      max-width: var(--content-max-width);
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-4);
+    }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--level5-gold); }
+    .lesson-hero h1 {
+      font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl));
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--text-primary);
+      margin: var(--prim-space-3) 0 var(--prim-space-3);
+      letter-spacing: -0.025em;
+    }
+    .lesson-meta {
+      display: flex;
+      gap: var(--prim-space-3);
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-medium);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-full);
+      color: var(--text-muted);
+    }
+    .callout {
+      display: flex;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border-radius: var(--callout-radius);
+      border-left: var(--callout-border-width) solid;
+      margin: var(--prim-space-6) 0;
+    }
+    .callout-principle {
+      background: var(--prim-blue-50);
+      border-color: var(--prim-blue-500);
+    }
+    .callout-practice {
+      background: var(--prim-green-50);
+      border-color: var(--prim-green-500);
+    }
+    .callout-warning {
+      background: var(--prim-yellow-50);
+      border-color: var(--prim-yellow-500);
+    }
+    .callout-gold {
+      background: var(--level5-gold-light);
+      border-color: var(--level5-gold);
+    }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    [data-theme="dark"] .callout-gold { background: rgba(212,168,67,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct {
+      display: block;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-1);
+    }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-gold .ct { color: var(--level5-gold-dark); }
+    [data-theme="dark"] .callout-gold .ct { color: var(--level5-gold); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-8) var(--content-padding-x);
+      border-top: 1px solid var(--border-default);
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+    }
+    .nav-prev, .nav-next {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--card-radius);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+      flex: 1;
+      max-width: 48%;
+    }
+    .nav-prev:hover, .nav-next:hover {
+      border-color: var(--level5-gold);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-5);
+      height: var(--btn-height);
+      background: var(--level5-gold);
+      color: #1a1208;
+      font-weight: var(--prim-weight-bold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      border: none;
+      cursor: pointer;
+      transition: background var(--prim-transition-fast);
+      white-space: nowrap;
+    }
+    .btn-complete:hover { background: var(--level5-gold-dark); }
+    .btn-complete.completed { background: var(--color-success); color: var(--prim-white); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .tier-diagram {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-6);
+      margin: var(--prim-space-6) 0;
+      font-family: var(--prim-font-mono);
+      font-size: var(--prim-text-sm);
+    }
+    .tier-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+      margin-bottom: var(--prim-space-3);
+    }
+    .tier-item:last-child { margin-bottom: 0; }
+    .tier-label {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+      font-family: var(--prim-font-mono);
+      padding: 2px 8px;
+      border-radius: var(--prim-radius-sm);
+      white-space: nowrap;
+    }
+    .tier-global { background: rgba(212,168,67,0.15); color: var(--level5-gold-dark); }
+    .tier-project { background: rgba(59,130,246,0.12); color: var(--prim-blue-600); }
+    .tier-module { background: rgba(0,208,132,0.12); color: var(--prim-green-700); }
+    [data-theme="dark"] .tier-global { color: var(--level5-gold); }
+    [data-theme="dark"] .tier-project { color: #93c5fd; }
+    [data-theme="dark"] .tier-module { color: #86efac; }
+    .tier-content { flex: 1; }
+    .tier-content strong { font-size: var(--prim-text-sm); color: var(--text-primary); display: block; margin-bottom: var(--prim-space-1); }
+    .tier-content p { font-size: var(--prim-text-xs); color: var(--text-muted); margin: 0; line-height: 1.6; font-family: var(--prim-font-base); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      text-align: center;
+    }
+    .metric-value {
+      font-size: var(--prim-text-2xl);
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--level5-gold);
+      display: block;
+      line-height: 1.2;
+    }
+    .metric-label {
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+      margin-top: var(--prim-space-1);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-5">Level 5: Ngọn</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="thiet-ke-he-thong.html" class="active">5.1 Thiết kế hệ thống</a></li>
+          <li><a href="tao-tai-lieu-dao-tao.html">5.2 Tài liệu đào tạo</a></li>
+          <li><a href="enterprise-patterns.html">5.3 Enterprise patterns</a></li>
+          <li><a href="dong-gop-cong-dong.html">5.4 Đóng góp cộng đồng</a></li>
+          <li><a href="day-nguoi-khac.html">5.5 Dạy người khác</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 5</a> / Thiết kế hệ thống cho team
+          </nav>
+          <h1>Bài 5.1: Thiết kế hệ thống cho team</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 5</span>
+            <span class="tag">System Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-gold">
+          <span class="callout-icon">🏗️</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Hệ thống tốt là hệ thống mà mọi thành viên có thể contribute ngay lập tức. CLAUDE.md + Skills + MCP = onboarding trong 1 ngày thay vì 1 tháng. Khi bạn thiết kế hệ thống đúng, năng lực của mỗi người nhân lên — không chỉ cộng lại.</p>
+          </div>
+        </div>
+
+        <h2>CLAUDE.md = Team DNA</h2>
+
+        <p>Ở Level 1, bạn học CLAUDE.md như một file hướng dẫn cá nhân. Ở Level 5, bạn hiểu nó là thứ gì đó sâu hơn: CLAUDE.md là nơi encode văn hóa làm việc của team.</p>
+
+        <p>Mỗi khi Claude Code đọc CLAUDE.md, nó không chỉ nhận hướng dẫn kỹ thuật — nó hấp thụ toàn bộ ngữ cảnh về cách team bạn vận hành: coding style, PR process, deployment checklist, naming conventions, business context, stakeholder preferences. Khi team member mới join, họ không cần 3 tuần shadow người khác — họ chỉ cần đọc CLAUDE.md và bắt đầu làm việc có ý nghĩa từ ngày đầu tiên.</p>
+
+        <p>Đây là sự khác biệt giữa tổ chức dùng Claude Code như công cụ cá nhân và tổ chức dùng nó như hạ tầng chiến lược.</p>
+
+        <h2>3-Tier Architecture cho organization</h2>
+
+        <p>Một tổ chức vận hành tốt với Claude Code cần ba lớp CLAUDE.md lồng vào nhau, mỗi lớp xử lý một phạm vi khác nhau:</p>
+
+        <div class="tier-diagram">
+          <div class="tier-item">
+            <span class="tier-label tier-global">GLOBAL</span>
+            <div class="tier-content">
+              <strong>~/.claude/CLAUDE.md — Company-wide standards</strong>
+              <p>Ngôn ngữ output mặc định (tiếng Việt hay English?), security policy (không commit secrets, không push to main trực tiếp), commit message format (conventional commits), tone of voice khi viết content, compliance requirements. Áp dụng cho mọi project, mọi người trong tổ chức.</p>
+            </div>
+          </div>
+          <div class="tier-item">
+            <span class="tier-label tier-project">PROJECT</span>
+            <div class="tier-content">
+              <strong>./CLAUDE.md — Project-specific context</strong>
+              <p>Tech stack đang dùng (Next.js 14, Tailwind, Supabase), kiến trúc tổng thể, business context (đây là gì, phục vụ ai, KPIs quan trọng), deployment process, environment variables cần có, đường dẫn đến tài liệu quan trọng. Bất kỳ developer nào clone repo này và đọc CLAUDE.md có thể hiểu project trong 10 phút.</p>
+            </div>
+          </div>
+          <div class="tier-item">
+            <span class="tier-label tier-module">MODULE</span>
+            <div class="tier-content">
+              <strong>./src/CLAUDE.md — Module-specific patterns</strong>
+              <p>API patterns riêng của module (authentication flow, error handling), data models và schema, đặc thù business logic cần biết, ví dụ code cho các patterns phổ biến. Dành cho codebase lớn nơi mỗi module có complexity riêng.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>Khi Claude Code làm việc trong một file cụ thể, nó tự động đọc và merge context từ tất cả ba lớp. Không cần nhắc lại, không cần giải thích. Mọi thứ đã được encode sẵn.</p>
+
+        <h2>Skills library cho team</h2>
+
+        <p>Skills là các workflow có thể tái sử dụng — bạn đã học điều này ở Level 3. Nhưng ở cấp độ tổ chức, skills library trở thành tài sản chiến lược.</p>
+
+        <p>Nguyên tắc: mỗi khi bạn lặp lại một workflow hơn 3 lần, hãy biến nó thành skill. Đây là ví dụ về internal skills library cho một team marketing:</p>
+
+        <ul>
+          <li><strong>/content-review</strong> — Review draft theo brand voice, check SEO, suggest improvements</li>
+          <li><strong>/social-schedule</strong> — Tạo calendar post từ article, format cho từng platform</li>
+          <li><strong>/report-weekly</strong> — Pull metrics từ Notion/Sheets, tạo weekly report template</li>
+          <li><strong>/competitor-watch</strong> — Phân tích competitor content, tìm gap và opportunity</li>
+          <li><strong>/deploy-check</strong> — Pre-deployment checklist: tests, security scan, environment vars</li>
+        </ul>
+
+        <p>Khi skill được chia sẻ trong team, toàn bộ team được hưởng lợi từ best practices của một người. Người giỏi nhất không phải làm hết — họ encode kiến thức vào hệ thống.</p>
+
+        <h2>MCP infrastructure cho team</h2>
+
+        <p>MCP servers kết nối Claude Code với công cụ bên ngoài. Ở cấp độ team, bạn cần một template chuẩn để mọi người cùng dùng cùng một set of tools:</p>
+
+        <p>File <code>.mcp.json</code> template cho team (commit vào repo, không chứa secrets):</p>
+
+        <pre><code>{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "NOTION_API_KEY": "${NOTION_API_KEY}"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+        <p>Secrets được inject qua environment variables — không bao giờ hardcode trong file. Mỗi team member tạo file <code>.env.local</code> riêng với API keys của mình (và file này trong .gitignore). Template không chứa secrets nhưng định nghĩa đầy đủ infrastructure.</p>
+
+        <h2>Permission model</h2>
+
+        <p>Claude Code có permission system để kiểm soát những gì agent được phép làm. Ở cấp độ team, điều này rất quan trọng:</p>
+
+        <p><strong>Developer permissions</strong> (file <code>.claude/settings.json</code> trong repo):</p>
+        <ul>
+          <li>Cho phép: đọc/viết files trong project, chạy tests, build commands</li>
+          <li>Không cho phép: push to main, delete production data, deploy trực tiếp</li>
+        </ul>
+
+        <p><strong>Admin permissions</strong> (override tại user level):</p>
+        <ul>
+          <li>Deployment commands</li>
+          <li>Database migrations</li>
+          <li>Infrastructure changes</li>
+        </ul>
+
+        <p>Với Claude Code Team/Enterprise plan, bạn có RBAC (Role-Based Access Control) và audit logging đầy đủ — mọi action đều được ghi lại, ai làm gì, lúc nào.</p>
+
+        <h2>Onboarding workflow</h2>
+
+        <p>Đây là kết quả khi hệ thống được thiết kế đúng. New member join team:</p>
+
+        <ol>
+          <li><strong>Ngày 1, giờ 1</strong>: Clone repo. CLAUDE.md tự giải thích project context, tech stack, business goals.</li>
+          <li><strong>Ngày 1, giờ 2</strong>: Setup MCP servers theo template — mọi tools kết nối trong 30 phút.</li>
+          <li><strong>Ngày 1, giờ 3</strong>: Chạy skills library — đã có sẵn /content-review, /deploy-check, workflows chuẩn.</li>
+          <li><strong>Ngày 1, buổi chiều</strong>: Làm task thực tế đầu tiên với Claude Code. Có output.</li>
+        </ol>
+
+        <p>So với onboarding truyền thống: 2-4 tuần shadow, đọc wiki lỗi thời, hỏi đồng nghiệp liên tục. CLAUDE.md không bao giờ out-of-date vì developer cập nhật nó khi code thay đổi.</p>
+
+        <h2>Đo lường hiệu quả</h2>
+
+        <p>Hệ thống tốt cần metrics để validate. Sau khi deploy Claude Code cho team, track:</p>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <span class="metric-value">↓40%</span>
+            <div class="metric-label">Time-to-merge trung bình</div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-value">↓60%</span>
+            <div class="metric-label">Thời gian onboarding</div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-value">↑3x</span>
+            <div class="metric-label">Content velocity</div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-value">↓25%</span>
+            <div class="metric-label">Bug rate</div>
+          </div>
+        </div>
+
+        <p>Những con số này từ các team thực tế đã triển khai Claude Code với hệ thống đầy đủ. Kết quả sẽ khác nhau tùy context, nhưng trend là nhất quán: hệ thống tốt nhân rộng năng lực của cả team.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lỗi phổ biến</b>
+            <p>Nhiều team setup CLAUDE.md một lần rồi không cập nhật. CLAUDE.md phải là living document — cập nhật khi code thay đổi, khi business context thay đổi, khi team học được bài học mới. Assign ownership: ai là người chịu trách nhiệm maintain CLAUDE.md? Đó phải là công việc thực sự, không phải việc phụ.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Thiết kế hệ thống Claude Code cho team bạn: (1) Viết CLAUDE.md với 3 tiers — global standards, project context, module specifics. (2) Liệt kê 5 skills team cần ngay bây giờ. (3) Xác định MCP servers cần setup — Notion? GitHub? Slack? Internal tools? (4) Viết onboarding checklist Day 1 cho member mới. Sau đó test với một người thực tế và ghi lại điểm friction.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="./" class="nav-prev">← Level 5: Ngọn</a>
+        <button class="btn-complete" data-lesson="5-1-thiet-ke-he-thong">✓ Hoàn thành bài học</button>
+        <a href="tao-tai-lieu-dao-tao.html" class="nav-next">5.2 Tài liệu đào tạo →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

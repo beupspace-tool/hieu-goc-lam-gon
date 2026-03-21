@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Làm việc với file | Level 2 | BEUP</title>
+  <meta name="description" content="Claude Code mạnh nhất khi làm việc với file thật. Đọc, tạo, sửa, tìm kiếm, batch operations — sức mạnh mà Claude Chat không có.">
+  <meta property="og:title" content="Làm việc với file | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .operation-card { border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); padding: var(--prim-space-5); margin-bottom: var(--prim-space-5); }
+    .operation-icon { font-size: 1.5rem; margin-bottom: var(--prim-space-2); }
+    .operation-title { font-size: var(--prim-text-lg); font-weight: var(--prim-weight-semibold); margin-bottom: var(--prim-space-2); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html" class="active">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / Làm việc với file
+          </nav>
+          <h1>Bài 2.5: Làm việc với file</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Claude Code mạnh nhất khi làm việc với file thật trên máy tính của bạn. Đọc, tạo, sửa, tìm kiếm — đây là sức mạnh mà Claude Chat (phiên bản web) hoàn toàn không có. Khi bạn đưa CC vào folder dự án, bạn đang cho nó "tay chân" để hành động, không chỉ "miệng" để nói.</p>
+          </div>
+        </div>
+
+        <h2>Các loại thao tác với file</h2>
+
+        <div class="operation-card">
+          <div class="operation-icon">📖</div>
+          <div class="operation-title">Đọc & Phân tích file</div>
+          <p>CC có thể đọc và hiểu nội dung của hầu hết các loại file văn bản: <code>.txt</code>, <code>.md</code>, <code>.csv</code>, <code>.json</code>, <code>.html</code>, <code>.py</code>, <code>.js</code>, v.v.</p>
+          <p>Ví dụ prompt:</p>
+          <pre><code>Đọc file report-thang-2.csv và tóm tắt:
+- Có bao nhiêu dòng dữ liệu?
+- Các cột là gì?
+- Số liệu nào có giá trị lớn nhất và nhỏ nhất?</code></pre>
+          <pre><code>Đọc file meeting-notes.md và liệt kê
+tất cả action items cùng với người chịu trách nhiệm.</code></pre>
+        </div>
+
+        <div class="operation-card">
+          <div class="operation-icon">✏️</div>
+          <div class="operation-title">Tạo file mới</div>
+          <p>CC có thể tạo file mới với nội dung bạn yêu cầu — trong bất kỳ format nào.</p>
+          <pre><code>Tạo file meeting-template.md trong folder /templates/
+với template họp chuẩn bao gồm:
+- Ngày và giờ họp
+- Danh sách người tham dự
+- Nội dung thảo luận (dạng bullet)
+- Quyết định đã đưa ra
+- Action items: người làm, deadline</code></pre>
+          <pre><code>Tạo file weekly-report-template.md với cấu trúc
+báo cáo tuần: tổng quan, thành tựu, vướng mắc,
+kế hoạch tuần tới, metrics chính.</code></pre>
+        </div>
+
+        <div class="operation-card">
+          <div class="operation-icon">🔧</div>
+          <div class="operation-title">Sửa file hiện có</div>
+          <p>CC có thể mở và chỉnh sửa nội dung file đang có — thêm, xóa, sửa đổi nội dung theo yêu cầu của bạn.</p>
+          <pre><code>Mở file prices.csv, tăng tất cả giá trị
+trong cột "Giá" lên 10%. Lưu lại file.</code></pre>
+          <pre><code>Sửa file email-chao-hang.md:
+thay tên khách hàng "[Tên]" thành "Chị Mai",
+thay tên sản phẩm "[Sản phẩm]" thành "Gói Premium".</code></pre>
+        </div>
+
+        <div class="operation-card">
+          <div class="operation-icon">🔍</div>
+          <div class="operation-title">Tìm kiếm xuyên file</div>
+          <p>CC có thể tìm kiếm từ khóa, pattern, hoặc nội dung cụ thể across nhiều file trong folder.</p>
+          <pre><code>Tìm tất cả file trong folder /reports/
+có chứa từ "overdue" hoặc "quá hạn".
+Liệt kê tên file và dòng chứa từ đó.</code></pre>
+          <pre><code>Tìm trong /data/customers/ xem có
+email nào bị trùng nhau không.
+Liệt kê các email trùng nếu có.</code></pre>
+        </div>
+
+        <div class="operation-card">
+          <div class="operation-icon">⚡</div>
+          <div class="operation-title">Batch operations — Xử lý hàng loạt</div>
+          <p>Đây là nơi CC thực sự tiết kiệm hàng giờ công sức. Những thứ bạn phải làm thủ công lặp đi lặp lại, CC có thể làm trong vài giây.</p>
+          <pre><code>Trong folder /photos/, đổi tên tất cả file
+theo format YYYY-MM-DD-[tên gốc].
+Ví dụ: "IMG_1234.jpg" → "2026-03-15-IMG_1234.jpg"</code></pre>
+          <pre><code>Đọc tất cả file .md trong folder /blog/
+và tạo file index.md liệt kê:
+- Tên file, tiêu đề bài (dòng đầu tiên), ngày tạo</code></pre>
+          <pre><code>Chuyển đổi file customers.csv thành
+bảng Markdown và lưu vào customers-table.md</code></pre>
+        </div>
+
+        <h2>An toàn khi làm việc với file</h2>
+
+        <p>Claude Code hiểu rằng thao tác file là không thể undo dễ dàng. CC có một số cơ chế bảo vệ tự động:</p>
+
+        <ul>
+          <li><strong>CC xin phép trước khi xóa.</strong> Nếu bạn yêu cầu xóa file, CC sẽ hỏi xác nhận, không tự xóa ngay.</li>
+          <li><strong>CC mô tả kế hoạch trước khi thực hiện.</strong> Với thao tác phức tạp hoặc ảnh hưởng nhiều file, CC thường mô tả sẽ làm gì trước khi thực sự làm.</li>
+          <li><strong>CC đề xuất backup trước thao tác lớn.</strong> Khi sửa file quan trọng, CC thường gợi ý tạo bản backup.</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Cảnh báo quan trọng</b>
+            <p>Trước khi yêu cầu CC thực hiện thao tác hàng loạt trên file quan trọng (đổi tên, sửa, xóa nhiều file cùng lúc): <strong>hãy backup folder đó trước</strong>. Copy sang folder khác hoặc Google Drive. CC làm rất nhanh và chính xác — nhưng nếu bạn ra lệnh sai, không thể undo trong một nốt nhạc.</p>
+          </div>
+        </div>
+
+        <h2>Loại file nào CC làm được?</h2>
+        <ul>
+          <li><strong>Có thể đọc và sửa:</strong> .txt, .md, .csv, .json, .html, .css, .js, .py, .xml, .yaml</li>
+          <li><strong>Có thể đọc nội dung text:</strong> Nhiều loại file khác nếu chứa text thuần</li>
+          <li><strong>Không làm được trực tiếp:</strong> .xlsx (Excel), .docx (Word), .pdf — CC cần bạn xuất sang CSV/TXT trước, hoặc dùng công cụ chuyển đổi</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo folder <code>test-files/</code> và tạo 5 file mẫu bên trong (có thể là file text với nội dung bất kỳ). Sau đó yêu cầu CC: (1) Liệt kê tất cả file trong folder và mô tả ngắn nội dung mỗi file, (2) Đổi tên tất cả file theo quy tắc kebab-case, (3) Tạo file tóm tắt <code>summary.md</code> liệt kê tên và nội dung ngắn của tất cả file.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="prompt-hieu-qua.html" class="nav-prev">← 2.4 Prompt hiệu quả</a>
+        <button class="btn-complete" data-lesson="2-5-lam-viec-voi-file">✓ Hoàn thành bài học</button>
+        <a href="quy-trinh-viet-noi-dung.html" class="nav-next">2.6 Quy trình viết nội dung →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP — Nguyên lý | Level 3: Thân | BEUP</title>
+  <meta name="description" content="MCP (Model Context Protocol) là gì và tại sao nó thay đổi cách Claude Code hoạt động. Kiến trúc, ecosystem, và tại sao đây là chuẩn mở quan trọng nhất của AI năm 2026.">
+  <meta property="og:title" content="Bài 3.1: MCP — Nguyên lý | BEUP">
+  <meta property="og:description" content="Hiểu MCP từ gốc — plugin system cho phép Claude kết nối với Notion, GitHub, Slack, databases và 200+ dịch vụ khác.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-3 {
+      background: rgba(34,197,94,0.12);
+      color: #16a34a;
+      border: 1px solid rgba(34,197,94,0.28);
+    }
+    [data-theme="dark"] .level-badge.level-3 {
+      background: rgba(34,197,94,0.1);
+      color: #4ade80;
+      border-color: rgba(34,197,94,0.3);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero {
+      padding: var(--prim-space-10) var(--content-padding-x);
+      background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .lesson-hero-inner {
+      max-width: var(--content-max-width);
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-4);
+    }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 {
+      font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl));
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--text-primary);
+      margin: var(--prim-space-3) 0 var(--prim-space-3);
+      letter-spacing: -0.025em;
+    }
+    .lesson-meta {
+      display: flex;
+      gap: var(--prim-space-3);
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-medium);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-full);
+      color: var(--text-muted);
+    }
+    .callout {
+      display: flex;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border-radius: var(--callout-radius);
+      border-left: var(--callout-border-width) solid;
+      margin: var(--prim-space-6) 0;
+    }
+    .callout-principle {
+      background: var(--prim-blue-50);
+      border-color: var(--prim-blue-500);
+    }
+    .callout-practice {
+      background: var(--prim-green-50);
+      border-color: var(--prim-green-500);
+    }
+    .callout-warning {
+      background: var(--prim-yellow-50);
+      border-color: var(--prim-yellow-500);
+    }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      line-height: 1.5;
+    }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct {
+      display: block;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-1);
+    }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-8) var(--content-padding-x);
+      border-top: 1px solid var(--border-default);
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+    }
+    .nav-prev, .nav-next {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--card-radius);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+      flex: 1;
+      max-width: 48%;
+    }
+    .nav-prev:hover, .nav-next:hover {
+      border-color: #16a34a;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-5);
+      height: var(--btn-height);
+      background: #16a34a;
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      border: none;
+      cursor: pointer;
+      transition: background var(--prim-transition-fast);
+      white-space: nowrap;
+    }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo {
+      width: 120px;
+      margin: 0 auto var(--prim-space-3);
+    }
+    /* Architecture diagram */
+    .arch-diagram {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-6);
+      margin: var(--prim-space-6) 0;
+      font-family: var(--prim-font-mono);
+      font-size: var(--prim-text-sm);
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    .arch-diagram pre {
+      margin: 0;
+      white-space: pre;
+    }
+    /* Use case grid */
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .use-case-card {
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+    }
+    .use-case-card .uc-icon {
+      font-size: 1.5rem;
+      margin-bottom: var(--prim-space-2);
+    }
+    .use-case-card h4 {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      margin: 0 0 var(--prim-space-1);
+    }
+    .use-case-card p {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html" class="active">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / MCP — Nguyên lý
+          </nav>
+          <h1>Bài 3.1: MCP — Nguyên lý</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">MCP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>MCP biến Claude Code từ tool đọc file thành platform kết nối mọi thứ. Trước MCP, Claude chỉ làm việc với file local trên máy bạn. Sau MCP, Claude có thể đọc task từ Notion, tạo PR trên GitHub, gửi message trên Slack, query database — tất cả trong cùng một session. Hiểu MCP = hiểu tại sao Claude Code mạnh hơn bất kỳ chatbot nào.</p>
+          </div>
+        </div>
+
+        <h2>Vấn đề MCP giải quyết</h2>
+
+        <p>Hãy tưởng tượng bạn có một nhân viên xuất sắc, nhưng nhân viên đó chỉ có thể làm việc trong một căn phòng kín — không email, không điện thoại, không kết nối với hệ thống nào của công ty. Tài năng đến đâu cũng bị giới hạn bởi thông tin họ có thể tiếp cận.</p>
+
+        <p>Đó chính xác là tình trạng của Claude Code trước khi có MCP. Claude Code mặc định chỉ đọc và viết file trên máy tính của bạn. Muốn Claude biết nội dung Notion workspace? Bạn phải copy-paste thủ công. Muốn Claude tạo issue trên GitHub? Phải mở browser, dùng tay. Muốn Claude kiểm tra dữ liệu từ database? Bạn phải export ra file CSV trước.</p>
+
+        <p><strong>MCP (Model Context Protocol)</strong> phá vỡ bức tường đó. Đây là chuẩn giao tiếp mở cho phép Claude Code kết nối trực tiếp với bất kỳ dịch vụ nào có MCP server — mà không cần bạn làm trung gian.</p>
+
+        <h2>Kiến trúc MCP: ba thành phần</h2>
+
+        <div class="arch-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│                    Claude Code (Client)                  │
+│   "Liệt kê tất cả tasks trong Notion workspace của tôi" │
+└────────────────────┬────────────────────────────────────┘
+                     │ gọi tool
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                   MCP Server                            │
+│   @notionhq/mcp-server  ←→  Notion API                  │
+│   @github/mcp-server    ←→  GitHub API                  │
+│   postgres-mcp          ←→  PostgreSQL                  │
+└─────────────────────────────────────────────────────────┘
+                     │ trả kết quả
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                    Claude Code                           │
+│   Nhận data → phân tích → trả lời → thực hiện action   │
+└─────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+
+        <p><strong>MCP Client</strong> là Claude Code — phía "yêu cầu". Claude biết các tools nào đang available và gọi chúng khi cần.</p>
+
+        <p><strong>MCP Server</strong> là cầu nối — chạy local trên máy bạn, expose một tập tools cụ thể cho Claude. Ví dụ: Notion MCP server expose các tools như <code>list_pages</code>, <code>create_page</code>, <code>update_block</code>. GitHub MCP server expose <code>create_pull_request</code>, <code>list_issues</code>, <code>review_code</code>.</p>
+
+        <p><strong>External Service</strong> là Notion, GitHub, Slack, database của bạn — phía "thực thi". MCP server dùng API của service này để thực sự làm việc.</p>
+
+        <p>Điểm quan trọng: <strong>MCP server chạy local, trên máy của bạn</strong>. Data không đi qua third party nào. Claude Code giao tiếp với MCP server qua localhost, không qua internet.</p>
+
+        <h2>MCP là chuẩn mở — không phải lock-in</h2>
+
+        <p>Anthropic publish MCP spec vào cuối 2024 dưới dạng open standard. Quyết định này thay đổi mọi thứ: thay vì Anthropic tự build từng integration, cả cộng đồng — từ startup nhỏ đến enterprise lớn — có thể build MCP server cho dịch vụ của họ.</p>
+
+        <p>Kết quả đến năm 2026: <strong>200+ MCP servers</strong> available, từ Notion, Slack, Linear đến Stripe, Salesforce, PostgreSQL, MongoDB, Google Sheets. Và con số này tăng mỗi tuần.</p>
+
+        <p>Quan trọng hơn: OpenAI, Google (Gemini), Microsoft (Copilot Studio), và Amazon (Bedrock) đều đã adopt MCP spec. Điều này có nghĩa là skill bạn học với Claude Code hôm nay — cách cấu hình MCP, cách thiết kế workflow — sẽ chuyển được sang các AI platform khác. Không bị lock-in vào một vendor.</p>
+
+        <h2>So sánh dễ hiểu: MCP giống USB</h2>
+
+        <p>Trước khi có USB, mỗi thiết bị ngoại vi — chuột, keyboard, printer, camera — đều có cổng kết nối riêng. Mua printer mới phải kiểm tra máy tính có đúng cổng không. Mua camera phải có driver riêng.</p>
+
+        <p>USB đến và giải quyết hết: 1 cổng chuẩn, tất cả thiết bị đều dùng. Bạn không cần biết printer của bạn kết nối với máy tính như thế nào — chỉ cần cắm USB là xong.</p>
+
+        <p>MCP là USB của thế giới AI. Trước MCP, mỗi AI tool tự build integration riêng với từng service — Copilot tích hợp GitHub theo cách riêng, ChatGPT tích hợp Zapier theo cách riêng, mỗi tool cần adapter riêng biệt. MCP = 1 chuẩn cho tất cả.</p>
+
+        <h2>Ví dụ business thực tế</h2>
+
+        <div class="use-case-grid">
+          <div class="use-case-card">
+            <div class="uc-icon">📋</div>
+            <h4>Notion MCP</h4>
+            <p>Claude đọc task list từ Notion → tạo báo cáo tiến độ weekly. Hoặc ngược lại: Claude tạo pages Notion từ brief của bạn.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="uc-icon">🐙</div>
+            <h4>GitHub MCP</h4>
+            <p>Claude tạo PR, review code, manage issues, tag releases — tất cả bằng ngôn ngữ tự nhiên thay vì nhớ lệnh git.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="uc-icon">🗄️</div>
+            <h4>Database MCP</h4>
+            <p>Claude query PostgreSQL trực tiếp — "Doanh thu tháng này so với tháng trước" thay vì bạn phải viết SQL query.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="uc-icon">💬</div>
+            <h4>Slack MCP</h4>
+            <p>Claude gửi notification vào đúng channel khi task hoàn thành. Hoặc đọc messages để tóm tắt cuộc thảo luận team.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="uc-icon">📊</div>
+            <h4>Google Sheets MCP</h4>
+            <p>Claude đọc spreadsheet thực tế → phân tích → ghi kết quả vào sheet mới. Không cần export CSV thủ công.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="uc-icon">📧</div>
+            <h4>Email MCP</h4>
+            <p>Claude tìm kiếm email theo chủ đề, tóm tắt threads dài, soạn reply — trực tiếp từ inbox của bạn.</p>
+          </div>
+        </div>
+
+        <h2>Tại sao điều này quan trọng với doanh nghiệp bạn</h2>
+
+        <p>Hầu hết doanh nghiệp SME đang vận hành trên 5-15 phần mềm khác nhau: CRM, kế toán, project management, email, chat, file storage. Mỗi phần mềm có dữ liệu riêng, không nói chuyện với nhau. Nhân viên mất 30-40% thời gian copy-paste dữ liệu giữa các hệ thống.</p>
+
+        <p>MCP không thay thế các phần mềm đó — nhưng nó đặt Claude Code làm <strong>lớp điều phối ở trên</strong>. Claude có thể đọc dữ liệu từ bất kỳ nguồn nào, xử lý, và ghi kết quả vào bất kỳ đâu — trong một workflow liên tục, không cần bạn làm trung gian.</p>
+
+        <p>Ví dụ thực tế: "Đọc danh sách leads mới từ CRM → tìm thông tin công ty trên web → tạo personalized email cho từng lead → lưu draft vào Gmail → tạo task follow-up trong Notion." Trước MCP: quy trình này mất 2-3 giờ mỗi tuần. Với MCP: 1 lệnh, 5 phút.</p>
+
+        <h2>Giới hạn cần biết</h2>
+
+        <p>MCP không phải magic. Một số điều cần hiểu đúng:</p>
+
+        <p><strong>Phụ thuộc vào MCP server quality:</strong> Chất lượng tích hợp tùy thuộc vào người build MCP server. Server do công ty chính thức build (Notion, Stripe) thường ổn định hơn community builds.</p>
+
+        <p><strong>Rate limits:</strong> Mỗi service có rate limit API riêng. Nếu bạn dùng Claude Code với Notion MCP để xử lý 1000 pages cùng lúc, bạn có thể bị block tạm thời bởi Notion API.</p>
+
+        <p><strong>Permission scope:</strong> MCP server chỉ có quyền làm những gì API key của bạn cho phép. Hãy tạo API key với minimal permissions cần thiết — không bao giờ dùng "admin key" cho MCP.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Xem danh sách MCP servers tại <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">github.com/modelcontextprotocol/servers</a>. Chọn 3 tool bạn dùng hàng ngày nhất (Notion, Slack, email, CRM, v.v.) và kiểm tra xem có MCP server chính thức không. Nếu có, ghi chú lại — bạn sẽ setup chúng ở bài tiếp theo.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lưu ý quan trọng</b>
+            <p>MCP server chạy local trên máy bạn — không phải trên server của Anthropic hay bất kỳ bên thứ ba nào. Điều này tốt cho privacy. Nhưng nó cũng có nghĩa là bạn cần cài đặt Node.js (cho hầu hết MCP servers) và maintain các dependencies. Bài 3.2 sẽ hướng dẫn chi tiết.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="./" class="nav-prev">← Level 3 Overview</a>
+        <button class="btn-complete" data-lesson="3-1-mcp-nguyen-ly">✓ Hoàn thành bài học</button>
+        <a href="mcp-thuc-hanh.html" class="nav-next">3.2 MCP thực hành →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

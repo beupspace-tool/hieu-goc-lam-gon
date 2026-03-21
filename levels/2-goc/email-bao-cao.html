@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email & Báo cáo | Level 2 | BEUP</title>
+  <meta name="description" content="Email và báo cáo chiếm 40% thời gian văn phòng. Claude Code có thể cắt giảm 70% — với templates tái sử dụng và báo cáo tự động từ data.">
+  <meta property="og:title" content="Email & Báo cáo | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .time-save-banner { background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(63,183,182,0.08)); border: 1px solid rgba(168,85,247,0.2); border-radius: var(--prim-radius-lg); padding: var(--prim-space-5); margin: var(--prim-space-6) 0; display: flex; gap: var(--prim-space-4); align-items: center; }
+    .time-save-number { font-size: var(--prim-text-4xl); font-weight: var(--prim-weight-extrabold); color: #7c3aed; line-height: 1; }
+    .time-save-desc { font-size: var(--prim-text-sm); color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html" class="active">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / Email &amp; Báo cáo
+          </nav>
+          <h1>Bài 2.8: Email &amp; Báo cáo</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Email và báo cáo chiếm 40% thời gian văn phòng — đây không phải con số tự nghĩ ra mà là thực tế của hầu hết doanh nghiệp nhỏ. Claude Code có thể cắt giảm 70% thời gian này nếu bạn biết cách brief đúng và tạo hệ thống template tái sử dụng.</p>
+          </div>
+        </div>
+
+        <div class="time-save-banner">
+          <div class="time-save-number">2h</div>
+          <div class="time-save-desc">
+            <strong>Tiết kiệm mỗi tuần</strong> khi dùng CC cho email và báo cáo định kỳ.<br>
+            8 tuần = 1 ngày làm việc được trả lại cho bạn.
+          </div>
+        </div>
+
+        <h2>Email templates — Hệ thống, không phải file lẻ</h2>
+        <p>Sai lầm phổ biến: viết email từ đầu mỗi lần. Đúng hướng: tạo template một lần, CC customize cho từng tình huống cụ thể.</p>
+
+        <p>Các loại email template cần thiết cho doanh nghiệp nhỏ:</p>
+
+        <pre><code># email-chao-hang.md
+
+## Template: Email Chào Hàng
+
+**Subject:** [Tên sản phẩm/dịch vụ] — Giải pháp cho [vấn đề khách hàng]
+
+Kính gửi [Tên khách hàng],
+
+Tôi là [Tên bạn] từ [Tên công ty].
+
+[1 câu mở đầu tạo điểm chung hoặc context tại sao liên hệ]
+
+Chúng tôi cung cấp [mô tả sản phẩm/dịch vụ] giúp [lợi ích cụ thể].
+Khách hàng điển hình của chúng tôi là [profile khách hàng].
+
+[Kết quả cụ thể hoặc case study ngắn 1–2 câu]
+
+Tôi muốn sắp xếp 15 phút gọi điện để tìm hiểu xem
+liệu [tên công ty của bạn] có phù hợp không.
+Bạn có rảnh [ngày/giờ cụ thể] không?
+
+Trân trọng,
+[Tên]</code></pre>
+
+        <p>Sau khi có template, yêu cầu CC customize:</p>
+        <pre><code>Dùng template email-chao-hang.md.
+Customize cho khách hàng này:
+- Tên: Anh Minh, Giám đốc công ty vận tải Minh Long
+- Vấn đề: Quản lý lịch xe và tài xế mất nhiều thời gian
+- Sản phẩm chúng tôi bán: Phần mềm quản lý đội xe
+- Context: Chúng tôi vừa làm cho 3 công ty vận tải tương tự</code></pre>
+
+        <h2>Các loại template nên tạo</h2>
+
+        <ul>
+          <li><strong>email-chao-hang.md</strong> — Lần đầu tiếp cận khách hàng mới</li>
+          <li><strong>email-follow-up.md</strong> — Sau cuộc gặp hoặc demo</li>
+          <li><strong>email-cam-on.md</strong> — Cảm ơn sau khi ký hợp đồng hoặc nhận hàng</li>
+          <li><strong>email-xin-loi.md</strong> — Khi có sự cố, lỗi, hoặc chậm trễ</li>
+          <li><strong>email-moi-hop.md</strong> — Mời họp, demo, hoặc cuộc gọi</li>
+          <li><strong>email-thong-bao-gia.md</strong> — Thông báo thay đổi giá hoặc chính sách</li>
+        </ul>
+
+        <h2>Báo cáo tự động từ data</h2>
+
+        <p>Thay vì mất 1–2 giờ compile báo cáo tuần/tháng, cho CC làm:</p>
+
+        <pre><code>Tôi cần tạo báo cáo tuần cho sếp.
+Đọc các file sau:
+- sales-tuan-11.csv (đơn hàng trong tuần)
+- leads-tuan-11.csv (khách hàng tiềm năng mới)
+- tasks-done.txt (việc đã hoàn thành)
+
+Tạo file weekly-report-tuan-11.md với cấu trúc:
+1. Tổng quan (3 bullet points quan trọng nhất)
+2. Số liệu chính: doanh thu, số đơn, số leads mới
+3. Thành tựu tuần này
+4. Vướng mắc (nếu có)
+5. Kế hoạch tuần tới
+
+Tone: chuyên nghiệp, ngắn gọn, sếp bận không có
+thời gian đọc dài.</code></pre>
+
+        <h2>Meeting notes — Cấu trúc từ ghi chép thô</h2>
+
+        <p>Sau cuộc họp, bạn thường có ghi chú rời rạc. CC giúp bạn cấu trúc lại:</p>
+
+        <pre><code>Đây là ghi chú thô của cuộc họp hôm nay:
+---
+họp với anh nam và chị linh về dự án website mới
+anh nam muốn xong trong 2 tháng, chị linh nói cần 3 tháng
+quyết định: 2.5 tháng, ngày xong 15/6
+chị linh lo phần design, tôi lo phần nội dung
+anh nam duyệt budget tuần sau
+cần gửi mockup đầu tiên trước 1/5
+---
+
+Từ ghi chú trên, tạo meeting notes theo cấu trúc:
+- Thời gian & Người tham dự
+- Nội dung thảo luận chính
+- Quyết định đã đưa ra
+- Action items (ai làm gì, deadline)</code></pre>
+
+        <h2>Workflow: Báo cáo tuần tự động</h2>
+
+        <p>Mỗi thứ 6, quy trình này tiết kiệm ~2 giờ:</p>
+
+        <ol>
+          <li><strong>Thu thập data:</strong> Xuất file CSV từ phần mềm bán hàng/CRM (5 phút thủ công)</li>
+          <li><strong>CC phân tích:</strong> Đọc file, tính toán số liệu chính (2 phút CC)</li>
+          <li><strong>CC tạo báo cáo:</strong> Viết báo cáo theo template chuẩn (1 phút CC)</li>
+          <li><strong>Bạn review:</strong> Đọc qua, thêm nhận xét cá nhân nếu cần (10 phút)</li>
+          <li><strong>Gửi:</strong> Copy vào email hoặc Slack và gửi (2 phút)</li>
+        </ol>
+
+        <p>Tổng: ~20 phút thay vì 2 giờ.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Yêu cầu CC tạo 3 email templates cho doanh nghiệp của bạn: (1) Email chào hàng sản phẩm/dịch vụ bạn đang bán, (2) Email follow-up sau cuộc gặp đầu tiên với khách hàng, (3) Email báo cáo tuần cho sếp hoặc đối tác. Lưu mỗi template vào folder <code>templates/emails/</code>. Sau đó test bằng cách yêu cầu CC customize email #1 cho một khách hàng cụ thể bạn đang nhắm đến.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="to-chuc-du-lieu.html" class="nav-prev">← 2.7 Tổ chức dữ liệu</a>
+        <button class="btn-complete" data-lesson="2-8-email-bao-cao">✓ Hoàn thành bài học</button>
+        <a href="bai-tap-tong-hop.html" class="nav-next">2.9 Bài tập tổng hợp →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

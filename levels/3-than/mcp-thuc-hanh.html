@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Thực hành — Setup Notion & GitHub | Level 3: Thân | BEUP</title>
+  <meta name="description" content="Hướng dẫn setup MCP step-by-step: Notion MCP, GitHub MCP, filesystem MCP. Debugging, bảo mật API keys, và cách kiểm tra tools available.">
+  <meta property="og:title" content="Bài 3.2: MCP Thực hành | BEUP">
+  <meta property="og:description" content="Setup Notion MCP và GitHub MCP từ A-Z. Cấu hình .mcp.json, xử lý lỗi, bảo mật API keys đúng cách.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Step list */
+    .steps { counter-reset: step-counter; list-style: none; padding: 0; margin: var(--prim-space-6) 0; }
+    .steps li { counter-increment: step-counter; display: flex; gap: var(--prim-space-4); margin-bottom: var(--prim-space-5); padding-bottom: var(--prim-space-5); border-bottom: 1px solid var(--border-default); }
+    .steps li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .steps li::before { content: counter(step-counter); flex-shrink: 0; width: 28px; height: 28px; background: #16a34a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-bold); font-family: var(--prim-font-mono); margin-top: 2px; }
+    .steps li .step-content { flex: 1; }
+    .steps li .step-content strong { display: block; margin-bottom: var(--prim-space-1); color: var(--text-primary); }
+    .steps li .step-content p { margin: 0 0 var(--prim-space-2); color: var(--text-muted); font-size: var(--prim-text-sm); line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html" class="active">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / MCP thực hành
+          </nav>
+          <h1>Bài 3.2: MCP thực hành</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Setup</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Setup MCP đúng cách lần đầu tiết kiệm hàng giờ debug về sau. Ba điều quan trọng nhất: (1) file cấu hình đúng vị trí, (2) API keys không commit lên git, (3) biết cách kiểm tra xem tools có available không. Mọi thứ khác đều có thể fix sau.</p>
+          </div>
+        </div>
+
+        <h2>File cấu hình MCP</h2>
+
+        <p>MCP được cấu hình qua file JSON. Claude Code đọc file này khi khởi động và biết những servers nào cần connect. Bạn có hai lựa chọn vị trí:</p>
+
+        <p><strong>Project-level</strong> — file <code>.mcp.json</code> trong thư mục project:</p>
+
+        <pre><code>your-project/
+├── .mcp.json          ← MCP config cho project này
+├── CLAUDE.md
+└── ...</code></pre>
+
+        <p>Dùng khi bạn muốn MCP config riêng cho từng project. Ví dụ: project marketing dùng Notion + Buffer MCP, project dev dùng GitHub + database MCP.</p>
+
+        <p><strong>Global</strong> — file <code>~/.claude/settings.json</code> trong home directory. Dùng khi muốn MCP available cho mọi project.</p>
+
+        <p>Format file cấu hình:</p>
+
+        <pre><code>{
+  "mcpServers": {
+    "ten-server": {
+      "command": "npx",
+      "args": ["-y", "@package/mcp-server"],
+      "env": {
+        "API_KEY": "your-key-here"
+      }
+    }
+  }
+}</code></pre>
+
+        <h2>Setup Notion MCP — từng bước</h2>
+
+        <p>Notion là một trong những MCP servers được dùng nhiều nhất. Đây là cách setup từ zero:</p>
+
+        <ol class="steps">
+          <li>
+            <div class="step-content">
+              <strong>Tạo Notion Integration</strong>
+              <p>Vào <a href="https://www.notion.so/my-integrations" target="_blank" rel="noopener">notion.so/my-integrations</a> → click "New integration" → đặt tên (ví dụ: "Claude Code") → chọn workspace → set capabilities: Read content, Update content, Insert content.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>Lấy Integration Token</strong>
+              <p>Sau khi tạo, bạn thấy "Internal Integration Token" bắt đầu bằng <code>secret_</code>. Copy token này — đây là API key của bạn.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>Share pages với Integration</strong>
+              <p>Mặc định, integration không có quyền đọc page nào. Vào từng Notion page bạn muốn Claude truy cập → click "..." → "Connections" → chọn integration vừa tạo. Hoặc share toàn bộ workspace nếu bạn muốn Claude đọc tất cả.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>Tạo file .mcp.json</strong>
+              <p>Trong thư mục project, tạo file <code>.mcp.json</code> với nội dung sau:</p>
+              <pre><code>{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/mcp-server"],
+      "env": {
+        "NOTION_TOKEN": "secret_xxx_token_của_bạn"
+      }
+    }
+  }
+}</code></pre>
+              <p>Thay <code>secret_xxx_token_của_bạn</code> bằng token thật từ bước 2.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>Thêm .mcp.json vào .gitignore ngay lập tức</strong>
+              <p>File này chứa API key — không bao giờ được commit lên git.</p>
+              <pre><code># Thêm vào .gitignore
+.mcp.json
+.claude/settings.local.json</code></pre>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>Restart Claude Code và kiểm tra</strong>
+              <p>Đóng và mở lại Claude Code. Gõ <code>/mcp</code> để xem danh sách MCP servers đang active. Bạn sẽ thấy "notion" trong danh sách với các tools available.</p>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>Test thực tế</strong>
+              <p>Hỏi Claude: "Liệt kê tất cả pages trong Notion workspace của tôi" hoặc "Tìm page có tiêu đề chứa từ 'marketing'." Nếu Claude trả về kết quả thực, setup thành công.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h2>Setup GitHub MCP</h2>
+
+        <p>GitHub MCP cho phép Claude tạo PR, review code, manage issues bằng ngôn ngữ tự nhiên.</p>
+
+        <p>Trước tiên, authenticate với GitHub CLI nếu chưa làm:</p>
+
+        <pre><code># Cài GitHub CLI nếu chưa có
+brew install gh   # macOS
+# hoặc: winget install GitHub.cli   # Windows
+
+# Authenticate
+gh auth login</code></pre>
+
+        <p>Thêm GitHub MCP vào <code>.mcp.json</code>:</p>
+
+        <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_your_token_here"
+      }
+    }
+  }
+}</code></pre>
+
+        <p>Tạo Personal Access Token tại <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">github.com/settings/tokens</a> → "Generate new token (classic)" → check các scopes: <code>repo</code>, <code>read:org</code>. Chỉ cần đúng permissions — không cần "admin:repo" nếu bạn chỉ muốn đọc/tạo PR.</p>
+
+        <h2>Setup nhiều servers cùng lúc</h2>
+
+        <p>File <code>.mcp.json</code> cho phép cấu hình nhiều servers trong cùng object <code>mcpServers</code>:</p>
+
+        <pre><code>{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/mcp-server"],
+      "env": { "NOTION_TOKEN": "secret_xxx" }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_xxx" }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/yourname/Documents",
+        "/Users/yourname/Desktop"
+      ]
+    }
+  }
+}</code></pre>
+
+        <p>Filesystem MCP server cho phép Claude đọc/ghi file ngoài thư mục project hiện tại — hữu ích khi bạn muốn Claude truy cập tài liệu ở nhiều vị trí khác nhau.</p>
+
+        <h2>Debugging khi có lỗi</h2>
+
+        <p>MCP setup thất bại thường do một trong ba nguyên nhân:</p>
+
+        <p><strong>1. Node.js chưa cài hoặc version cũ.</strong> Hầu hết MCP servers yêu cầu Node.js 18+. Kiểm tra: <code>node --version</code>. Nếu chưa có, tải tại <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>.</p>
+
+        <p><strong>2. API key sai hoặc thiếu permissions.</strong> Kiểm tra lại token trong <code>.mcp.json</code>. Thử gọi API trực tiếp bằng curl để verify key còn hiệu lực.</p>
+
+        <p><strong>3. File cấu hình sai cú pháp JSON.</strong> Dùng <a href="https://jsonlint.com" target="_blank" rel="noopener">jsonlint.com</a> để validate JSON trước khi restart Claude Code.</p>
+
+        <p>Xem log lỗi MCP: trong Claude Code, gõ <code>/mcp</code> → xem trạng thái từng server. Server có lỗi sẽ hiển thị error message cụ thể.</p>
+
+        <h2>Bảo mật API keys</h2>
+
+        <p>Nguyên tắc cốt lõi: API keys không bao giờ được commit lên git repository, dù là private repo.</p>
+
+        <p>Cách tốt nhất: lưu API keys trong environment variables của hệ điều hành, sau đó tham chiếu trong <code>.mcp.json</code>:</p>
+
+        <pre><code># Thêm vào ~/.zshrc hoặc ~/.bashrc
+export NOTION_TOKEN="secret_xxx"
+export GITHUB_TOKEN="ghp_xxx"</code></pre>
+
+        <pre><code># Trong .mcp.json, dùng process.env
+{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/mcp-server"],
+      "env": { "NOTION_TOKEN": "${NOTION_TOKEN}" }
+    }
+  }
+}</code></pre>
+
+        <p>Hoặc dùng file <code>.env</code> (cũng phải add vào <code>.gitignore</code>) để lưu secrets theo project.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Không commit secrets</b>
+            <p>KHÔNG commit file <code>.mcp.json</code> chứa API keys lên GitHub — dù repo đó là private. Private repos có thể bị leak qua nhiều cách: fork, collaborators, GitHub Actions logs. Luôn thêm vào <code>.gitignore</code> ngay khi tạo file. Nếu lỡ commit, revoke token ngay lập tức và tạo token mới.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Setup Notion MCP theo 7 bước trên. Sau khi xong, hỏi Claude: "Liệt kê tất cả pages trong Notion workspace của tôi và cho biết page nào được sửa gần nhất." Nếu Claude trả về danh sách thực từ Notion của bạn — bạn vừa mở khóa khả năng quan trọng nhất của Level 3. Ghi lại thời gian setup — thường 15-20 phút lần đầu, 5 phút cho lần sau.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="mcp-nguyen-ly.html" class="nav-prev">← 3.1 MCP — Nguyên lý</a>
+        <button class="btn-complete" data-lesson="3-2-mcp-thuc-hanh">✓ Hoàn thành bài học</button>
+        <a href="git-co-ban.html" class="nav-next">3.3 Git cơ bản →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

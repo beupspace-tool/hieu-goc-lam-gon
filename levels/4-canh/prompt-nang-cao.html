@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4.5: Prompt nâng cao — Level 4 Cành | BEUP</title>
+  <meta name="description" content="Context engineering, extended thinking, few-shot examples, model routing, và prompt caching. Giảm 90% chi phí AI với kỹ thuật đúng.">
+  <meta property="og:title" content="Bài 4.5: Prompt nâng cao | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-4 { background: rgba(22,163,74,0.12); color: #15803d; border: 1px solid rgba(22,163,74,0.3); }
+    [data-theme="dark"] .level-badge.level-4 { background: rgba(22,163,74,0.15); color: #4ade80; border-color: rgba(22,163,74,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(22,163,74,0.08) 0%, rgba(22,163,74,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .model-table { width: 100%; border-collapse: collapse; font-size: var(--prim-text-sm); margin: var(--prim-space-4) 0; }
+    .model-table th { text-align: left; padding: var(--prim-space-2) var(--prim-space-3); background: var(--bg-secondary); font-weight: var(--prim-weight-semibold); color: var(--text-muted); font-size: var(--prim-text-xs); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 2px solid var(--border-default); }
+    .model-table td { padding: var(--prim-space-3); border-bottom: 1px solid var(--border-default); color: var(--text-primary); vertical-align: top; }
+    .model-table tr:last-child td { border-bottom: none; }
+    .model-table tr:hover td { background: var(--bg-secondary); }
+    .price-tag { font-family: var(--prim-font-mono); font-size: var(--prim-text-xs); color: #15803d; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-4">Level 4: Cành</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="skill-tu-chinh.html">4.1 Skill tùy chỉnh</a></li>
+          <li><a href="mcp-nang-cao.html">4.2 MCP nâng cao</a></li>
+          <li><a href="hooks-tu-dong-hoa.html">4.3 Hooks &amp; tự động hóa</a></li>
+          <li><a href="multi-agent.html">4.4 Multi-agent</a></li>
+          <li><a href="prompt-nang-cao.html" class="active">4.5 Prompt nâng cao</a></li>
+          <li><a href="marketing-stack.html">4.6 Marketing stack</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 4</a> / Prompt nâng cao
+          </nav>
+          <h1>Bài 4.5: Prompt nâng cao</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 4</span>
+            <span class="tag">Cost optimization</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Prompt engineering cơ bản là viết prompt rõ hơn. Context engineering — cấp độ tiếp theo — là quản lý TOÀN BỘ thông tin Claude nhận được: CLAUDE.md, conversation history, file context, MCP data. Người giỏi context engineering ra output tốt hơn với chi phí ít hơn.</p>
+          </div>
+        </div>
+
+        <h2>Context engineering: Toàn bộ picture</h2>
+
+        <p>Khi Claude nhận một request, nó xử lý nhiều luồng context đồng thời:</p>
+
+        <ul>
+          <li><strong>System context</strong>: CLAUDE.md của bạn — instructions, rules, brand voice, workflows</li>
+          <li><strong>Conversation history</strong>: Những gì đã nói trong session hiện tại</li>
+          <li><strong>File context</strong>: Files Claude đã đọc trong session — source code, docs, data</li>
+          <li><strong>MCP context</strong>: Data từ MCP servers — database queries, API responses</li>
+          <li><strong>Tool outputs</strong>: Kết quả từ Bash, Read, Grep commands</li>
+        </ul>
+
+        <p>Context engineering là biết cái nào nên có mặt, cái nào không, và khi nào. Context quá nhiều = Claude "bị loãng", không focus. Context thiếu = Claude đoán mò, ra output sai.</p>
+
+        <p><strong>Nguyên tắc vàng:</strong> CLAUDE.md chứa những gì luôn cần (rules, brand, workflows). Conversation chứa những gì liên quan đến task hiện tại. Không dump tất cả vào một nơi.</p>
+
+        <h2>Extended thinking / Adaptive thinking</h2>
+
+        <p>Claude Opus 4 và Sonnet 4 có adaptive thinking — model tự quyết định khi nào cần "suy nghĩ" lâu hơn cho complex tasks. Bạn không cần config gì, nó tự kích hoạt.</p>
+
+        <p>Khi nào extended thinking thực sự hữu ích:</p>
+        <ul>
+          <li>Multi-step reasoning: "Phân tích chiến lược pricing của 5 đối thủ và đề xuất cho công ty chúng tôi"</li>
+          <li>Complex code architecture: "Design database schema cho hệ thống inventory multi-warehouse"</li>
+          <li>Decision analysis: "So sánh 3 tech stack options với trade-offs cụ thể cho team 5 người"</li>
+        </ul>
+
+        <p>Không cần cho: write email, format data, simple code tasks. Extended thinking tốn thêm tokens — dùng đúng chỗ.</p>
+
+        <h2>Chain-of-thought prompting</h2>
+
+        <p>Yêu cầu Claude giải thích reasoning trước khi đưa ra kết quả:</p>
+
+        <pre><code># Không tốt:
+"Chiến lược marketing nào phù hợp cho startup SaaS B2B?"
+
+# Tốt hơn với chain-of-thought:
+"Phân tích từng bước: (1) Đặc điểm của startup SaaS B2B trong giai đoạn early-stage,
+(2) Budget constraints thường gặp, (3) Channels nào có ROI cao nhất ở giai đoạn này,
+(4) Đề xuất 3 chiến lược ưu tiên với justification cho mỗi cái."</code></pre>
+
+        <p>Chain-of-thought tốn thêm ~30% tokens nhưng accuracy cao hơn rõ rệt với complex problems. Dùng khi kết quả sai có cost cao (business decisions, architecture choices).</p>
+
+        <h2>Few-shot examples: Format nhất quán</h2>
+
+        <p>Cho Claude 2-3 examples trước khi yêu cầu output — kết quả nhất quán hơn nhiều so với chỉ mô tả format:</p>
+
+        <pre><code># Thay vì:
+"Viết product description ngắn gọn, professional, theo tone BEUP"
+
+# Dùng few-shot:
+"Viết product description theo format sau:
+
+Ví dụ 1:
+Product: Claude Code Pro Plan
+Output: Dành cho team cần AI coding assistant mạnh nhất.
+Không giới hạn context, không giới hạn models, không giới hạn tốc độ.
+
+Ví dụ 2:
+Product: Khóa học Claude Code
+Output: Từ zero đến power user trong 5 levels.
+Practical, không lý thuyết, kết quả ngay từ bài đầu tiên.
+
+Bây giờ viết cho: [your product]"</code></pre>
+
+        <p>Few-shot đặc biệt hiệu quả cho: social media posts, email subjects, product copy — bất kỳ thứ gì cần tone và format nhất quán.</p>
+
+        <h2>Model routing: Chọn đúng model cho đúng task</h2>
+
+        <table class="model-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Giá (input)</th>
+              <th>Dùng cho</th>
+              <th>Switch command</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Haiku 3.5</strong></td>
+              <td><span class="price-tag">~$0.80/1M</span></td>
+              <td>Format data, simple queries, classification, translation</td>
+              <td><code>/model haiku</code></td>
+            </tr>
+            <tr>
+              <td><strong>Sonnet 4</strong></td>
+              <td><span class="price-tag">~$3/1M</span></td>
+              <td>Code generation, analysis, content writing — daily driver</td>
+              <td><code>/model sonnet</code></td>
+            </tr>
+            <tr>
+              <td><strong>Opus 4</strong></td>
+              <td><span class="price-tag">~$15/1M</span></td>
+              <td>Complex reasoning, architecture design, strategic analysis</td>
+              <td><code>/model opus</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Trong thực tế: 80% tasks có thể dùng Sonnet. 15% simple tasks có thể dùng Haiku và tiết kiệm 75% chi phí. 5% tasks thực sự phức tạp xứng đáng Opus.</p>
+
+        <p>Routing strategy thực tế: Dùng Sonnet làm default. Khi task clearly simple (formatting, translation), switch sang Haiku. Khi gặp vấn đề quan trọng cần phân tích sâu (pricing strategy, architecture decision), switch sang Opus rồi về Sonnet.</p>
+
+        <h2>Prompt caching: 90% cost reduction</h2>
+
+        <p>Claude cache context được lặp lại — CLAUDE.md, large codebases, reference documents. Khi cache hit, chi phí giảm 90%.</p>
+
+        <p><strong>Cách hoạt động:</strong> Lần đầu Claude đọc file 50KB, Anthropic charge full price. Lần thứ 2 trong 5 phút, cache hit — charge 10% của giá input. Cache TTL ~5 phút, sau đó expired.</p>
+
+        <p><strong>Tối ưu cho caching:</strong></p>
+        <ul>
+          <li>Đặt content ít thay đổi (CLAUDE.md, docs) ở đầu conversation — dễ cache hơn</li>
+          <li>Làm việc trong session dài thay vì nhiều sessions ngắn — cache stay warm</li>
+          <li>Khi làm việc với codebase lớn, đọc files quan trọng lúc đầu session — Claude sẽ cache chúng</li>
+        </ul>
+
+        <h2>System prompts qua CLAUDE.md</h2>
+
+        <p>CLAUDE.md là system prompt persistent của bạn — đặt rules ở đây override mọi thứ trong conversation. Cấu trúc CLAUDE.md hiệu quả:</p>
+
+        <pre><code># CLAUDE.md
+
+## Role
+Bạn là Senior Marketing Strategist cho BEUP Learning.
+Luôn trả lời bằng tiếng Việt, tone professional nhưng thân thiện.
+
+## Brand Voice
+- Direct, không vòng vo
+- Practical over theoretical
+- Dùng ví dụ Việt Nam, không Western examples
+
+## Workflow Rules
+- Trước khi implement, luôn outline plan
+- Sau mỗi task, hỏi "Tiếp theo bạn muốn làm gì?"
+- Không suggest thêm features trừ khi được hỏi
+
+## File Ownership
+- Marketing content: content/*
+- Analytics: data/*
+- Never touch: .env, credentials/</code></pre>
+
+        <h2>Anti-patterns cần tránh</h2>
+
+        <p><strong>Vague creative requests:</strong> "Hãy sáng tạo về cách marketing sản phẩm này" — Claude không biết "sáng tạo" nghĩa là gì với bạn. Thay bằng: "Đề xuất 3 angle marketing khác nhau: 1 emotional, 1 data-driven, 1 social proof."</p>
+
+        <p><strong>Task chaining quá dài trong 1 prompt:</strong> "Tìm hiểu competitors, viết strategy, tạo content calendar 3 tháng, viết 10 blog post outlines, tạo email sequence, và design social media plan." Claude sẽ làm tất cả nhưng không cái nào thực sự tốt. Break thành nhiều prompts riêng.</p>
+
+        <p><strong>Bỏ qua error output:</strong> Khi Claude báo lỗi hoặc nói "tôi không chắc", đừng ignore. Đó là signal để clarify hoặc cung cấp thêm context — không phải để nói "cứ thử đi".</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Thử 3 model tiers cho cùng 1 task — ví dụ "Đề xuất 3 headline cho landing page khóa học Claude Code": (1) <code>/model haiku</code> → run → note chất lượng và tốc độ. (2) <code>/model sonnet</code> → same task. (3) <code>/model opus</code> → same task. So sánh kết quả và quyết định tier nào phù hợp cho từng loại task trong workflow hàng ngày của bạn. Với task đơn giản như thế này, Haiku thường đủ tốt và tiết kiệm 75% chi phí.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="multi-agent.html" class="nav-prev">← 4.4 Multi-agent</a>
+        <button class="btn-complete" data-lesson="4-5-prompt-nang-cao">✓ Hoàn thành bài học</button>
+        <a href="marketing-stack.html" class="nav-next">4.6 Marketing stack →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

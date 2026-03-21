@@ -1,0 +1,301 @@
+/*
+ * tokens.css — Design System Tokens
+ * Hiểu Gốc — Làm Gọn | BEUP Brand
+ * 3-layer: Primitive → Semantic → Component
+ */
+
+/* ============================================================
+   LAYER 1: PRIMITIVE TOKENS
+   Raw values. Never use directly in components.
+   ============================================================ */
+:root {
+  /* --- Teal palette --- */
+  --prim-teal-50:  #e8f8f8;
+  --prim-teal-100: #c5eeee;
+  --prim-teal-200: #a8dedd;
+  --prim-teal-300: #7dcfce;
+  --prim-teal-400: #52bfbe;
+  --prim-teal-500: #3fb7b6;  /* brand primary */
+  --prim-teal-600: #2d9190;
+  --prim-teal-700: #1e6b6a;
+  --prim-teal-800: #124645;
+  --prim-teal-900: #082323;
+
+  /* --- Navy palette --- */
+  --prim-navy-900: #0d1829;
+  --prim-navy-800: #1B2A4A;  /* brand navy */
+  --prim-navy-700: #243758;
+  --prim-navy-600: #2e4470;
+  --prim-navy-100: #e8ecf4;
+  --prim-navy-50:  #f4f6fb;
+
+  /* --- Gold palette --- */
+  --prim-gold-500: #D4A843;
+  --prim-gold-400: #e0be72;
+  --prim-gold-100: #fdf3dc;
+  --prim-gold-50:  #fefaf0;
+
+  /* --- Green palette --- */
+  --prim-green-500: #00d084;
+  --prim-green-400: #1adda0;
+  --prim-green-600: #009e62;
+  --prim-green-100: #d4f9eb;
+  --prim-green-50:  #edfdf5;
+
+  /* --- Callout colors --- */
+  --prim-blue-500:   #3b82f6;
+  --prim-blue-100:   #dbeafe;
+  --prim-blue-50:    #eff6ff;
+  --prim-purple-500: #8b5cf6;
+  --prim-purple-100: #ede9fe;
+  --prim-purple-50:  #f5f3ff;
+  --prim-yellow-500: #f59e0b;
+  --prim-yellow-100: #fef3c7;
+  --prim-yellow-50:  #fffbeb;
+  --prim-red-500:    #ef4444;
+  --prim-red-100:    #fee2e2;
+  --prim-red-50:     #fef2f2;
+  --prim-orange-500: #f97316;
+  --prim-orange-100: #ffedd5;
+  --prim-orange-50:  #fff7ed;
+
+  /* --- Gray palette --- */
+  --prim-gray-50:  #f9fafb;
+  --prim-gray-100: #f3f4f6;
+  --prim-gray-200: #e5e7eb;
+  --prim-gray-300: #d1d5db;
+  --prim-gray-400: #9ca3af;
+  --prim-gray-500: #6b7280;
+  --prim-gray-600: #4b5563;
+  --prim-gray-700: #374151;
+  --prim-gray-800: #1f2937;
+  --prim-gray-900: #111827;
+
+  /* --- Base text --- */
+  --prim-text-base:  #1a1a2e;
+  --prim-text-muted: #687080;
+  --prim-white:      #ffffff;
+
+  /* --- Spacing scale (4px base) --- */
+  --prim-space-1:  4px;
+  --prim-space-2:  8px;
+  --prim-space-3:  12px;
+  --prim-space-4:  16px;
+  --prim-space-5:  20px;
+  --prim-space-6:  24px;
+  --prim-space-8:  32px;
+  --prim-space-10: 40px;
+  --prim-space-12: 48px;
+  --prim-space-16: 64px;
+  --prim-space-20: 80px;
+
+  /* --- Typography scale --- */
+  --prim-text-xs:   0.75rem;   /* 12px */
+  --prim-text-sm:   0.875rem;  /* 14px */
+  --prim-text-base: 0.9375rem; /* 15px */
+  --prim-text-md:   1rem;      /* 16px */
+  --prim-text-lg:   1.125rem;  /* 18px */
+  --prim-text-xl:   1.25rem;   /* 20px */
+  --prim-text-2xl:  1.5rem;    /* 24px */
+  --prim-text-3xl:  1.875rem;  /* 30px */
+  --prim-text-4xl:  2.25rem;   /* 36px */
+  --prim-text-5xl:  3rem;      /* 48px */
+
+  /* --- Font weight --- */
+  --prim-weight-normal:   400;
+  --prim-weight-medium:   500;
+  --prim-weight-semibold: 600;
+  --prim-weight-bold:     700;
+  --prim-weight-extrabold:800;
+
+  /* --- Radius --- */
+  --prim-radius-sm:   4px;
+  --prim-radius-md:   8px;
+  --prim-radius-lg:   12px;
+  --prim-radius-xl:   16px;
+  --prim-radius-2xl:  24px;
+  --prim-radius-full: 9999px;
+
+  /* --- Font families --- */
+  --prim-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --prim-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+
+  /* --- Shadows --- */
+  --prim-shadow-sm:  0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --prim-shadow-md:  0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --prim-shadow-lg:  0 8px 24px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
+  --prim-shadow-xl:  0 16px 40px rgba(0,0,0,0.14);
+
+  /* --- Transitions --- */
+  --prim-transition-fast:   150ms ease;
+  --prim-transition-base:   250ms ease;
+  --prim-transition-slow:   400ms ease;
+}
+
+/* ============================================================
+   LAYER 2: SEMANTIC TOKENS — Light Mode (default)
+   Maps meaning to primitives.
+   ============================================================ */
+:root {
+  /* Backgrounds */
+  --bg-primary:   var(--prim-white);
+  --bg-secondary: var(--prim-gray-50);
+  --bg-sidebar:   var(--prim-white);
+  --bg-code:      #1a1a2e;
+  --bg-hover:     var(--prim-teal-50);
+  --bg-active:    var(--prim-teal-100);
+  --bg-card:      var(--prim-white);
+  --bg-overlay:   rgba(0, 0, 0, 0.5);
+
+  /* Text */
+  --text-primary:   var(--prim-text-base);
+  --text-secondary: var(--prim-gray-700);
+  --text-muted:     var(--prim-text-muted);
+  --text-inverse:   var(--prim-white);
+  --text-on-brand:  var(--prim-white);
+  --text-code:      #e2e8f0;
+  --text-link:      var(--prim-teal-600);
+  --text-link-hover:var(--prim-teal-700);
+
+  /* Brand */
+  --color-primary:  var(--prim-teal-500);
+  --color-primary-dark: var(--prim-teal-600);
+  --color-accent:   var(--prim-gold-500);
+  --color-success:  var(--prim-green-500);
+  --color-warning:  var(--prim-yellow-500);
+  --color-danger:   var(--prim-red-500);
+
+  /* Borders */
+  --border-default: var(--prim-gray-200);
+  --border-brand:   var(--prim-teal-200);
+  --border-strong:  var(--prim-gray-300);
+  --border-focus:   var(--prim-teal-500);
+
+  /* Gradients */
+  --gradient-hero:    linear-gradient(140deg, #1e6b6a 0%, #3fb7b6 55%, #00d084 100%);
+  --gradient-sidebar: none;
+  --gradient-card:    linear-gradient(135deg, var(--prim-teal-50) 0%, var(--prim-white) 100%);
+
+  /* Shadows */
+  --shadow-sm: var(--prim-shadow-sm);
+  --shadow-md: var(--prim-shadow-md);
+  --shadow-lg: var(--prim-shadow-lg);
+
+  /* Sidebar text (light bg) */
+  --sidebar-text:        var(--prim-gray-600);
+  --sidebar-text-muted:  var(--prim-gray-400);
+  --sidebar-text-active: var(--prim-teal-700);
+  --sidebar-active-bg:   var(--prim-teal-50);
+  --sidebar-hover-bg:    var(--prim-gray-50);
+  --sidebar-border:      var(--prim-gray-200);
+}
+
+/* ============================================================
+   LAYER 2: SEMANTIC TOKENS — Dark Mode
+   ============================================================ */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary:   #131924;
+  --bg-secondary: #1a2233;
+  --bg-sidebar:   #0d1421;
+  --bg-code:      #0d1117;
+  --bg-hover:     rgba(63,183,182,0.08);
+  --bg-active:    rgba(63,183,182,0.15);
+  --bg-card:      #1a2233;
+  --bg-overlay:   rgba(0, 0, 0, 0.7);
+
+  /* Text */
+  --text-primary:    #e8edf5;
+  --text-secondary:  #a8b4c8;
+  --text-muted:      #6b7a95;
+  --text-inverse:    #131924;
+  --text-on-brand:   var(--prim-white);
+  --text-code:       #cdd9f0;
+  --text-link:       var(--prim-teal-400);
+  --text-link-hover: var(--prim-teal-300);
+
+  /* Brand — slightly brighter in dark */
+  --color-primary:      var(--prim-teal-400);
+  --color-primary-dark: var(--prim-teal-500);
+  --color-accent:       var(--prim-gold-400);
+  --color-success:      var(--prim-green-400);
+
+  /* Borders */
+  --border-default: rgba(255,255,255,0.08);
+  --border-brand:   rgba(63,183,182,0.3);
+  --border-strong:  rgba(255,255,255,0.15);
+  --border-focus:   var(--prim-teal-400);
+
+  /* Shadows (more subtle on dark) */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+
+  /* Sidebar dark mode */
+  --sidebar-text:        #a8b4c8;
+  --sidebar-text-muted:  #6b7a95;
+  --sidebar-text-active: var(--prim-teal-300);
+  --sidebar-active-bg:   rgba(63,183,182,0.12);
+  --sidebar-hover-bg:    rgba(255,255,255,0.05);
+  --sidebar-border:      rgba(255,255,255,0.08);
+}
+
+/* ============================================================
+   LAYER 3: COMPONENT TOKENS
+   Specific values for recurring UI pieces.
+   ============================================================ */
+:root {
+  /* Layout */
+  --sidebar-width:       268px;
+  --content-max-width:   860px;
+  --content-padding-x:   var(--prim-space-10);
+  --content-padding-y:   var(--prim-space-12);
+
+  /* Tree navigation */
+  --tree-node-size:       48px;
+  --tree-node-size-sm:    36px;
+  --tree-line-width:      2px;
+  --tree-branch-width:    32px;
+
+  /* Progress */
+  --progress-height:      6px;
+  --progress-radius:      var(--prim-radius-full);
+  --progress-bg:          var(--prim-gray-200);
+  --progress-fill:        var(--color-primary);
+  --progress-complete:    var(--prim-green-500);
+  --progress-ring-size:   44px;
+  --progress-ring-stroke: 3px;
+
+  /* Callouts */
+  --callout-radius:       var(--prim-radius-md);
+  --callout-padding:      var(--prim-space-4) var(--prim-space-5);
+  --callout-border-width: 3px;
+
+  /* Cards */
+  --card-radius:    var(--prim-radius-lg);
+  --card-padding:   var(--prim-space-6);
+  --card-border:    var(--border-default);
+  --card-shadow:    var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+  --card-bg:        var(--bg-card);
+
+  /* Code */
+  --code-radius:    var(--prim-radius-md);
+  --code-padding:   var(--prim-space-5) var(--prim-space-6);
+  --code-font-size: var(--prim-text-sm);
+
+  /* Buttons */
+  --btn-height:       40px;
+  --btn-padding-x:    var(--prim-space-5);
+  --btn-radius:       var(--prim-radius-md);
+  --btn-font-size:    var(--prim-text-sm);
+  --btn-font-weight:  var(--prim-weight-semibold);
+
+  /* Level accent colors — tree growth stages */
+  --level-0-color: var(--prim-teal-300);   /* Hạt giống — seed: soft teal */
+  --level-1-color: var(--prim-teal-500);   /* Rễ — roots: teal */
+  --level-2-color: var(--prim-teal-600);   /* Gốc — trunk: deep teal */
+  --level-3-color: #4ade80;                /* Thân — stem: fresh green */
+  --level-4-color: var(--prim-green-500);  /* Cành — branches: bright green */
+  --level-5-color: var(--prim-gold-500);   /* Ngọn — crown: gold */
+}

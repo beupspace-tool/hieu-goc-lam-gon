@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cấu trúc dự án | Level 2 | BEUP</title>
+  <meta name="description" content="Cấu trúc folder tốt giúp Claude Code hiểu dự án nhanh hơn. Quy tắc đặt tên file, cấu trúc mẫu cho doanh nghiệp nhỏ và website.">
+  <meta property="og:title" content="Cấu trúc dự án | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--prim-space-4); margin: var(--prim-space-6) 0; }
+    .compare-bad { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--prim-radius-lg); padding: var(--prim-space-4); }
+    .compare-good { background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.2); border-radius: var(--prim-radius-lg); padding: var(--prim-space-4); }
+    .compare-label { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-2); }
+    .compare-bad .compare-label { color: #dc2626; }
+    .compare-good .compare-label { color: #16a34a; }
+    @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html" class="active">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / Cấu trúc dự án
+          </nav>
+          <h1>Bài 2.3: Cấu trúc dự án</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Cấu trúc folder tốt giúp Claude Code hiểu dự án nhanh hơn và đưa ra kết quả chính xác hơn. Giống như văn phòng ngăn nắp — khách đến biết ngay tìm gì ở đâu mà không cần hỏi. Tổ chức tốt = giao tiếp tốt.</p>
+          </div>
+        </div>
+
+        <h2>Tại sao cấu trúc folder quan trọng với Claude Code?</h2>
+
+        <p>Claude Code không "nhìn" dự án của bạn như con người. CC đọc tên file và folder để hiểu ngữ cảnh. Khi bạn yêu cầu CC làm gì đó, việc đầu tiên CC làm là khám phá cấu trúc folder để định hướng.</p>
+
+        <p>Ví dụ, bạn nói: <em>"Tạo email thông báo khuyến mãi cho tháng 3."</em></p>
+
+        <ul>
+          <li><strong>Folder tốt:</strong> CC thấy <code>/marketing/emails/</code> — biết ngay nên đặt file mới ở đây, và tham khảo các email cũ trong folder để giữ đúng format.</li>
+          <li><strong>Folder lộn xộn:</strong> CC thấy <code>/random-stuff/</code> và <code>/file-cu/</code> — không biết đặt ở đâu, không có template tham khảo, kết quả chung chung.</li>
+        </ul>
+
+        <p>Tên file và folder tốt = CC hiểu không cần giải thích. Đây là dạng "giao tiếp ngầm" hiệu quả nhất.</p>
+
+        <h2>Quy tắc đặt tên</h2>
+
+        <p>Hai nguyên tắc cần nhớ:</p>
+
+        <h3>1. Dùng kebab-case (dấu gạch ngang)</h3>
+        <p>Tên file và folder nên dùng chữ thường và dấu gạch ngang thay vì khoảng trắng hoặc chữ hoa. Lý do: khoảng trắng trong tên file gây lỗi terminal; camelCase khó đọc với người không quen code.</p>
+
+        <div class="compare-grid">
+          <div class="compare-bad">
+            <div class="compare-label">Không nên</div>
+            <code>Báo cáo Q1 2026.xlsx</code><br>
+            <code>EmailMarketing_FINAL_v3.docx</code><br>
+            <code>KhachHang_Nam2025.csv</code><br>
+            <code>file1.txt</code>
+          </div>
+          <div class="compare-good">
+            <div class="compare-label">Nên dùng</div>
+            <code>bao-cao-q1-2026.xlsx</code><br>
+            <code>email-marketing-thang-3.docx</code><br>
+            <code>khach-hang-2025.csv</code><br>
+            <code>danh-sach-san-pham.txt</code>
+          </div>
+        </div>
+
+        <h3>2. Tên mô tả được nội dung</h3>
+        <p>Đọc tên file, bạn — và Claude Code — phải biết ngay file này chứa gì mà không cần mở ra. Đây là nguyên tắc "self-documenting".</p>
+
+        <ul>
+          <li><code>file1.csv</code> → Không có thông tin gì</li>
+          <li><code>data.csv</code> → Vẫn không biết data gì</li>
+          <li><code>khach-hang-ho-chi-minh-2025.csv</code> → Biết ngay: danh sách khách hàng HCM năm 2025</li>
+        </ul>
+
+        <h2>Cấu trúc folder mẫu cho doanh nghiệp nhỏ</h2>
+        <p>Đây là cấu trúc phổ biến và hiệu quả cho doanh nghiệp không có đội kỹ thuật:</p>
+
+        <pre><code>my-business/
+├── CLAUDE.md                    ← Sổ tay vận hành cho CC
+├── README.md                    ← Ghi chú nhanh cho bản thân
+│
+├── marketing/
+│   ├── emails/                  ← Template và nội dung email
+│   ├── social/                  ← Nội dung mạng xã hội
+│   │   ├── facebook/
+│   │   └── instagram/
+│   └── blog/                    ← Bài viết blog
+│
+├── reports/                     ← Báo cáo định kỳ
+│   ├── weekly/
+│   └── monthly/
+│
+├── data/                        ← Dữ liệu thô
+│   ├── customers/               ← Danh sách khách hàng
+│   ├── products/                ← Catalog sản phẩm
+│   └── orders/                  ← Lịch sử đơn hàng
+│
+└── templates/                   ← Template tái sử dụng
+    ├── email-chao-hang.md
+    ├── bao-cao-tuan.md
+    └── hop-dong-dich-vu.md</code></pre>
+
+        <h2>Cấu trúc folder cho website</h2>
+        <p>Nếu dự án của bạn là website, đây là cấu trúc chuẩn:</p>
+
+        <pre><code>my-website/
+├── CLAUDE.md
+├── index.html                   ← Trang chủ
+│
+├── src/                         ← Source code (do CC chỉnh sửa)
+│   ├── pages/                   ← Các trang HTML
+│   ├── components/              ← Thành phần tái sử dụng
+│   └── scripts/                 ← JavaScript
+│
+├── assets/                      ← Tài nguyên tĩnh
+│   ├── css/                     ← Style
+│   ├── images/                  ← Hình ảnh
+│   └── fonts/                   ← Font chữ
+│
+├── content/                     ← Nội dung (blog, text)
+└── docs/                        ← Tài liệu dự án</code></pre>
+
+        <h2>Mẹo tổ chức thực tế</h2>
+
+        <ul>
+          <li><strong>Một folder = một mục đích.</strong> Đừng nhồi nhiều loại file khác nhau vào cùng một folder. Khi CC tìm kiếm, nó nhìn vào tên folder để quyết định "vào hay không vào".</li>
+          <li><strong>Tạo README.md trong mỗi folder chính.</strong> Chỉ cần 2–3 dòng mô tả folder này chứa gì và quy tắc gì. Ví dụ: <em>"Folder này chứa tất cả email marketing. Tên file: email-[loại]-[tháng-năm].md"</em></li>
+          <li><strong>Giữ đường dẫn ngắn.</strong> Tránh tạo quá nhiều tầng folder lồng nhau. Quá 3–4 tầng bắt đầu khó quản lý. Thay vì <code>/data/old/backup/2024/q1/customers/</code>, hãy dùng <code>/archive/customers-2024/</code>.</li>
+          <li><strong>Archive thay vì xóa.</strong> Tạo folder <code>/archive/</code> để dời file cũ vào thay vì xóa. CC không thể recover file đã xóa.</li>
+        </ul>
+
+        <h2>Best practices cho project root (từ cộng đồng Claude Code)</h2>
+
+        <p>Ngoài cấu trúc folder, những file và thư mục ở root có vai trò đặc biệt với Claude Code:</p>
+
+        <ul>
+          <li><strong><code>CLAUDE.md</code> ở root</strong> — Luôn đặt ở root, không trong subfolder. CC tìm ở đây trước tiên.</li>
+          <li><strong><code>.claude/</code> directory</strong> — Thư mục cho project-specific settings của Claude Code. Đây là nơi CC lưu cài đặt và permissions.</li>
+          <li><strong><code>.claude/settings.local.json</code></strong> — Permissions cho CC: file nào được phép đọc/sửa, lệnh nào được phép chạy. Không commit file này lên git.</li>
+          <li><strong><code>plans/</code> directory</strong> — Nơi lưu implementation plans khi dùng CC cho dự án phức tạp. Cộng đồng khuyến nghị tạo thư mục này để CC có chỗ "suy nghĩ" có tổ chức.</li>
+          <li><strong>Tên file dài và mô tả</strong> — Với LLM tools (Grep, Glob, Search), tên file dài như <code>email-marketing-chao-hang-khach-hang-cu.md</code> tốt hơn <code>email.md</code>. File tự mô tả chính nó.</li>
+        </ul>
+
+        <h2>Git Worktrees: chạy nhiều Claude Code session song song</h2>
+
+        <p>Power users chạy 5–20 Claude Code sessions cùng lúc. Bí quyết: <strong>git worktrees</strong> — mỗi session trong một worktree riêng biệt, không có merge conflict.</p>
+
+        <p>Tại sao cần worktrees? Nếu 2 sessions cùng làm việc trên một folder, chúng có thể sửa cùng file gây conflict. Worktree tạo ra bản copy riêng của codebase cho mỗi branch, mỗi session làm việc độc lập.</p>
+
+        <p><strong>Ví dụ thực tế:</strong> Thay vì làm tuần tự (feature A xong mới làm B), bạn chạy song song:</p>
+
+        <pre><code># Tạo worktree cho feature authentication
+git worktree add ../my-project-auth -b feature/auth
+
+# Tạo worktree cho feature dashboard
+git worktree add ../my-project-dashboard -b feature/dashboard
+
+# Mở 2 Claude Code sessions riêng biệt:
+# Terminal 1: cd ../my-project-auth && claude
+# Terminal 2: cd ../my-project-dashboard && claude</code></pre>
+
+        <p>Kết quả: task mất 30 phút tuần tự → 5–10 phút khi chạy song song. Mỗi session có CLAUDE.md, context, và file riêng — không ảnh hưởng lẫn nhau.</p>
+
+        <p>Khi xong, merge về branch chính như bình thường: <code>git merge feature/auth</code>.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Cảnh báo</b>
+            <p>Đừng cố tạo cấu trúc "hoàn hảo" ngay từ đầu. Bắt đầu đơn giản với 3–4 folder, rồi thêm dần khi cần. Cấu trúc quá phức tạp mà không dùng đến còn tệ hơn cấu trúc đơn giản nhưng thực tế.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Nhìn vào folder làm việc hiện tại của bạn. Liệt kê 3 thứ cần cải thiện: tên file nào khó hiểu, folder nào lộn xộn, file nào đặt sai chỗ. Sau đó yêu cầu Claude Code: "Đây là danh sách file trong folder [tên]. Đề xuất cách tổ chức lại theo quy tắc kebab-case và phân loại hợp lý." Xem CC gợi ý gì.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="claude-md-templates.html" class="nav-prev">← 2.2 Templates</a>
+        <button class="btn-complete" data-lesson="2-3-cau-truc-du-an">✓ Hoàn thành bài học</button>
+        <a href="prompt-hieu-qua.html" class="nav-next">2.4 Prompt hiệu quả →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuộc hội thoại đầu tiên với Claude Code — Level 1: Rễ | BEUP</title>
+  <meta name="description" content="3 bài tập thực hành đơn giản để làm quen Claude Code. Mục tiêu: xây dựng confidence, không phải ấn tượng.">
+  <meta property="og:title" content="Cuộc hội thoại đầu tiên với Claude Code — Level 1: Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-1 { background: rgba(167,139,250,0.18); color: #6d28d9; border: 1px solid rgba(167,139,250,0.4); }
+    [data-theme="dark"] .level-badge.level-1 { background: rgba(167,139,250,0.12); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Exercise box */
+    .exercise-box {
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+      margin: var(--prim-space-8) 0;
+    }
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: rgba(167,139,250,0.08);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .exercise-num {
+      width: 32px;
+      height: 32px;
+      background: rgba(167,139,250,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: #6d28d9;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .exercise-num { background: rgba(167,139,250,0.15); color: #c4b5fd; }
+    .exercise-title { font-weight: var(--prim-weight-bold); color: var(--text-primary); font-size: var(--prim-text-md); }
+    .exercise-body { padding: var(--prim-space-5); }
+    .exercise-body p { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.7; margin: 0 0 var(--prim-space-3); }
+    .exercise-body p:last-child { margin-bottom: 0; }
+    .exercise-body ol, .exercise-body ul { margin: var(--prim-space-3) 0; padding-left: var(--prim-space-5); }
+    .exercise-body li { font-size: var(--prim-text-sm); color: var(--text-secondary); margin-bottom: var(--prim-space-2); line-height: 1.6; }
+    /* Tips list */
+    .tips-grid { display: grid; gap: var(--prim-space-3); margin: var(--prim-space-4) 0; }
+    .tip-item { display: flex; gap: var(--prim-space-3); padding: var(--prim-space-3) var(--prim-space-4); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-md); }
+    .tip-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .tip-body { flex: 1; }
+    .tip-title { font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); color: var(--text-primary); margin-bottom: var(--prim-space-1); }
+    .tip-desc { font-size: var(--prim-text-sm); color: var(--text-muted); line-height: 1.5; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html" class="active">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Cuộc hội thoại đầu tiên
+          </nav>
+          <h1>Bài 1.5: Cuộc hội thoại đầu tiên</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 1</span>
+            <span class="tag">🖥️ Thực hành trên máy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Cuộc hội thoại đầu tiên với Claude Code nên đơn giản và thành công. Mục tiêu không phải tạo ra thứ gì ấn tượng — mà là hiểu cách CC hoạt động và xây dựng confidence để tiếp tục. Nhưng trước khi làm bài tập, hãy biết người dùng power dùng CC như thế nào.</p>
+          </div>
+        </div>
+
+        <h2>Người thực, kết quả thực</h2>
+        <p>Trước khi bạn lo lắng về việc "mình có dùng được không", hãy xem những gì người dùng thực đã đạt được:</p>
+
+        <div class="tips-grid">
+          <div class="tip-item">
+            <span class="tip-icon">🚀</span>
+            <div class="tip-body">
+              <div class="tip-title">Boris Cherny — Creator của Claude Code</div>
+              <p class="tip-desc">Bản thân người tạo ra Claude Code đã merge <strong>100 Pull Request mỗi tuần</strong> khi xây dựng công cụ này. Ông dùng CC để viết code, review, và iterate — liên tục. <a href="https://boristane.com/blog/how-i-use-claude-code/" target="_blank" rel="noopener">Đọc workflow của ông tại đây.</a></p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">✍️</span>
+            <div class="tip-body">
+              <div class="tip-title">Addy Osmani — Engineering Director tại Google</div>
+              <p class="tip-desc"><strong>90% code trong dự án cá nhân</strong> của ông được viết bởi Claude Code. Ông dùng CC như co-pilot liên tục, không phải chỉ khi "bí". Chi phí: ~$6/ngày cho một heavy user chuyên nghiệp.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">📊</span>
+            <div class="tip-body">
+              <div class="tip-title">Chi phí thực tế của power user</div>
+              <p class="tip-desc">Heavy user (lập trình viên làm 8h/ngày với CC): ~$6/ngày = ~$180/tháng. User bình thường cho công việc văn phòng: $20–50/tháng. Người mới bắt đầu: $5–15/tháng. Luôn kiểm tra <code>/cost</code> để biết mình đang ở đâu.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Slash commands cần biết ngay từ đầu</h2>
+        <p>Đây không phải danh sách đọc cho vui — đây là những lệnh bạn sẽ dùng trong các bài tập ngay bên dưới:</p>
+
+        <div class="tips-grid">
+          <div class="tip-item">
+            <span class="tip-icon">⚡</span>
+            <div class="tip-body">
+              <div class="tip-title"><code>/init</code> — Khởi tạo project</div>
+              <p class="tip-desc">Claude đọc cấu trúc folder hiện tại và tự tạo file CLAUDE.md phù hợp. Dùng ngay khi bắt đầu làm việc với project mới — tiết kiệm hàng giờ viết tay.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">🗺️</span>
+            <div class="tip-body">
+              <div class="tip-title"><code>/plan</code> — Plan trước, code sau</div>
+              <p class="tip-desc">Bật Plan Mode: Claude chỉ đề xuất kế hoạch, không tự sửa file. Community consensus: <strong>Plan Mode First</strong> — luôn xem kế hoạch trước khi cho Claude hành động. Cũng có thể dùng phím tắt <strong>Shift+Tab</strong>.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">📦</span>
+            <div class="tip-body">
+              <div class="tip-title"><code>/compact</code> — Nén context</div>
+              <p class="tip-desc">Tóm tắt lịch sử hội thoại, giữ nguyên ngữ cảnh quan trọng nhưng giảm 60–80% tokens. Dùng khi conversation đã dài hoặc khi <code>/cost</code> cho thấy bạn đang tiêu nhiều.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">💰</span>
+            <div class="tip-body">
+              <div class="tip-title"><code>/cost</code> — Kiểm tra chi phí</div>
+              <p class="tip-desc">Xem bạn đã dùng bao nhiêu tokens trong session hiện tại. Gõ sau mỗi task lớn để biết task đó tốn bao nhiêu — dần dần bạn sẽ biết cái gì đáng làm, cái gì không.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">🔄</span>
+            <div class="tip-body">
+              <div class="tip-title"><code>/model</code> — Chuyển model</div>
+              <p class="tip-desc">Chuyển giữa Sonnet (mặc định, cân bằng), Opus (mạnh nhất, đắt nhất), Haiku (nhanh nhất, rẻ nhất). Đừng dùng Opus cho tất cả — nó đắt gấp 5x Sonnet.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">❓</span>
+            <div class="tip-body">
+              <div class="tip-title"><code>/help</code> — Danh sách đầy đủ</div>
+              <p class="tip-desc">Xem tất cả lệnh có sẵn và mô tả ngắn. Gõ khi bạn không nhớ lệnh nào đó.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Bài tập thực hành — 3 bước cần làm ngay</h2>
+        <p>Mở Terminal và chạy lần lượt các lệnh sau để tạo môi trường thử nghiệm an toàn:</p>
+        <pre><code>mkdir ~/claude-test
+cd ~/claude-test
+claude</code></pre>
+
+        <p>Mọi file CC tạo ra sẽ nằm trong <code>claude-test</code> — bạn có thể xóa sạch folder này bất cứ lúc nào mà không lo ảnh hưởng dữ liệu khác.</p>
+
+        <div class="exercise-box">
+          <div class="exercise-header">
+            <div class="exercise-num">1</div>
+            <div class="exercise-title">Bài tập 1: Tạo CLAUDE.md với /init</div>
+          </div>
+          <div class="exercise-body">
+            <p>Mục tiêu: hiểu cách CLAUDE.md hoạt động — file cấu hình được đọc tự động mỗi lần khởi động CC.</p>
+            <p>Sau khi Claude Code đang chạy trong <code>~/claude-test</code>, gõ:</p>
+            <pre><code>/init</code></pre>
+            <p>Claude sẽ tự động tạo file <code>CLAUDE.md</code> dựa trên cấu trúc folder. Mở file đó ra và đọc — đây là "bản hướng dẫn" mà Claude sẽ đọc mỗi khi bạn bắt đầu session mới trong folder này.</p>
+            <p>Thử thêm 1 dòng vào file: <em>"Tôi đang học Claude Code. Hãy giải thích bằng tiếng Việt và dùng ví dụ đơn giản."</em> — lần sau Claude sẽ tự động biết điều này.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <div class="exercise-header">
+            <div class="exercise-num">2</div>
+            <div class="exercise-title">Bài tập 2: Plan Mode — Plan trước khi làm</div>
+          </div>
+          <div class="exercise-body">
+            <p>Mục tiêu: học thói quen Plan First — xem Claude dự định làm gì trước khi cho phép nó hành động.</p>
+            <p>Gõ <code>/plan</code> hoặc nhấn <strong>Shift+Tab</strong> để vào Plan Mode. Bạn sẽ thấy indicator "[PLAN MODE]" trong giao diện. Sau đó gõ:</p>
+            <pre><code>Tạo cho tôi một file báo cáo đơn giản tóm tắt 3 kết quả kinh doanh của tháng này.</code></pre>
+            <p>Quan sát: Claude sẽ chỉ <em>đề xuất kế hoạch</em> — nó sẽ nói "Tôi sẽ tạo file X với nội dung Y" mà KHÔNG tự tạo file. Đây là lúc bạn review và chỉnh sửa nếu kế hoạch chưa đúng ý.</p>
+            <p>Nhấn <strong>Shift+Tab</strong> lần nữa để thoát Plan Mode và cho phép Claude thực thi. Thói quen này giúp tránh 80% lỗi "Claude làm sai ý tôi".</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <div class="exercise-header">
+            <div class="exercise-num">3</div>
+            <div class="exercise-title">Bài tập 3: Track chi phí với /cost</div>
+          </div>
+          <div class="exercise-body">
+            <p>Mục tiêu: xây dựng thói quen nhận thức về token usage ngay từ đầu.</p>
+            <p>Gõ <code>/cost</code> ngay khi bắt đầu session (con số sẽ rất nhỏ hoặc bằng 0). Sau đó làm bài tập 1 và 2 ở trên. Sau mỗi bài tập, gõ lại <code>/cost</code> và ghi nhận:</p>
+            <ul>
+              <li>Bài tập <code>/init</code> tốn bao nhiêu tokens?</li>
+              <li>Bài tập Plan Mode tốn bao nhiêu?</li>
+              <li>Tổng cộng session này đến giờ là bao nhiêu cents?</li>
+            </ul>
+            <p>Cuối cùng, gõ <code>/compact</code> để nén context, rồi kiểm tra <code>/cost</code> lần nữa. Bạn sẽ thấy token counter giảm đáng kể — đó là tiền bạn vừa tiết kiệm.</p>
+          </div>
+        </div>
+
+        <h2>Vòng lặp cơ bản của Claude Code</h2>
+        <p>Sau 3 bài tập trên, bạn đã thấy quy trình Claude Code luôn tuân theo:</p>
+
+        <ol>
+          <li><strong>CC đọc yêu cầu của bạn</strong> và hiểu mục tiêu</li>
+          <li><strong>CC thông báo kế hoạch</strong> — nó định làm gì, dùng Tool nào (Plan Mode)</li>
+          <li><strong>CC hỏi xác nhận</strong> hoặc tự thực thi (tùy chế độ)</li>
+          <li><strong>CC thực thi</strong> và báo cáo kết quả</li>
+          <li><strong>Bạn kiểm tra</strong> và phản hồi nếu cần điều chỉnh</li>
+        </ol>
+
+        <p>Điểm khác biệt lớn nhất so với Claude Chat: CC không chỉ "nói" — nó <em>làm</em>. File được tạo thật. Lệnh được chạy thật. Kết quả tồn tại sau khi bạn đóng Terminal.</p>
+
+        <h2>Mẹo từ người dùng thực tế</h2>
+        <div class="tips-grid">
+          <div class="tip-item">
+            <span class="tip-icon">🎯</span>
+            <div class="tip-body">
+              <div class="tip-title">Cụ thể về đầu ra</div>
+              <p class="tip-desc">Thay vì "tạo báo cáo", hãy nói "tạo file report.txt chứa bảng tổng hợp doanh thu 12 tháng định dạng markdown". CC cần biết file tên gì, định dạng gì, nội dung gì.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">📌</span>
+            <div class="tip-body">
+              <div class="tip-title">Cung cấp ngữ cảnh</div>
+              <p class="tip-desc">CC không biết bạn là ai, ngành của bạn là gì. 3 câu mô tả ngữ cảnh đầu session thay đổi hoàn toàn chất lượng output. Đây là lý do CLAUDE.md tồn tại.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">1️⃣</span>
+            <div class="tip-body">
+              <div class="tip-title">Một việc mỗi lần</div>
+              <p class="tip-desc">Đừng nhồi 5 yêu cầu vào một câu. Làm tuần tự — xong việc 1 rồi mới hỏi việc 2. CC làm tốt hơn khi có mục tiêu rõ ràng. Và kiểm tra <code>/cost</code> sau mỗi task.</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">✅</span>
+            <div class="tip-body">
+              <div class="tip-title">Luôn verify output</div>
+              <p class="tip-desc">"First attempt is 95% garbage" — đây là quan điểm thực tế từ các team engineering chuyên nghiệp. Luôn đọc qua kết quả, mở file được tạo ra, kiểm tra số liệu. Iterate, đừng accept ngay.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành thêm</b>
+            <p>Sau 3 bài tập trên, giao cho Claude Code một việc thực tế từ công việc của bạn: viết một email, tổ chức danh sách công việc tuần này, hay tóm tắt một tài liệu. Trước khi giao, nhớ: (1) bật <code>/plan</code> để xem kế hoạch trước, (2) kiểm tra <code>/cost</code> sau khi xong. Đây là workflow bạn sẽ dùng hàng ngày.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lưu ý an toàn</b>
+            <p>Claude Code có thể chỉnh sửa và xóa file thật trên máy bạn. Trong quá trình học, hãy luôn làm việc trong folder thử nghiệm riêng (<code>~/claude-test</code>). Không yêu cầu CC thao tác với folder chứa dữ liệu quan trọng khi bạn còn đang làm quen.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="khai-niem-cot-loi.html" class="nav-prev">← 1.4 Khái niệm cốt lõi</a>
+        <button class="btn-complete" data-lesson="1-5-cuoc-hoi-thoai-dau-tien">✓ Hoàn thành bài học</button>
+        <a href="tro-ly-van-hanh.html" class="nav-next">1.6 Trợ lý vận hành →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

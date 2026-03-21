@@ -1,0 +1,285 @@
+/*
+ * tree-navigation.css — Landing Page Tree Visual
+ * Hiểu Gốc — Làm Gọn | Depends on tokens.css
+ */
+
+/* ============================================================
+   TREE CONTAINER
+   ============================================================ */
+.tree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--prim-space-12) var(--prim-space-6);
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   VERTICAL TRUNK LINE
+   ============================================================ */
+.tree-trunk {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(var(--prim-space-12) + var(--tree-node-size) / 2);
+  bottom: calc(var(--prim-space-12) + var(--tree-node-size) / 2);
+  width: var(--tree-line-width);
+  background: linear-gradient(
+    180deg,
+    var(--prim-teal-300) 0%,
+    var(--prim-teal-500) 30%,
+    var(--prim-teal-600) 55%,
+    var(--prim-green-500) 80%,
+    var(--prim-gold-500) 100%
+  );
+  border-radius: var(--prim-radius-full);
+  z-index: 0;
+}
+
+/* ============================================================
+   TREE ROW (node + label together)
+   ============================================================ */
+.tree-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  margin: var(--prim-space-6) 0;
+}
+
+/* Alternate: even rows put label on left, odd on right */
+.tree-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+/* ============================================================
+   TREE NODE
+   ============================================================ */
+.tree-node {
+  width: var(--tree-node-size);
+  height: var(--tree-node-size);
+  border-radius: var(--prim-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  transition: transform var(--prim-transition-fast),
+              box-shadow var(--prim-transition-fast);
+  /* Center on trunk line */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tree-node:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 6px rgba(63,183,182,0.15), var(--shadow-md);
+}
+
+/* Node icon / number */
+.tree-node-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- State: locked --- */
+.tree-node--locked {
+  background: var(--prim-gray-200);
+  border: 2px solid var(--prim-gray-300);
+  opacity: 0.55;
+  cursor: default;
+}
+
+[data-theme="dark"] .tree-node--locked {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  opacity: 0.45;
+}
+
+.tree-node--locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- State: available --- */
+.tree-node--available {
+  background: var(--bg-primary);
+  border: 2px solid var(--level-accent, var(--color-primary));
+  color: var(--level-accent, var(--color-primary));
+}
+
+.tree-node--available:hover {
+  box-shadow: 0 0 0 6px rgba(63,183,182,0.12), var(--shadow-md);
+}
+
+/* --- State: in-progress --- */
+.tree-node--in-progress {
+  background: var(--level-accent, var(--color-primary));
+  border: 2px solid var(--level-accent, var(--color-primary));
+  color: var(--prim-white);
+}
+
+.tree-node--in-progress:hover {
+  box-shadow: 0 0 0 6px rgba(63,183,182,0.2), var(--shadow-lg);
+}
+
+/* Progress ring overlay for in-progress */
+.tree-node--in-progress .progress-ring-overlay {
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+}
+
+/* --- State: complete --- */
+.tree-node--complete {
+  background: var(--prim-green-500);
+  border: 2px solid var(--prim-green-600);
+  color: var(--prim-white);
+}
+
+.tree-node--complete:hover {
+  box-shadow: 0 0 0 6px rgba(0,208,132,0.2), var(--shadow-md);
+}
+
+/* Level-specific accent colors */
+.tree-row[data-level="0"] .tree-node { --level-accent: var(--level-0-color); }
+.tree-row[data-level="1"] .tree-node { --level-accent: var(--level-1-color); }
+.tree-row[data-level="2"] .tree-node { --level-accent: var(--level-2-color); }
+.tree-row[data-level="3"] .tree-node { --level-accent: var(--level-3-color); }
+.tree-row[data-level="4"] .tree-node { --level-accent: var(--level-4-color); }
+.tree-row[data-level="5"] .tree-node { --level-accent: var(--level-5-color); }
+
+/* ============================================================
+   TREE BRANCH — horizontal line connecting node to label
+   ============================================================ */
+.tree-branch {
+  height: var(--tree-line-width);
+  width: var(--tree-branch-width);
+  background: var(--border-default);
+  flex-shrink: 0;
+  transition: background var(--prim-transition-fast);
+}
+
+.tree-row:hover .tree-branch {
+  background: var(--level-accent, var(--color-primary));
+}
+
+.tree-row[data-level="5"] .tree-branch {
+  background: linear-gradient(90deg, transparent, var(--prim-gold-500));
+}
+
+/* ============================================================
+   TREE LABEL
+   ============================================================ */
+.tree-label {
+  flex: 1;
+  padding: 0 var(--prim-space-4);
+  text-decoration: none;
+  transition: opacity var(--prim-transition-fast);
+}
+
+.tree-row:nth-child(even) .tree-label {
+  text-align: right;
+}
+
+.tree-label-name {
+  font-size: var(--prim-text-md);
+  font-weight: var(--prim-weight-bold);
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: var(--prim-space-1);
+}
+
+.tree-label-vi {
+  font-size: var(--prim-text-sm);
+  color: var(--text-muted);
+}
+
+.tree-label-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--prim-space-2);
+  margin-top: var(--prim-space-1);
+  flex-wrap: wrap;
+}
+
+.tree-row:nth-child(even) .tree-label-meta {
+  justify-content: flex-end;
+}
+
+/* Dimmed label for locked nodes */
+.tree-row:has(.tree-node--locked) .tree-label {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ============================================================
+   PULSE ANIMATION — available / in-progress nodes
+   ============================================================ */
+@keyframes tree-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63,183,182,0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(63,183,182,0); }
+}
+
+.tree-node--available {
+  animation: tree-pulse 2.5s ease-in-out infinite;
+}
+
+.tree-node--available:hover {
+  animation: none;
+}
+
+@keyframes tree-pulse-progress {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(63,183,182,0.4); }
+  50%       { box-shadow: 0 0 0 10px rgba(63,183,182,0); }
+}
+
+.tree-node--in-progress {
+  animation: tree-pulse-progress 2s ease-in-out infinite;
+}
+
+.tree-node--in-progress:hover {
+  animation: none;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px) {
+  :root {
+    --tree-node-size:     var(--tree-node-size-sm);
+    --tree-branch-width:  20px;
+  }
+
+  .tree-container {
+    padding: var(--prim-space-8) var(--prim-space-4);
+  }
+
+  .tree-row {
+    margin: var(--prim-space-4) 0;
+    /* On mobile: always left-to-right for readability */
+    flex-direction: row !important;
+  }
+
+  .tree-row:nth-child(even) .tree-label {
+    text-align: left;
+  }
+
+  .tree-row:nth-child(even) .tree-label-meta {
+    justify-content: flex-start;
+  }
+
+  .tree-label-name {
+    font-size: var(--prim-text-sm);
+  }
+
+  .tree-label-vi {
+    font-size: var(--prim-text-xs);
+  }
+}

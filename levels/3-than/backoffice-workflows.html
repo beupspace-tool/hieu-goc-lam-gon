@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backoffice Workflows — Tự động hoá vận hành | Level 3: Thân | BEUP</title>
+  <meta name="description" content="Invoice processing, data entry, báo cáo tự động, HR workflows, đối chiếu tài chính với Claude Code. Giảm 30-80% thời gian công việc hành chính.">
+  <meta property="og:title" content="Bài 3.8: Backoffice Workflows | BEUP">
+  <meta property="og:description" content="Automate backoffice với Claude Code — từ xử lý hóa đơn, báo cáo tháng đến HR screening và reconciliation tài chính.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Use case cards */
+    .backoffice-grid { display: grid; gap: var(--prim-space-4); margin: var(--prim-space-6) 0; }
+    .backoffice-item { padding: var(--prim-space-5) var(--prim-space-6); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); }
+    .backoffice-item .bi-header { display: flex; align-items: center; gap: var(--prim-space-3); margin-bottom: var(--prim-space-3); }
+    .backoffice-item .bi-icon { font-size: 1.3rem; }
+    .backoffice-item .bi-title { font-size: var(--prim-text-md); font-weight: var(--prim-weight-semibold); color: var(--text-primary); }
+    .backoffice-item .bi-saving { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-bold); color: #16a34a; font-family: var(--prim-font-mono); background: rgba(34,197,94,0.1); padding: 2px 8px; border-radius: 20px; margin-left: auto; }
+    .backoffice-item p { font-size: var(--prim-text-sm); color: var(--text-muted); margin: 0 0 var(--prim-space-3); line-height: 1.6; }
+    /* CTA box level complete */
+    .level-complete-box {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, var(--bg-card) 100%);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-8);
+      text-align: center;
+      margin: var(--prim-space-10) 0 var(--prim-space-6);
+    }
+    .level-complete-box .lc-badge { display: inline-block; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-bold); text-transform: uppercase; letter-spacing: 0.1em; color: #16a34a; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: var(--prim-space-1) var(--prim-space-3); border-radius: 20px; margin-bottom: var(--prim-space-4); }
+    .level-complete-box h3 { font-size: var(--prim-text-xl); font-weight: var(--prim-weight-bold); margin-bottom: var(--prim-space-3); }
+    .level-complete-box p { color: var(--text-muted); max-width: 55ch; margin: 0 auto var(--prim-space-5); line-height: 1.65; }
+    .btn-level-next { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-7); height: calc(var(--btn-height) + 4px); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-bold); font-size: var(--prim-text-md); border-radius: var(--btn-radius); text-decoration: none; transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast); }
+    .btn-level-next:hover { background: #15803d; box-shadow: 0 4px 20px rgba(34,197,94,0.3); text-decoration: none; color: var(--prim-white); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html" class="active">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / Backoffice workflows
+          </nav>
+          <h1>Bài 3.8: Backoffice workflows</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Operations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Backoffice — kế toán, HR, admin, compliance — chiếm 30-40% thời gian của nhiều doanh nghiệp SME. Đây là công việc quan trọng nhưng không tạo ra giá trị trực tiếp. Claude Code tốt nhất ở đây: structured data, repeatable processes, clear inputs và outputs. Mỗi giờ bạn automate backoffice = một giờ trả lại cho công việc có giá trị thực sự.</p>
+          </div>
+        </div>
+
+        <h2>Những việc Claude Code làm tốt nhất trong backoffice</h2>
+
+        <div class="backoffice-grid">
+
+          <div class="backoffice-item">
+            <div class="bi-header">
+              <span class="bi-icon">🧾</span>
+              <span class="bi-title">Xử lý hóa đơn và chứng từ</span>
+              <span class="bi-saving">-60% thời gian</span>
+            </div>
+            <p>Claude đọc invoice (PDF text hoặc CSV) → extract fields: nhà cung cấp, số tiền, ngày, hạng mục → structured data → update spreadsheet hoặc chuẩn bị data import vào phần mềm kế toán.</p>
+            <pre><code>Đọc tất cả file invoice trong folder invoices/tháng-6/
+Với mỗi invoice, extract:
+- Tên nhà cung cấp
+- Số hóa đơn
+- Ngày phát hành
+- Ngày đến hạn thanh toán
+- Số tiền (VND)
+- Mã loại chi phí (xem categories.md)
+- Trạng thái: đã thanh toán / chưa thanh toán
+
+Tổng hợp vào file invoice-summary-t6.csv
+Flag invoices quá hạn hoặc > 50 triệu VND để review ưu tiên.</code></pre>
+          </div>
+
+          <div class="backoffice-item">
+            <div class="bi-header">
+              <span class="bi-icon">📊</span>
+              <span class="bi-title">Report generation tự động</span>
+              <span class="bi-saving">-75% thời gian</span>
+            </div>
+            <p>Không cần mở Excel, viết formula, format lại. Claude nhận raw data, phân tích, tạo formatted report với executive summary, charts data, và recommendations.</p>
+            <pre><code>Đọc file sales-data-q2.csv
+Tạo quarterly report bao gồm:
+1. Executive summary (5 bullet points, tối đa 30 từ/bullet)
+2. Doanh thu theo tháng: tháng 4, 5, 6 (so sánh % vs Q1)
+3. Top 10 sản phẩm theo doanh thu
+4. Top 5 khách hàng theo giá trị
+5. Phân tích vùng địa lý nếu có data
+6. 3 điểm đáng chú ý và đề xuất hành động
+
+Lưu vào reports/Q2-2026.md với format chuẩn</code></pre>
+          </div>
+
+          <div class="backoffice-item">
+            <div class="bi-header">
+              <span class="bi-icon">🔍</span>
+              <span class="bi-title">Đối chiếu tài chính</span>
+              <span class="bi-saving">-80% thời gian</span>
+            </div>
+            <p>So sánh bank statement với sổ sách nội bộ, tìm mismatches. Công việc này thường mất 3-4 giờ/tháng và dễ xảy ra sai sót khi làm thủ công.</p>
+            <pre><code>Đây là file bank-statement-t6.csv (giao dịch ngân hàng)
+và internal-records-t6.csv (sổ sách nội bộ).
+
+1. Match từng transaction: tìm giao dịch nào có trong bank
+   nhưng không có trong sổ sách, và ngược lại
+2. Flag mismatches: cùng giao dịch nhưng số tiền khác nhau
+3. Tóm tắt: tổng unmatched items, tổng giá trị
+4. Tạo reconciliation-t6.csv với 3 cột:
+   matched | unmatched-bank | unmatched-internal</code></pre>
+          </div>
+
+          <div class="backoffice-item">
+            <div class="bi-header">
+              <span class="bi-icon">👤</span>
+              <span class="bi-title">HR — Sàng lọc ứng viên</span>
+              <span class="bi-saving">-50% thời gian</span>
+            </div>
+            <p>Từ JD đến criteria matrix đến đánh giá CV. Claude không thay thế judgment của hiring manager — nhưng làm được phần screening ban đầu hiệu quả hơn nhiều.</p>
+            <pre><code>JD: [paste job description]
+Từ JD này, tạo evaluation rubric với:
+- Must-have requirements (loại thẳng nếu thiếu): 5-7 criteria
+- Nice-to-have (điểm cộng): 3-5 criteria
+- Red flags cần chú ý: 3-5 criteria
+
+Sau đó đọc 10 CV trong folder cvs/sales-manager/
+Với mỗi CV, tạo scorecard theo rubric, kết luận:
+SHORTLIST / MAYBE / NO - kèm reason ngắn gọn.</code></pre>
+          </div>
+
+          <div class="backoffice-item">
+            <div class="bi-header">
+              <span class="bi-icon">✅</span>
+              <span class="bi-title">Compliance và kiểm tra chứng từ</span>
+              <span class="bi-saving">-40% thời gian</span>
+            </div>
+            <p>Kiểm tra tài liệu có đủ thông tin bắt buộc không. Hữu ích cho hợp đồng, báo cáo định kỳ, hồ sơ thuế, giấy phép.</p>
+            <pre><code>Đọc tất cả hợp đồng trong folder contracts/q2/
+Với mỗi hợp đồng, kiểm tra checklist:
+- [ ] Đầy đủ thông tin hai bên (tên, địa chỉ, mã số thuế)
+- [ ] Giá trị hợp đồng và điều khoản thanh toán rõ ràng
+- [ ] Ngày hiệu lực và ngày kết thúc
+- [ ] Điều khoản chấm dứt hợp đồng
+- [ ] Chữ ký và con dấu (ghi "cần verify thủ công")
+- [ ] Phụ lục đính kèm nếu được tham chiếu trong nội dung
+
+Flag hợp đồng thiếu bất kỳ mục nào trong checklist.</code></pre>
+          </div>
+
+          <div class="backoffice-item">
+            <div class="bi-header">
+              <span class="bi-icon">📋</span>
+              <span class="bi-title">Data entry và cleanup</span>
+              <span class="bi-saving">-90% thời gian</span>
+            </div>
+            <p>Dọn dẹp data lộn xộn, standardize format, detect duplicates, fill missing values. Việc này thường mất hàng giờ với Excel — Claude làm trong vài phút.</p>
+            <pre><code>File customer-data.csv có các vấn đề sau:
+- Tên công ty: lúc viết tắt, lúc viết đầy đủ (VD: "CTY TNHH" vs "Công ty TNHH")
+- Số điện thoại: nhiều format khác nhau (không có 0, có dấu -, có khoảng cách)
+- Email: một số bị sai format
+- Tỉnh thành: không nhất quán (HCM, Hồ Chí Minh, TPHCM, TP. HCM)
+
+Làm sạch toàn bộ file:
+1. Standardize tên công ty
+2. Format SĐT về: 0xxx-xxx-xxx
+3. Flag emails sai format (không sửa — chỉ flag)
+4. Standardize tên tỉnh theo list trong provinces.csv
+5. Tạo cleaned_customer-data.csv + report về những gì đã thay đổi</code></pre>
+          </div>
+
+        </div>
+
+        <h2>Lưu ý bảo mật với data nhạy cảm</h2>
+
+        <p>Backoffice data thường chứa thông tin nhạy cảm: lương, thông tin khách hàng, dữ liệu tài chính. Một số nguyên tắc:</p>
+
+        <ul>
+          <li><strong>Claude Code chạy local</strong> — data không gửi đến cloud (trừ phần Claude API process). Tuy nhiên, với sensitive data, hãy review Anthropic Privacy Policy.</li>
+          <li><strong>Anonymize trước khi test</strong> — khi đang build workflow mới, dùng sample data thay vì real customer data.</li>
+          <li><strong>Không commit data vào git</strong> — thêm <code>data/</code> và <code>*.csv</code> vào <code>.gitignore</code> cho projects xử lý sensitive data.</li>
+          <li><strong>Access control</strong> — nếu dùng Claude Code trong team context, đảm bảo chỉ người có quyền mới có thể chạy workflows với data nhất định.</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo file <code>invoices.csv</code> với 10 hóa đơn mẫu (dữ liệu giả): tên nhà cung cấp, số tiền, ngày, hạng mục. Yêu cầu Claude: (1) Tóm tắt tổng chi theo hạng mục, (2) Nhóm theo nhà cung cấp và tính trung bình, (3) Flag hóa đơn có số tiền lớn hơn 10 triệu VND, (4) Tạo báo cáo chi tiêu tháng với executive summary. Đo thời gian. Sau đó thử với data thật của tháng gần nhất và cảm nhận sự khác biệt.</p>
+          </div>
+        </div>
+
+        <div class="level-complete-box">
+          <div class="lc-badge">Level 3 hoàn thành</div>
+          <h3>Bạn đã xây được nền tảng hệ thống</h3>
+          <p>MCP kết nối Claude với thế giới bên ngoài. Git bảo vệ mọi thay đổi. Skills mở rộng khả năng không giới hạn. Quy trình lặp lại chạy ổn định mỗi tuần. Team phối hợp nhất quán. Marketing và backoffice tự động hóa đến 70-80%.</p>
+          <p>Level 4 sẽ dạy bạn tạo tools riêng — khi bạn muốn build hệ thống vượt ra ngoài những gì có sẵn.</p>
+          <a href="../4-canh/index.html" class="btn-level-next">Tiếp tục Level 4 →</a>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="marketing-tu-dong.html" class="nav-prev">← 3.7 Marketing tự động</a>
+        <button class="btn-complete" data-lesson="3-8-backoffice-workflows">✓ Hoàn thành bài học</button>
+        <span style="flex:1;max-width:48%;"></span>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

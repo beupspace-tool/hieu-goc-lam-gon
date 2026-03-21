@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 1: Rễ — Hiểu nền tảng | BEUP</title>
+  <meta name="description" content="Hiểu cách phần mềm được tạo ra, sự khác biệt giữa các sản phẩm Claude, và thực hiện cuộc hội thoại đầu tiên với Claude Code. Nền tảng để mọi thứ có nghĩa.">
+  <meta property="og:title" content="Level 1: Rễ — Hiểu nền tảng | BEUP">
+  <meta property="og:description" content="Hiểu cách phần mềm được tạo ra, sự khác biệt giữa các sản phẩm Claude, và thực hiện cuộc hội thoại đầu tiên với Claude Code.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    /* Level hub specific styles */
+    .level-hub-hero {
+      background: var(--gradient-hero);
+      color: var(--prim-white);
+      padding: var(--prim-space-16) var(--content-padding-x);
+      position: relative;
+      overflow: hidden;
+    }
+    .level-hub-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .level-hub-hero-inner {
+      max-width: var(--content-max-width);
+      position: relative;
+    }
+    .level-hub-eyebrow {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: var(--prim-space-3);
+    }
+    .level-hub-title {
+      font-size: clamp(var(--prim-text-3xl), 5vw, var(--prim-text-5xl));
+      font-weight: var(--prim-weight-extrabold);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--prim-white);
+      margin: 0 0 var(--prim-space-4);
+    }
+    .level-hub-subtitle {
+      font-size: var(--prim-text-lg);
+      color: rgba(255,255,255,0.85);
+      max-width: 60ch;
+      line-height: 1.65;
+      margin-bottom: var(--prim-space-6);
+    }
+    .level-hub-stats {
+      display: flex;
+      gap: var(--prim-space-6);
+      flex-wrap: wrap;
+    }
+    .level-hub-stat {
+      font-size: var(--prim-text-sm);
+      color: rgba(255,255,255,0.7);
+    }
+    .level-hub-stat strong {
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-bold);
+    }
+
+    /* Lesson card grid */
+    .lesson-grid {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: var(--prim-space-12) var(--content-padding-x);
+    }
+    .lesson-grid-title {
+      font-size: var(--prim-text-2xl);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-2);
+    }
+    .lesson-grid-desc {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-8);
+    }
+    .lesson-cards {
+      display: grid;
+      gap: var(--prim-space-4);
+    }
+    .lesson-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      text-decoration: none;
+      transition: border-color var(--prim-transition-fast),
+                  box-shadow var(--prim-transition-fast),
+                  transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover {
+      border-color: var(--border-brand);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .lesson-card-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--prim-teal-50);
+      border: 2px solid var(--prim-teal-200);
+      border-radius: var(--prim-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: var(--prim-teal-700);
+      font-family: var(--prim-font-mono);
+    }
+    [data-theme="dark"] .lesson-card-num {
+      background: rgba(63,183,182,0.1);
+      border-color: rgba(63,183,182,0.3);
+      color: var(--prim-teal-300);
+    }
+    .lesson-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .lesson-card-title {
+      font-size: var(--prim-text-md);
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-1);
+      line-height: 1.4;
+    }
+    .lesson-card-desc {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .lesson-card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      margin-top: var(--prim-space-2);
+    }
+    .lesson-card-time {
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+    }
+    .lesson-card-arrow {
+      flex-shrink: 0;
+      font-size: var(--prim-text-lg);
+      color: var(--text-muted);
+      transition: color var(--prim-transition-fast), transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover .lesson-card-arrow {
+      color: var(--color-primary);
+      transform: translateX(3px);
+    }
+
+    /* CTA section */
+    .hub-cta {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding-x) var(--prim-space-12);
+    }
+    .hub-cta-box {
+      background: linear-gradient(135deg, var(--prim-teal-50) 0%, var(--prim-white) 100%);
+      border: 1px solid var(--border-brand);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-8) var(--prim-space-8);
+      text-align: center;
+    }
+    [data-theme="dark"] .hub-cta-box {
+      background: linear-gradient(135deg, rgba(63,183,182,0.08) 0%, var(--bg-card) 100%);
+    }
+    .hub-cta-box h3 {
+      font-size: var(--prim-text-xl);
+      margin-bottom: var(--prim-space-2);
+    }
+    .hub-cta-box p {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-5);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-6);
+      height: var(--btn-height);
+      background: var(--color-primary);
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast),
+                  box-shadow var(--prim-transition-fast);
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-dark);
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+      color: var(--prim-white);
+    }
+
+    /* Level badge */
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-1);
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-1 {
+      background: rgba(167,139,250,0.18);
+      color: #6d28d9;
+      border: 1px solid rgba(167,139,250,0.4);
+    }
+    [data-theme="dark"] .level-badge.level-1 {
+      background: rgba(167,139,250,0.12);
+      color: #c4b5fd;
+      border-color: rgba(167,139,250,0.25);
+    }
+
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a {
+      color: var(--prim-teal-400);
+    }
+    .footer-logo {
+      width: 120px;
+      margin: 0 auto var(--prim-space-3);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <!-- Level Hub Hero -->
+      <div class="level-hub-hero">
+        <div class="level-hub-hero-inner">
+          <div class="level-hub-eyebrow">Level 1 · Rễ</div>
+          <h1 class="level-hub-title">Hiểu nền tảng — trước khi làm gì cũng cần rễ</h1>
+          <p class="level-hub-subtitle">
+            Ở Level này, bạn sẽ hiểu cách phần mềm được tạo ra, sự khác biệt giữa các sản phẩm Claude, và thực hiện cuộc hội thoại đầu tiên với Claude Code. Đây là nền tảng để mọi thứ sau này đều có nghĩa.
+          </p>
+          <div class="level-hub-stats">
+            <span class="level-hub-stat"><strong>8</strong> bài học</span>
+            <span class="level-hub-stat"><strong>~46 phút</strong> tổng thời gian</span>
+            <span class="level-hub-stat"><strong>Yêu cầu:</strong> hoàn thành Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lesson Cards -->
+      <div class="lesson-grid">
+        <h2 class="lesson-grid-title">8 Bài học trong Level 1</h2>
+        <p class="lesson-grid-desc">Đọc tuần tự từ đầu đến cuối. Bài 1.3 cần bạn cài đặt trên máy thật.</p>
+
+        <div class="lesson-cards">
+
+          <a href="chu-ky-phat-trien.html" class="lesson-card">
+            <div class="lesson-card-num">1.1</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Chu kỳ phát triển phần mềm</div>
+              <p class="lesson-card-desc">Mọi phần mềm đều trải qua cùng một chu kỳ: Ý tưởng → Thiết kế → Phát triển → Kiểm thử → Triển khai → Bảo trì. Hiểu Claude Code đang giúp bạn ở bước nào.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="cc-vs-chat-vs-api.html" class="lesson-card">
+            <div class="lesson-card-num">1.2</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Claude Code vs Claude Chat vs API</div>
+              <p class="lesson-card-desc">Claude có 3 cách sử dụng khác nhau, phục vụ 3 mục đích khác nhau. Chọn đúng công cụ để hiệu quả gấp đôi.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~5 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="cai-dat-xac-thuc.html" class="lesson-card">
+            <div class="lesson-card-num">1.3</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Cài đặt &amp; Xác thực</div>
+              <p class="lesson-card-desc">Hướng dẫn từng bước: cài Node.js, cài Claude Code, xác thực tài khoản. Làm đúng một lần, dùng mãi mãi.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="khai-niem-cot-loi.html" class="lesson-card">
+            <div class="lesson-card-num">1.4</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Khái niệm cốt lõi</div>
+              <p class="lesson-card-desc">4 khái niệm nền tảng: Context Window, Tokens, Prompts, và Tools. Hiểu 4 khái niệm này = hiểu 90% cách Claude vận hành.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="cuoc-hoi-thoai-dau-tien.html" class="lesson-card">
+            <div class="lesson-card-num">1.5</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Cuộc hội thoại đầu tiên</div>
+              <p class="lesson-card-desc">3 bài tập thực hành đơn giản để làm quen với Claude Code. Mục tiêu: tạo confidence, không phải ấn tượng.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="tro-ly-van-hanh.html" class="lesson-card">
+            <div class="lesson-card-num">1.6</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Claude Code như trợ lý vận hành</div>
+              <p class="lesson-card-desc">Claude Code không thay thế bạn — nó khuếch đại bạn. 5 vai trò CC có thể đóng trong doanh nghiệp nhỏ của bạn.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~5 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="sai-lam-thuong-gap.html" class="lesson-card">
+            <div class="lesson-card-num">1.7</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Sai lầm thường gặp</div>
+              <p class="lesson-card-desc">6 sai lầm phổ biến của người dùng mới. Hiểu trước = tránh 80% frustration khi bắt đầu.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="bai-tap-thuc-hanh.html" class="lesson-card">
+            <div class="lesson-card-num">1.8</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Bài tập thực hành</div>
+              <p class="lesson-card-desc">3 bài tập có hướng dẫn: tổ chức folder, viết email chào hàng, và phân tích tài liệu. Hoàn thành để sẵn sàng sang Level 2.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="hub-cta">
+        <div class="hub-cta-box">
+          <h3>Sẵn sàng bắt đầu?</h3>
+          <p>Bắt đầu từ bài 1.1 — tìm hiểu chu kỳ phát triển phần mềm và vị trí của bạn trong đó.</p>
+          <a href="chu-ky-phat-trien.html" class="btn-primary">Bắt đầu Bài 1.1 →</a>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

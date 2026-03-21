@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Từ task lẻ sang quy trình lặp lại | Level 3: Thân | BEUP</title>
+  <meta name="description" content="4 bước xây workflow tái sử dụng với Claude Code. Hooks event automation, ví dụ Weekly Content và Monthly Report chạy ổn định mỗi tuần/tháng.">
+  <meta property="og:title" content="Bài 3.5: Từ task lẻ sang quy trình lặp lại | BEUP">
+  <meta property="og:description" content="Thiết kế workflow với Claude Code — từ capture, template, automate đến iterate. Hooks, triggers, và ví dụ business thực tế.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* 4-step process */
+    .process-steps { display: grid; gap: var(--prim-space-4); margin: var(--prim-space-6) 0; }
+    .process-step { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-5); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); }
+    .process-step-num { flex-shrink: 0; width: 36px; height: 36px; background: #16a34a; color: white; border-radius: var(--prim-radius-md); display: flex; align-items: center; justify-content: center; font-weight: var(--prim-weight-bold); font-family: var(--prim-font-mono); font-size: var(--prim-text-sm); }
+    .process-step-body { flex: 1; }
+    .process-step-body h4 { margin: 0 0 var(--prim-space-1); font-size: var(--prim-text-md); font-weight: var(--prim-weight-semibold); color: var(--text-primary); }
+    .process-step-body p { margin: 0; font-size: var(--prim-text-sm); color: var(--text-muted); line-height: 1.6; }
+    /* Timeline */
+    .timeline { margin: var(--prim-space-5) 0; }
+    .timeline-item { display: flex; gap: var(--prim-space-4); margin-bottom: var(--prim-space-4); }
+    .timeline-day { flex-shrink: 0; width: 80px; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-bold); color: #16a34a; text-transform: uppercase; padding-top: 2px; }
+    .timeline-content { flex: 1; padding: var(--prim-space-3) var(--prim-space-4); background: var(--bg-secondary); border-radius: var(--prim-radius-md); border-left: 3px solid rgba(34,197,94,0.4); }
+    .timeline-content p { margin: 0; font-size: var(--prim-text-sm); color: var(--text-muted); line-height: 1.6; }
+    .timeline-content strong { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html" class="active">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / Quy trình lặp lại
+          </nav>
+          <h1>Bài 3.5: Từ task lẻ sang quy trình</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Workflow</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Dùng Claude Code cho một task một lần là tốt. Nhưng giá trị thực sự đến khi bạn xây workflow tái sử dụng — cùng quy trình, mỗi tuần hoặc mỗi tháng, chạy nhất quán mà không cần bạn nhớ từng bước. Đây là sự khác biệt giữa "người dùng Claude" và "người vận hành hệ thống".</p>
+          </div>
+        </div>
+
+        <h2>Tại sao cần thiết kế quy trình</h2>
+
+        <p>Hầu hết người dùng Claude Code ở giai đoạn đầu làm như sau: nhớ ra cần làm gì → mở Claude Code → gõ prompt ngẫu hứng → nhận kết quả → repeat tuần sau với prompt khác một chút. Không nhất quán. Phụ thuộc vào "mood" của bạn hôm đó.</p>
+
+        <p>Một workflow được thiết kế tốt trông khác hẳn: bạn có file prompt templates sẵn, bạn biết chính xác phải chạy lệnh gì theo thứ tự nào, output được lưu đúng chỗ, và kết quả tuần này có thể so sánh được với tuần trước. Không phụ thuộc vào trí nhớ hay cảm hứng.</p>
+
+        <h2>4 bước xây quy trình</h2>
+
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="process-step-num">1</div>
+            <div class="process-step-body">
+              <h4>Capture — Ghi lại workflow thủ công</h4>
+              <p>Trước khi tự động hóa bất cứ điều gì, ghi lại chính xác bạn đang làm gì thủ công. Inputs là gì? Outputs là gì? Bao nhiêu bước? Bước nào mất thời gian nhất? Bước nào hay bị quên? Đây là "as-is process" — không cần đẹp, cần thật.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">2</div>
+            <div class="process-step-body">
+              <h4>Template — Tạo prompt templates</h4>
+              <p>Mỗi bước trong workflow → một prompt template. Templates không phải câu hỏi mở — chúng là instructions cụ thể với placeholders cho data thay đổi mỗi lần. Lưu vào CLAUDE.md hoặc folder <code>templates/</code> trong project. Tốt nhất: tạo file <code>workflow-weekly-content.md</code> chứa tất cả prompts theo thứ tự.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">3</div>
+            <div class="process-step-body">
+              <h4>Automate — Dùng hooks và scripts</h4>
+              <p>Hooks là event listeners: Claude Code phát sự kiện khi xảy ra action → hook chạy script tương ứng. Ví dụ: mỗi khi Claude ghi file vào <code>drafts/</code>, hook tự động chạy spell-checker. Mỗi khi session bắt đầu, hook tạo backup. Automations nhỏ này cộng lại tiết kiệm nhiều thời gian.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step-num">4</div>
+            <div class="process-step-body">
+              <h4>Iterate — Cải thiện qua từng lần chạy</h4>
+              <p>Sau mỗi lần chạy workflow, dành 5 phút ghi chú: bước nào còn awkward? Output nào chưa đúng format? Prompt nào cần rõ hơn? Update templates ngay. Sau 4-6 lần, workflow sẽ chạy gần như tự động và output sẽ đạt chất lượng nhất quán.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Hooks — event automation</h2>
+
+        <p>Hooks được cấu hình trong <code>CLAUDE.md</code> hoặc file <code>.claude/hooks.json</code>. Claude Code hỗ trợ các events:</p>
+
+        <ul>
+          <li><strong>PreToolUse</strong>: Chạy trước khi Claude dùng tool (đọc file, ghi file, chạy lệnh)</li>
+          <li><strong>PostToolUse</strong>: Chạy sau khi Claude dùng tool</li>
+          <li><strong>SessionStart</strong>: Chạy khi bắt đầu session mới</li>
+          <li><strong>SessionEnd</strong>: Chạy khi kết thúc session</li>
+        </ul>
+
+        <p>Ví dụ hook cấu hình trong <code>.claude/settings.json</code>:</p>
+
+        <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'File đã được lưu: $TOOL_INPUT_PATH' >> .claude/activity.log"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git add . && git commit -m 'auto: pre-session backup' 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+        <p>Hook đầu tiên log mọi file Claude ghi. Hook thứ hai tự động commit backup mỗi khi bạn bắt đầu session mới với Claude Code.</p>
+
+        <h2>Ví dụ thực tế: Weekly Content Workflow</h2>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-day">Thứ 2</div>
+            <div class="timeline-content">
+              <p><strong>Claude đọc content calendar</strong> từ <code>content-calendar.csv</code> → draft 3 blog post outlines dựa trên chủ đề tuần này → lưu vào <code>drafts/week-XX/outlines.md</code></p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-day">Thứ 3</div>
+            <div class="timeline-content">
+              <p><strong>Bạn review outlines</strong>, để lại comments trong file → Claude viết full drafts dựa trên approved outlines → lưu 3 file riêng trong <code>drafts/week-XX/</code></p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-day">Thứ 4</div>
+            <div class="timeline-content">
+              <p><strong>Claude tạo social posts</strong> từ mỗi blog: 1 post cho Facebook (800-1200 ký tự), 1 cho LinkedIn (tập trung insight), 1 cho Instagram (caption + hashtags), 1 cho X (280 ký tự), 1 cho Threads → lưu vào <code>social/week-XX.md</code></p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-day">Thứ 5</div>
+            <div class="timeline-content">
+              <p><strong>Claude tạo email newsletter</strong> từ 3 blog posts: executive summary, top 3 insights, CTA → lưu vào <code>email/week-XX-newsletter.html</code></p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-day">Thứ 6</div>
+            <div class="timeline-content">
+              <p><strong>Final review</strong> toàn bộ content → bạn approve → schedule trên Buffer hoặc gửi email newsletter</p>
+            </div>
+          </div>
+        </div>
+
+        <p>Mỗi ngày, thay vì nghĩ "hôm nay làm gì", bạn mở Claude Code, chạy prompt template đúng ngày, và work với output Claude tạo ra. Tổng thời gian bạn cần: 30-45 phút/tuần thay vì 4-6 giờ.</p>
+
+        <h2>Ví dụ thực tế: Monthly Report Workflow</h2>
+
+        <pre><code># Prompt template: monthly-report.md
+# Chạy vào đầu mỗi tháng
+
+Bối cảnh: Tôi là {tên bạn}, {vị trí} tại {công ty}.
+Dữ liệu input nằm trong folder data/reports/{tháng}/
+
+Task:
+1. Đọc tất cả CSV files trong data/reports/{tháng}/
+2. Phân tích: doanh thu, số đơn hàng, top 5 sản phẩm, so sánh với tháng trước
+3. Identify 3 điểm đáng chú ý (tích cực và tiêu cực)
+4. Tạo executive summary 5 bullet points
+5. Lưu báo cáo vào reports/{tháng}-report.md với format chuẩn (xem template trong templates/monthly-report-template.md)
+
+Không thêm nhận xét ngoài phạm vi data. Nếu data thiếu, ghi rõ "Không đủ data" thay vì estimate.</code></pre>
+
+        <p>Prompt này không thay đổi tháng nào. Bạn chỉ cần đảm bảo data CSV đúng chỗ, copy prompt → paste vào Claude Code → nhận báo cáo trong vài phút.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chọn một workflow bạn làm mỗi tuần hoặc mỗi tháng — dù là báo cáo, content, review leads, hay bất cứ thứ gì. Dành 20 phút viết ra các bước theo Bước 1 (Capture): inputs là gì, outputs là gì, bao nhiêu bước thủ công? Sau đó tạo prompt template cho bước mất thời gian nhất. Chạy thử với Claude Code. Đây là seed của workflow system của bạn.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="skills-kha-nang.html" class="nav-prev">← 3.4 Skills</a>
+        <button class="btn-complete" data-lesson="3-5-quy-trinh-lap-lai">✓ Hoàn thành bài học</button>
+        <a href="cong-tac-nhom.html" class="nav-next">3.6 Cộng tác nhóm →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

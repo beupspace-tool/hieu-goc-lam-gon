@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cộng tác nhóm với Claude Code | Level 3: Thân | BEUP</title>
+  <meta name="description" content="Team dùng Claude Code cùng nhau: shared CLAUDE.md, MCP config phân quyền, Git branching strategy, Agent Teams cho task lớn. Code review workflow.">
+  <meta property="og:title" content="Bài 3.6: Cộng tác nhóm | BEUP">
+  <meta property="og:description" content="Cách team vận hành Claude Code nhất quán — shared conventions, bảo mật API keys, Agent Teams phân tán task phức tạp.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Comparison */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--prim-space-4); margin: var(--prim-space-5) 0; }
+    @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card { padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--prim-radius-md); }
+    .compare-card.shared { background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); }
+    .compare-card.private { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); }
+    .compare-card h4 { margin: 0 0 var(--prim-space-2); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); }
+    .compare-card.shared h4 { color: #16a34a; }
+    .compare-card.private h4 { color: #d97706; }
+    .compare-card ul { margin: 0; padding-left: var(--prim-space-4); }
+    .compare-card ul li { font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-1); line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html" class="active">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / Cộng tác nhóm
+          </nav>
+          <h1>Bài 3.6: Cộng tác nhóm</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Team</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Khi cả team dùng Claude Code, vấn đề không phải là kỹ thuật — mà là nhất quán. Mỗi người một cách dùng khác nhau → output chất lượng không đồng đều → team lead phải fix nhiều hơn làm. Shared CLAUDE.md và conventions chung giải quyết vấn đề này: AI của mọi người trong team hoạt động theo cùng một "playbook".</p>
+          </div>
+        </div>
+
+        <h2>Shared CLAUDE.md — nền tảng của team</h2>
+
+        <p>CLAUDE.md của team là file quan trọng nhất khi nhiều người cùng dùng Claude Code cho một project. Nó được lưu trong repo (commit và sync qua git), và mỗi thành viên team đều dùng khi làm việc trên project đó.</p>
+
+        <p>Những gì cần có trong shared CLAUDE.md của team:</p>
+
+        <pre><code># Team CLAUDE.md — Marketing Team
+
+## Project Context
+Chúng ta là team marketing của XYZ Corp. Claude Code hỗ trợ content creation,
+data analysis, và workflow automation. Khách hàng mục tiêu: B2B SME tại Việt Nam.
+
+## Brand Voice
+- Tông: professional nhưng không quá formal
+- Ngôn ngữ: tiếng Việt, có thể mix một số thuật ngữ tiếng Anh khi cần
+- Không dùng: quá nhiều emoji, câu hỏi tu từ kiểu "Bạn đã biết chưa?"
+
+## Tech Stack & Tools
+- Content calendar: Notion (xem MCP config)
+- Analytics: Google Analytics 4
+- Email: Mailchimp
+- Social scheduling: Buffer
+
+## File Conventions
+- Blog drafts: content/drafts/YYYY-MM-DD-slug.md
+- Social posts: social/YYYY-WW/ (theo tuần)
+- Reports: reports/YYYY-MM/ (theo tháng)
+
+## Commit Convention
+- feat: content mới
+- fix: sửa lỗi
+- refactor: cải thiện không thêm content mới
+- docs: cập nhật documentation
+
+## Không làm
+- Không publish trực tiếp lên website mà chưa có approval
+- Không xóa file trong reports/ mà không backup
+- Không commit file chứa customer data</code></pre>
+
+        <h2>Shared vs. private — phân tách đúng cách</h2>
+
+        <div class="compare-grid">
+          <div class="compare-card shared">
+            <h4>Shared — commit vào git</h4>
+            <ul>
+              <li>CLAUDE.md với conventions</li>
+              <li>.mcp.json (không chứa secrets)</li>
+              <li>Prompt templates trong <code>templates/</code></li>
+              <li>Workflow documentation</li>
+              <li>Skills trong <code>.claude/skills/</code></li>
+            </ul>
+          </div>
+          <div class="compare-card private">
+            <h4>Private — không commit</h4>
+            <ul>
+              <li>API keys (Notion token, GitHub token)</li>
+              <li><code>.claude/settings.local.json</code></li>
+              <li><code>.env</code> files với credentials</li>
+              <li>Personal preferences</li>
+              <li>Draft content chưa review</li>
+            </ul>
+          </div>
+        </div>
+
+        <p>Cách tách secrets: file <code>.mcp.json</code> shared chứa server config không có credentials. Mỗi người tự lưu credentials trong <code>.claude/settings.local.json</code> hoặc environment variables của máy họ.</p>
+
+        <pre><code># .mcp.json — SAFE to commit (no secrets)
+{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/mcp-server"],
+      "env": {
+        "NOTION_TOKEN": "${NOTION_TOKEN}"
+      }
+    }
+  }
+}
+
+# Mỗi người tự set trong ~/.zshrc:
+export NOTION_TOKEN="secret_của_tôi_riêng"</code></pre>
+
+        <h2>Claude Code Team plan</h2>
+
+        <p>Anthropic cung cấp Team plan ($25+/người/tháng) với các tính năng dành riêng cho tổ chức:</p>
+
+        <ul>
+          <li><strong>Admin dashboard</strong>: xem usage của từng thành viên, quản lý seat</li>
+          <li><strong>Usage monitoring</strong>: track token consumption per user/project</li>
+          <li><strong>Centralized billing</strong>: một hóa đơn cho toàn team, phân bổ chi phí theo phòng ban</li>
+          <li><strong>SSO (Single Sign-On)</strong>: tích hợp với Google Workspace hoặc Okta</li>
+          <li><strong>Priority support</strong>: response time ưu tiên</li>
+        </ul>
+
+        <p>Với team dưới 5 người, Pro plan cá nhân cho từng người thường cost-effective hơn Team plan. Team plan worth it từ 5-6 người trở lên khi admin overhead và billing consolidation trở nên quan trọng.</p>
+
+        <h2>Git branching strategy cho team</h2>
+
+        <p>Khi nhiều người dùng Claude Code trên cùng project, cần quy tắc rõ ràng để tránh conflict:</p>
+
+        <pre><code># Mỗi thành viên làm việc trên branch riêng
+git checkout -b feature/nguyen-content-june
+git checkout -b feature/linh-data-cleanup
+git checkout -b feature/tuan-template-update
+
+# Khi xong, tạo Pull Request để review
+gh pr create --title "Content batch June week 1" --base main
+
+# Lead review và merge, không tự merge</code></pre>
+
+        <p>Quy tắc quan trọng: không ai trực tiếp commit lên <code>main</code>. Mọi thay đổi qua Pull Request, dù nhỏ. Điều này cho phép code review và tránh tình huống hai người vô tình ghi đè lên nhau.</p>
+
+        <h2>Agent Teams — điều phối task lớn</h2>
+
+        <p>Agent Teams là tính năng nâng cao cho phép một "lead agent" phân chia task lớn thành subtasks và giao cho nhiều "worker agents" chạy song song.</p>
+
+        <p>Ví dụ thực tế: "Audit toàn bộ 200 trang web của tôi về SEO" là task quá lớn cho một Claude session. Với Agent Teams:</p>
+
+        <ul>
+          <li>Lead agent phân tích sitemap, chia thành 10 nhóm 20 trang</li>
+          <li>10 worker agents chạy song song, mỗi agent audit 20 trang</li>
+          <li>Lead agent tổng hợp kết quả, prioritize issues, tạo final report</li>
+        </ul>
+
+        <p>Thời gian: sequential 4 giờ → parallel 30 phút. Agent Teams còn ở giai đoạn early access — nhưng đây là hướng mà team workflows sẽ đi trong tương lai gần.</p>
+
+        <h2>Code review bằng Claude Code</h2>
+
+        <p>Workflow thực tế cho team dùng Claude Code review lẫn nhau:</p>
+
+        <pre><code># Sau khi thành viên tạo PR:
+# 1. Đọc diff của PR
+git diff main...feature/nguyen-update
+
+# 2. Yêu cầu Claude review
+"Review những thay đổi trong diff này.
+Tập trung vào: (1) logic errors, (2) security issues, (3) inconsistencies với CLAUDE.md.
+Trả về list cụ thể, mỗi issue 1 dòng với file:line reference."
+
+# 3. Claude output review comments
+# 4. Human approves/rejects suggestions
+# 5. Merge nếu clean</code></pre>
+
+        <p>Claude review nhanh và không bỏ sót chi tiết. Human review đảm bảo Claude không bỏ qua context business. Kết hợp hai lớp review = chất lượng cao với tốc độ nhanh.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo shared CLAUDE.md cho team bạn. Bao gồm tối thiểu: (1) mô tả project và khách hàng mục tiêu, (2) brand voice và ngôn ngữ, (3) file naming conventions, (4) commit message format, (5) danh sách những việc Claude không được làm mà không có approval. Commit file này lên shared repo và gửi cho team review. Đây là bước đầu tiên để team dùng Claude nhất quán.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="quy-trinh-lap-lai.html" class="nav-prev">← 3.5 Quy trình lặp lại</a>
+        <button class="btn-complete" data-lesson="3-6-cong-tac-nhom">✓ Hoàn thành bài học</button>
+        <a href="marketing-tu-dong.html" class="nav-next">3.7 Marketing tự động →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

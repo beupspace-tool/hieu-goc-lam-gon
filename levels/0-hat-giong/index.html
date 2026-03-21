@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 0: Hạt Giống — Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="Bạn chưa biết gì về công nghệ? Hoàn hảo. Level 0 dành cho bạn — từ phần mềm, internet, AI, terminal, đến Claude Code. Nền tảng vững để bắt đầu.">
+  <meta property="og:title" content="Level 0: Hạt Giống — Hiểu Gốc Làm Gọn | BEUP">
+  <meta property="og:description" content="Bạn chưa biết gì về công nghệ? Hoàn hảo. Level 0 dành cho bạn — từ phần mềm, internet, AI, terminal, đến Claude Code.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    /* Level hub specific styles */
+    .level-hub-hero {
+      background: var(--gradient-hero);
+      color: var(--prim-white);
+      padding: var(--prim-space-16) var(--content-padding-x);
+      position: relative;
+      overflow: hidden;
+    }
+    .level-hub-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .level-hub-hero-inner {
+      max-width: var(--content-max-width);
+      position: relative;
+    }
+    .level-hub-eyebrow {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: var(--prim-space-3);
+    }
+    .level-hub-title {
+      font-size: clamp(var(--prim-text-3xl), 5vw, var(--prim-text-5xl));
+      font-weight: var(--prim-weight-extrabold);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--prim-white);
+      margin: 0 0 var(--prim-space-4);
+    }
+    .level-hub-subtitle {
+      font-size: var(--prim-text-lg);
+      color: rgba(255,255,255,0.85);
+      max-width: 60ch;
+      line-height: 1.65;
+      margin-bottom: var(--prim-space-6);
+    }
+    .level-hub-stats {
+      display: flex;
+      gap: var(--prim-space-6);
+      flex-wrap: wrap;
+    }
+    .level-hub-stat {
+      font-size: var(--prim-text-sm);
+      color: rgba(255,255,255,0.7);
+    }
+    .level-hub-stat strong {
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-bold);
+    }
+
+    /* Lesson card grid */
+    .lesson-grid {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: var(--prim-space-12) var(--content-padding-x);
+    }
+    .lesson-grid-title {
+      font-size: var(--prim-text-2xl);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-2);
+    }
+    .lesson-grid-desc {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-8);
+    }
+    .lesson-cards {
+      display: grid;
+      gap: var(--prim-space-4);
+    }
+    .lesson-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      text-decoration: none;
+      transition: border-color var(--prim-transition-fast),
+                  box-shadow var(--prim-transition-fast),
+                  transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover {
+      border-color: var(--border-brand);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .lesson-card-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--prim-teal-50);
+      border: 2px solid var(--prim-teal-200);
+      border-radius: var(--prim-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: var(--prim-teal-700);
+      font-family: var(--prim-font-mono);
+    }
+    [data-theme="dark"] .lesson-card-num {
+      background: rgba(63,183,182,0.1);
+      border-color: rgba(63,183,182,0.3);
+      color: var(--prim-teal-300);
+    }
+    .lesson-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .lesson-card-title {
+      font-size: var(--prim-text-md);
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-1);
+      line-height: 1.4;
+    }
+    .lesson-card-desc {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .lesson-card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      margin-top: var(--prim-space-2);
+    }
+    .lesson-card-time {
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+    }
+    .lesson-card-arrow {
+      flex-shrink: 0;
+      font-size: var(--prim-text-lg);
+      color: var(--text-muted);
+      transition: color var(--prim-transition-fast), transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover .lesson-card-arrow {
+      color: var(--color-primary);
+      transform: translateX(3px);
+    }
+
+    /* CTA section */
+    .hub-cta {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding-x) var(--prim-space-12);
+    }
+    .hub-cta-box {
+      background: linear-gradient(135deg, var(--prim-teal-50) 0%, var(--prim-white) 100%);
+      border: 1px solid var(--border-brand);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-8) var(--prim-space-8);
+      text-align: center;
+    }
+    [data-theme="dark"] .hub-cta-box {
+      background: linear-gradient(135deg, rgba(63,183,182,0.08) 0%, var(--bg-card) 100%);
+    }
+    .hub-cta-box h3 {
+      font-size: var(--prim-text-xl);
+      margin-bottom: var(--prim-space-2);
+    }
+    .hub-cta-box p {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-5);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-6);
+      height: var(--btn-height);
+      background: var(--color-primary);
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast),
+                  box-shadow var(--prim-transition-fast);
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-dark);
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+      color: var(--prim-white);
+    }
+
+    /* Level badge */
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-1);
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-0 {
+      background: rgba(127,212,211,0.18);
+      color: var(--prim-teal-700);
+      border: 1px solid var(--prim-teal-200);
+    }
+    [data-theme="dark"] .level-badge.level-0 {
+      background: rgba(127,212,211,0.12);
+      color: var(--prim-teal-300);
+      border-color: rgba(127,212,211,0.25);
+    }
+
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a {
+      color: var(--prim-teal-400);
+    }
+    .footer-logo {
+      width: 120px;
+      margin: 0 auto var(--prim-space-3);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <!-- Level Hub Hero -->
+      <div class="level-hub-hero">
+        <div class="level-hub-hero-inner">
+          <div class="level-hub-eyebrow">Level 0 · Hạt Giống</div>
+          <h1 class="level-hub-title">Người mới hoàn toàn — bắt đầu từ đây</h1>
+          <p class="level-hub-subtitle">
+            Bạn chưa biết gì về công nghệ? Hoàn hảo. Level này dành cho bạn. Chúng tôi sẽ bắt đầu từ những khái niệm cơ bản nhất — phần mềm là gì, AI hoạt động thế nào, và tại sao Claude Code có thể giúp bạn vận hành doanh nghiệp hiệu quả hơn.
+          </p>
+          <div class="level-hub-stats">
+            <span class="level-hub-stat"><strong>7</strong> bài học</span>
+            <span class="level-hub-stat"><strong>~33 phút</strong> tổng thời gian</span>
+            <span class="level-hub-stat"><strong>0</strong> kiến thức kỹ thuật cần thiết</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lesson Cards -->
+      <div class="lesson-grid">
+        <h2 class="lesson-grid-title">7 Bài học trong Level 0</h2>
+        <p class="lesson-grid-desc">Đọc tuần tự từ đầu đến cuối. Mỗi bài xây dựng trên bài trước.</p>
+
+        <div class="lesson-cards">
+
+          <a href="phan-mem-la-gi.html" class="lesson-card">
+            <div class="lesson-card-num">0.1</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Phần mềm là gì?</div>
+              <p class="lesson-card-desc">Hiểu phần mềm là tập hợp chỉ dẫn cho máy tính — từ app Zalo đến hệ thống ATM. Nền tảng để hiểu mọi thứ còn lại.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~5 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="internet-va-web.html" class="lesson-card">
+            <div class="lesson-card-num">0.2</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Internet &amp; Web</div>
+              <p class="lesson-card-desc">Internet là mạng lưới, web là một dịch vụ chạy trên đó. Hiểu server, browser, và cách một trang web thực sự hoạt động.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~4 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="ai-va-llm.html" class="lesson-card">
+            <div class="lesson-card-num">0.3</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">AI là gì? LLM là gì?</div>
+              <p class="lesson-card-desc">AI không phải robot biết suy nghĩ. Tìm hiểu cách LLM hoạt động, Claude là ai, và tại sao AI hữu ích nhưng không hoàn hảo.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="terminal.html" class="lesson-card">
+            <div class="lesson-card-num">0.4</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Terminal — Công cụ giao tiếp bằng chữ</div>
+              <p class="lesson-card-desc">Cửa sổ đen với con trỏ nhấp nháy. Đừng sợ — terminal chỉ là cách gõ lệnh trực tiếp cho máy tính, mạnh mẽ hơn nút bấm.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~5 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="code-la-gi.html" class="lesson-card">
+            <div class="lesson-card-num">0.5</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">"Code" là gì?</div>
+              <p class="lesson-card-desc">Code là ngôn ngữ viết chỉ dẫn cho máy tính. Bạn không cần viết code — Claude Code làm thay. Nhưng hiểu code giúp bạn ra lệnh tốt hơn.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~4 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="claude-code-gioi-thieu.html" class="lesson-card">
+            <div class="lesson-card-num">0.6</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Claude Code — Trợ lý kỹ thuật số</div>
+              <p class="lesson-card-desc">Claude Code không phải chatbot. Đây là trợ lý có thể đọc file, viết file, và thao tác trên máy tính của bạn — như nhân viên IT siêu giỏi.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="tu-danh-gia.html" class="lesson-card">
+            <div class="lesson-card-num">0.7</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Tự đánh giá</div>
+              <p class="lesson-card-desc">Kiểm tra xem bạn đã nắm vững 6 khái niệm nền tảng chưa. 6/6 thì sẵn sàng sang Level 1.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~3 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="hub-cta">
+        <div class="hub-cta-box">
+          <h3>Sẵn sàng bắt đầu?</h3>
+          <p>Bắt đầu từ bài 0.1 — không cần cài gì, không cần kiến thức trước. Chỉ cần đọc và hiểu.</p>
+          <a href="phan-mem-la-gi.html" class="btn-primary">Bắt đầu Bài 0.1 →</a>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

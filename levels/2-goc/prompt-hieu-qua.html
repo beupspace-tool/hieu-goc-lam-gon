@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt hiệu quả | Level 2 | BEUP</title>
+  <meta name="description" content="Prompt không phải câu hỏi — nó là bản brief. Framework ICC và 6 pattern để viết prompt cho kết quả chính xác ngay lần đầu.">
+  <meta property="og:title" content="Prompt hiệu quả | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .pattern-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); padding: var(--prim-space-5); margin-bottom: var(--prim-space-4); }
+    .pattern-num { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-bold); color: #7c3aed; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .pattern-title { font-size: var(--prim-text-md); font-weight: var(--prim-weight-semibold); margin-bottom: var(--prim-space-2); }
+    .example-bad { color: var(--text-muted); font-size: var(--prim-text-sm); font-style: italic; }
+    .example-good { color: #16a34a; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-medium); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html" class="active">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / Prompt hiệu quả
+          </nav>
+          <h1>Bài 2.4: Prompt hiệu quả</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Prompt tốt = kết quả tốt. Prompt không phải câu hỏi — nó là bản brief. Càng rõ ràng, Claude càng chính xác. Giống như brief cho nhân viên sáng tạo: bạn cho biết mục tiêu, khách hàng, giới hạn, và format mong muốn — thì bạn nhận lại đúng thứ cần.</p>
+          </div>
+        </div>
+
+        <h2>Framework ICC: Cấu trúc prompt cơ bản</h2>
+
+        <p>Mọi prompt tốt đều có 3 thành phần cốt lõi:</p>
+
+        <ul>
+          <li><strong>I — Instructions (Hướng dẫn):</strong> Bạn muốn CC làm gì? Cụ thể, rõ ràng. "Viết email" vs "Viết email chào hàng sản phẩm mới cho khách hàng cũ."</li>
+          <li><strong>C — Context (Ngữ cảnh):</strong> Background cần thiết để CC hiểu tình huống. Ai là người đọc? Đây là đợt khuyến mãi nào? Đã có cuộc trao đổi nào trước chưa?</li>
+          <li><strong>C — Constraints (Giới hạn):</strong> Yêu cầu bắt buộc và giới hạn. Độ dài, tone, format, những thứ không được làm.</li>
+        </ul>
+
+        <p><strong>Prompt kém:</strong> <em class="example-bad">"Viết email marketing."</em></p>
+        <p><strong>Prompt ICC tốt:</strong></p>
+        <pre><code>Viết email marketing chào hàng sản phẩm mới (áo dài truyền thống).
+[Instructions]
+
+Khách hàng là phụ nữ 30–50 tuổi đã mua hàng ít nhất 1 lần trong 6 tháng qua.
+Họ quan tâm đến chất liệu và nguồn gốc sản phẩm.
+[Context]
+
+Giới hạn: tối đa 200 từ, tone thân mật như bạn bè, không dùng emoji,
+kết thúc bằng CTA "Xem ngay" link về trang sản phẩm. Không đề cập giá.
+[Constraints]</code></pre>
+
+        <h2>6 pattern prompt hiệu quả</h2>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 1</div>
+          <div class="pattern-title">Explicit Role — Giao vai trò cụ thể</div>
+          <p>Nói với CC vai trò nó đang đảm nhận để nó điều chỉnh tone và cách tiếp cận phù hợp.</p>
+          <p class="example-bad">Viết bài giới thiệu sản phẩm.</p>
+          <p class="example-good">"Bạn là content writer cho công ty phần mềm B2B. Viết bài giới thiệu sản phẩm quản lý nhân sự cho website — nhắm vào giám đốc nhân sự công ty 50–200 nhân viên."</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 2</div>
+          <div class="pattern-title">Step-by-step — Hướng dẫn từng bước</div>
+          <p>Khi task phức tạp, chia thành các bước rõ ràng. CC sẽ thực hiện tuần tự và có thể dừng hỏi nếu cần.</p>
+          <p class="example-good">"Bước 1: Đọc file sales-q1.csv và hiểu cấu trúc dữ liệu. Bước 2: Tính tổng doanh thu theo từng tháng. Bước 3: Tìm top 3 sản phẩm bán chạy nhất. Bước 4: Tạo file report-q1-summary.md với kết quả."</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 3</div>
+          <div class="pattern-title">Example-driven — Cho ví dụ mẫu</div>
+          <p>Thay vì mô tả, cho CC xem bạn muốn kết quả trông như thế nào.</p>
+          <p class="example-good">"Viết 3 caption Instagram cho sản phẩm mới. Theo phong cách này: 'Mỗi buổi sáng là một trang giấy trắng. Bắt đầu ngày của bạn với [sản phẩm] — nhẹ nhàng, tươi sáng, đúng nghĩa là của bạn.' Không dùng emoji, kết thúc bằng hashtag."</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 4</div>
+          <div class="pattern-title">Constraints first — Nêu giới hạn trước</div>
+          <p>Đặc biệt hữu ích khi bạn biết rõ những gì KHÔNG muốn hơn là những gì muốn.</p>
+          <p class="example-good">"Tóm tắt cuộc họp. Yêu cầu: tối đa 150 từ, dạng bullet points, chỉ liệt kê action items và người chịu trách nhiệm, không cần ghi lại nội dung thảo luận chi tiết."</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 5</div>
+          <div class="pattern-title">Output format — Chỉ định format đầu ra</div>
+          <p>Nói rõ bạn muốn kết quả ở dạng gì để không phải format lại sau khi nhận.</p>
+          <p class="example-good">"Phân tích file khach-hang.csv và trả về kết quả dưới dạng bảng Markdown với 3 cột: Tên, Số đơn hàng, Giá trị trung bình. Sắp xếp theo giá trị giảm dần."</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 6</div>
+          <div class="pattern-title">Iterative — Làm bản nháp trước, chỉnh sau</div>
+          <p>Với content quan trọng, đừng kỳ vọng bản đầu tiên là hoàn hảo. Dùng quy trình 2 bước.</p>
+          <p class="example-good">"Tạo bản nháp email thông báo tăng giá dịch vụ. Đây là lần viết đầu — tôi sẽ review và cho phản hồi, sau đó bạn chỉnh sửa. Ưu tiên: thông điệp rõ ràng, tone không xin lỗi nhưng tôn trọng."</p>
+        </div>
+
+        <h2>Ví dụ thực tế: Bad vs Good prompt</h2>
+
+        <h3>Tình huống 1: Phân tích báo cáo</h3>
+        <p><strong>Prompt kém:</strong> <em class="example-bad">"Phân tích file này."</em> — CC không biết file gì, phân tích để làm gì, kết quả trình bày thế nào.</p>
+        <p><strong>Prompt tốt:</strong></p>
+        <pre><code>Đọc file bao-cao-ban-hang-thang-2.csv.
+Tôi cần hiểu: (1) Tháng 2 doanh thu tổng bao nhiêu?
+(2) Sản phẩm nào bán kém nhất? (3) So với tháng 1 trong file
+bao-cao-ban-hang-thang-1.csv thì tăng hay giảm bao nhiêu %?
+Trả kết quả dưới dạng 3 bullet points ngắn gọn.</code></pre>
+
+        <h3>Tình huống 2: Viết nội dung</h3>
+        <p><strong>Prompt kém:</strong> <em class="example-bad">"Viết post Facebook quảng cáo."</em></p>
+        <p><strong>Prompt tốt:</strong></p>
+        <pre><code>Bạn là social media manager cho tiệm bánh handmade nhỏ ở Hà Nội.
+Viết post Facebook giới thiệu bánh macaron vị trà xanh mới ra lò.
+Khách hàng: nữ 20–35 tuổi, thích đồ ăn đẹp, hay chụp ảnh.
+Yêu cầu: 80–100 chữ, bắt đầu bằng câu hỏi gợi cảm xúc,
+cuối gọi mọi người comment đặt hàng. 5 emoji phù hợp.</code></pre>
+
+        <h2>Battle-tested patterns từ power users</h2>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 7 — Tip #1 của cộng đồng</div>
+          <div class="pattern-title">Plan Mode First — Phân tích trước, code sau</div>
+          <p>Đây là tip được nhắc đến nhiều nhất từ power users. Thay vì để CC bắt tay vào làm ngay, hãy bật Plan Mode trước: nhấn <strong>Shift+Tab 2 lần</strong> hoặc gõ <code>/plan</code>.</p>
+          <p>Trong Plan Mode, CC phân tích yêu cầu, đặt câu hỏi, và đề xuất approach — nhưng <em>không sửa file nào</em>. Bạn review plan, điều chỉnh nếu cần, rồi mới approve để CC thực thi.</p>
+          <p class="example-bad">Dùng trực tiếp: "Tạo landing page cho sản phẩm X." → CC bắt đầu code ngay, có thể đi hướng sai.</p>
+          <p class="example-good">Dùng /plan trước: "Tạo landing page cho sản phẩm X." → CC hỏi về audience, stack, sections cần có → bạn confirm → CC execute đúng ngay lần đầu.</p>
+          <p style="font-size:var(--prim-text-sm);font-weight:600;color:#7c3aed;margin-top:var(--prim-space-3);">Nếu chỉ nhớ 1 điều từ guide này: Plan trước khi code.</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 8</div>
+          <div class="pattern-title">The Verification Pattern — Tự kiểm tra kết quả</div>
+          <p>Thay vì chỉ yêu cầu CC viết code, thêm vào cuối: "và viết tests cho nó, rồi chạy tests." CC tự verify output của mình — chất lượng tăng 2–3x so với chỉ viết code.</p>
+          <p class="example-bad">"Viết function tính thuế VAT."</p>
+          <p class="example-good">"Viết function tính thuế VAT. Sau đó viết unit tests bao gồm edge cases (số âm, số 0, số rất lớn), và chạy tests để xác nhận tất cả pass."</p>
+          <p style="font-size:var(--prim-text-sm);color:var(--text-muted);margin-top:var(--prim-space-2);">Áp dụng cho bất kỳ task nào có thể verify: "tạo và kiểm tra", "viết và validate", "phân tích và xác nhận số liệu."</p>
+        </div>
+
+        <div class="pattern-card">
+          <div class="pattern-num">Pattern 9</div>
+          <div class="pattern-title">Subagent Delegation — Giảm tải context chính</div>
+          <p>Khi cần research hoặc xử lý task phụ, thay vì nhồi hết vào một prompt, hãy nói rõ: "Research X và báo cáo lại." CC sẽ spawn subagent để xử lý riêng — giảm 40–60% context usage của conversation chính.</p>
+          <p class="example-good">"Trước khi viết code, research xem Mailchimp API v3 có endpoint nào để bulk-unsubscribe không. Báo cáo lại rồi mới bắt đầu implement."</p>
+        </div>
+
+        <h2>Ví dụ prompt đầy đủ từ thực tế</h2>
+
+        <h3>Bad → Good → Best: Tạo landing page</h3>
+        <p><strong class="example-bad">Bad:</strong> <em class="example-bad">"Tạo landing page."</em> — Không đủ context để làm gì.</p>
+        <p><strong>Good:</strong></p>
+        <pre><code>Tạo landing page cho khóa học online "Thành thạo Excel trong 30 ngày",
+audience là nhân viên văn phòng 22–35 tuổi muốn thăng tiến.
+Cần: hero section với value proposition, 3 feature cards,
+testimonial section, và CTA đăng ký email.
+Dùng Tailwind CSS, responsive, dark mode. Chạy dev server sau khi xong.</code></pre>
+        <p><strong class="example-good">Best:</strong> Gõ <code>/plan</code> trước → CC hỏi về màu sắc brand, số testimonials, CTA action cụ thể, integrations cần → bạn confirm → CC execute. Kết quả đúng ngay lần đầu, không cần revise nhiều.</p>
+
+        <h2>Sai lầm thường gặp khi viết prompt</h2>
+
+        <ul>
+          <li><strong>Quá mơ hồ:</strong> "Giúp tôi với email này" không có thông tin gì để CC làm việc.</li>
+          <li><strong>Quá nhiều yêu cầu trong một prompt:</strong> Nếu cần 5 thứ khác nhau, gửi 5 prompt riêng. CC làm từng việc tốt hơn là làm 5 việc cùng lúc.</li>
+          <li><strong>Mâu thuẫn giữa các yêu cầu:</strong> "Viết ngắn gọn nhưng đầy đủ mọi chi tiết" — ngắn gọn hay đầy đủ? Bạn phải chọn một.</li>
+          <li><strong>Quên context:</strong> CC không nhớ cuộc hội thoại trước. Mỗi session mới, cần cung cấp lại ngữ cảnh quan trọng.</li>
+          <li><strong>Không nói format đầu ra:</strong> Nếu bạn cần bảng Excel mà không nói, CC có thể trả về bảng text thuần. Nói rõ format bạn cần.</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Viết 3 prompts theo framework ICC cho 3 tình huống thực tế: (1) Viết email chào hàng cho một sản phẩm/dịch vụ bạn đang bán, (2) Tóm tắt một cuộc họp gần đây theo dạng action items, (3) Phân tích một file dữ liệu bạn đang có. Sau khi viết xong, kiểm tra: mỗi prompt có đủ Instructions + Context + Constraints không?</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="cau-truc-du-an.html" class="nav-prev">← 2.3 Cấu trúc dự án</a>
+        <button class="btn-complete" data-lesson="2-4-prompt-hieu-qua">✓ Hoàn thành bài học</button>
+        <a href="lam-viec-voi-file.html" class="nav-next">2.5 Làm việc với file →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

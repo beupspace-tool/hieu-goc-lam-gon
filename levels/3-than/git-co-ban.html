@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git cho người vận hành — Safety net khi dùng Claude Code | Level 3: Thân | BEUP</title>
+  <meta name="description" content="Git không phải chỉ dành cho developer. Khi Claude Code thay đổi files, Git là safety net giúp bạn rollback nếu sai. 5 lệnh cần biết, không cần hiểu kỹ thuật sâu.">
+  <meta property="og:title" content="Bài 3.3: Git cho người vận hành | BEUP">
+  <meta property="og:description" content="Version control cho non-developers. 5 lệnh Git cần biết khi dùng Claude Code. Branch, worktrees, và GitHub basics.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Command table */
+    .cmd-table { width: 100%; border-collapse: collapse; margin: var(--prim-space-6) 0; font-size: var(--prim-text-sm); }
+    .cmd-table th { background: var(--bg-secondary); padding: var(--prim-space-3) var(--prim-space-4); text-align: left; font-weight: var(--prim-weight-semibold); color: var(--text-primary); border-bottom: 2px solid var(--border-default); }
+    .cmd-table td { padding: var(--prim-space-3) var(--prim-space-4); border-bottom: 1px solid var(--border-default); vertical-align: top; }
+    .cmd-table tr:last-child td { border-bottom: none; }
+    .cmd-table code { background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px; font-size: 0.875em; font-family: var(--prim-font-mono); }
+    .cmd-table td:first-child { width: 45%; }
+    .cmd-table td:last-child { color: var(--text-muted); line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html" class="active">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / Git cơ bản
+          </nav>
+          <h1>Bài 3.3: Git cho người vận hành</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Git không phải dành riêng cho developer. Khi Claude Code chỉnh sửa hàng chục files trong một session, bạn cần biết: Claude đã thay đổi gì, thay đổi đó có đúng không, và nếu sai thì quay lại bằng cách nào. Git trả lời cả ba câu hỏi đó. Không có Git = không có safety net = rủi ro mất dữ liệu thật sự.</p>
+          </div>
+        </div>
+
+        <h2>Git thực sự là gì</h2>
+
+        <p>Hãy nghĩ về tính năng "Version History" trong Google Docs — bạn có thể xem ai đã sửa gì, lúc nào, và restore về phiên bản trước nếu cần. Git làm điều tương tự nhưng cho <strong>toàn bộ thư mục project</strong>, không chỉ một file.</p>
+
+        <p>Mỗi lần bạn "commit", Git chụp một snapshot toàn bộ trạng thái project tại thời điểm đó. Bạn có thể xem lịch sử đầy đủ, so sánh bất kỳ hai thời điểm nào, và quay lại bất kỳ snapshot nào — kể cả snapshot từ 6 tháng trước.</p>
+
+        <p>Với Claude Code, Git đặc biệt quan trọng vì:</p>
+        <ul>
+          <li>Claude có thể sửa nhiều files cùng lúc trong vài giây — không có Git, bạn không biết Claude đã thay đổi gì</li>
+          <li>Claude đôi khi hiểu sai yêu cầu và làm sai — Git cho phép bạn undo toàn bộ session đó</li>
+          <li>Bạn cần record lại "Claude đã làm gì" để có thể reproduce hoặc audit sau này</li>
+        </ul>
+
+        <h2>5 lệnh Git cần biết</h2>
+
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th>Lệnh</th>
+              <th>Dùng để</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>git init</code></td>
+              <td>Khởi tạo Git trong thư mục hiện tại. Chạy một lần khi bắt đầu project mới.</td>
+            </tr>
+            <tr>
+              <td><code>git add .</code></td>
+              <td>Đánh dấu tất cả thay đổi để đưa vào snapshot tiếp theo. Dấu chấm nghĩa là "mọi thứ trong thư mục này".</td>
+            </tr>
+            <tr>
+              <td><code>git commit -m "mô tả"</code></td>
+              <td>Tạo snapshot với một mô tả ngắn. Đây là thao tác quan trọng nhất — làm thường xuyên.</td>
+            </tr>
+            <tr>
+              <td><code>git log --oneline</code></td>
+              <td>Xem lịch sử các snapshots, mỗi cái một dòng. Dễ đọc hơn <code>git log</code> thông thường.</td>
+            </tr>
+            <tr>
+              <td><code>git diff</code></td>
+              <td>Xem những gì đã thay đổi kể từ snapshot cuối. Cực kỳ hữu ích sau khi Claude sửa files — bạn thấy chính xác Claude đã làm gì.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Workflow chuẩn khi làm việc với Claude Code</h2>
+
+        <p>Quy trình đơn giản mà hiệu quả:</p>
+
+        <pre><code># 1. Trước khi bắt đầu session với Claude
+git add . && git commit -m "before: claude session - mô tả task"
+
+# 2. Claude làm việc, sửa files...
+
+# 3. Sau khi Claude hoàn thành, xem Claude đã làm gì
+git diff
+
+# 4. Nếu ổn, commit kết quả
+git add . && git commit -m "feat: claude added/fixed/updated..."
+
+# 5. Nếu Claude làm sai, revert về snapshot trước
+git checkout -- .   # Hoặc dùng: git restore .</code></pre>
+
+        <p>Bước 1 và 2 là quan trọng nhất: <strong>commit trước khi giao task cho Claude</strong>. Đây là checkpoint để bạn rollback về nếu cần.</p>
+
+        <h2>Đọc output của git diff</h2>
+
+        <p>Sau khi Claude sửa files, chạy <code>git diff</code>. Bạn sẽ thấy output như này:</p>
+
+        <pre><code>diff --git a/reports/monthly.md b/reports/monthly.md
+--- a/reports/monthly.md
++++ b/reports/monthly.md
+@@ -15,7 +15,9 @@
+ ## Doanh thu tháng 3
+
+-Tổng doanh thu: 450 triệu VND
++Tổng doanh thu: 487 triệu VND
++Tăng trưởng: +8.2% so với tháng 2
++Đạt 97% kế hoạch tháng</code></pre>
+
+        <p>Dòng bắt đầu bằng <code>-</code> (đỏ) = những gì bị xóa. Dòng bắt đầu bằng <code>+</code> (xanh) = những gì được thêm vào. Trong ví dụ trên, Claude đã cập nhật số liệu doanh thu và thêm hai dòng phân tích mới.</p>
+
+        <h2>GitHub — Git trên cloud</h2>
+
+        <p>Git là công cụ local trên máy bạn. GitHub là dịch vụ lưu trữ Git repository trên cloud — backup + collaboration.</p>
+
+        <p>Để đẩy project lên GitHub:</p>
+
+        <pre><code># Tạo repo mới trên github.com, sau đó:
+git remote add origin https://github.com/username/repo-name.git
+git branch -M main
+git push -u origin main
+
+# Lần sau chỉ cần:
+git push</code></pre>
+
+        <p>Claude Code tích hợp sẵn với GitHub qua MCP (bài 3.2). Khi có GitHub MCP, Claude có thể tạo PR, review code, manage issues trực tiếp từ Claude Code session.</p>
+
+        <h2>Branching — thử nghiệm an toàn</h2>
+
+        <p>Khi muốn thử nghiệm một thay đổi lớn mà không ảnh hưởng project chính:</p>
+
+        <pre><code># Tạo branch mới và chuyển sang đó
+git checkout -b thu-nghiem-tinh-nang-moi
+
+# Làm việc, Claude sửa files...
+
+# Nếu ổn, merge về main
+git checkout main
+git merge thu-nghiem-tinh-nang-moi
+
+# Nếu không ổn, xóa branch đó đi
+git checkout main
+git branch -D thu-nghiem-tinh-nang-moi</code></pre>
+
+        <p>Nguyên tắc: <code>main</code> = phiên bản đang chạy thực tế. Branch = khu vực thử nghiệm. Chỉ merge vào main khi đã verify kết quả ổn.</p>
+
+        <h2>Git Worktrees — chạy song song (nâng cao)</h2>
+
+        <p>Một tính năng ít người biết nhưng cực kỳ mạnh: Git Worktrees cho phép bạn mở nhiều working copies của cùng một repository, mỗi copy ở một branch khác nhau.</p>
+
+        <p>Ứng dụng thực tế: chạy 5-10 Claude Code sessions cùng lúc, mỗi session trên một worktree riêng, làm 5-10 task khác nhau song song. Không có conflict vì mỗi session làm việc trên folder riêng biệt hoàn toàn.</p>
+
+        <pre><code># Tạo worktree mới cho task song song
+git worktree add ../project-task-marketing -b task-marketing
+git worktree add ../project-task-report -b task-report
+
+# Mỗi folder được mở trong Claude Code session riêng
+# 30 phút sequential → 5 phút parallel</code></pre>
+
+        <p>Worktrees là công cụ của power users — bạn chưa cần ngay, nhưng khi workflow của bạn scale lên, đây là bước nhảy vọt về năng suất.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Trong một thư mục test mới, chạy: <code>git init && git add . && git commit -m "initial commit"</code>. Mở Claude Code trong thư mục đó, yêu cầu Claude tạo một file nào đó. Sau khi Claude hoàn thành, chạy <code>git diff</code> để xem Claude đã làm gì. Đây là workflow bạn sẽ dùng mỗi ngày.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="mcp-thuc-hanh.html" class="nav-prev">← 3.2 MCP thực hành</a>
+        <button class="btn-complete" data-lesson="3-3-git-co-ban">✓ Hoàn thành bài học</button>
+        <a href="skills-kha-nang.html" class="nav-next">3.4 Skills →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Patterns — Level 5 | BEUP</title>
+  <meta name="description" content="Git worktrees, GitHub Actions, security &amp; SSO, cost optimization với model routing và prompt caching. Claude Code ở quy mô tổ chức.">
+  <meta property="og:title" content="Bài 5.3: Enterprise Patterns | BEUP">
+  <meta property="og:description" content="Parallel development, automation pipelines, security compliance, cost management. Claude Code ở quy mô enterprise.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    :root {
+      --level5-gold: #D4A843;
+      --level5-gold-dark: #B8922E;
+      --level5-gold-light: rgba(212,168,67,0.12);
+      --level5-gold-border: rgba(212,168,67,0.3);
+    }
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-5 { background: var(--level5-gold-light); color: var(--level5-gold-dark); border: 1px solid var(--level5-gold-border); }
+    [data-theme="dark"] .level-badge.level-5 { background: rgba(212,168,67,0.1); color: var(--level5-gold); border-color: rgba(212,168,67,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, var(--level5-gold-light) 0%, rgba(212,168,67,0.03) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--level5-gold); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    .callout-gold { background: var(--level5-gold-light); border-color: var(--level5-gold); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    [data-theme="dark"] .callout-gold { background: rgba(212,168,67,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-gold .ct { color: var(--level5-gold-dark); }
+    [data-theme="dark"] .callout-gold .ct { color: var(--level5-gold); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--level5-gold); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--level5-gold); color: #1a1208; font-weight: var(--prim-weight-bold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--level5-gold-dark); }
+    .btn-complete.completed { background: var(--color-success); color: var(--prim-white); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--prim-space-6) 0;
+      font-size: var(--prim-text-sm);
+    }
+    .cost-table th {
+      text-align: left;
+      padding: var(--prim-space-3) var(--prim-space-4);
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--prim-text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--border-default);
+    }
+    .cost-table td {
+      padding: var(--prim-space-3) var(--prim-space-4);
+      border-bottom: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+    .cost-table tr:last-child td { border-bottom: none; }
+    .cost-table tr:hover td { background: var(--bg-secondary); }
+    .model-tag {
+      display: inline-block;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: 2px 8px;
+      border-radius: var(--prim-radius-sm);
+      font-family: var(--prim-font-mono);
+    }
+    .model-haiku { background: rgba(0,208,132,0.12); color: var(--prim-green-700); }
+    .model-sonnet { background: rgba(59,130,246,0.12); color: var(--prim-blue-600); }
+    .model-opus { background: var(--level5-gold-light); color: var(--level5-gold-dark); }
+    [data-theme="dark"] .model-haiku { color: #86efac; }
+    [data-theme="dark"] .model-sonnet { color: #93c5fd; }
+    [data-theme="dark"] .model-opus { color: var(--level5-gold); }
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      flex-wrap: wrap;
+      margin: var(--prim-space-4) 0;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-lg);
+      border: 1px solid var(--border-default);
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: var(--prim-space-2) var(--prim-space-3);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+      font-size: var(--prim-text-sm);
+      color: var(--text-secondary);
+    }
+    .pipeline-arrow {
+      color: var(--level5-gold);
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .security-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-4) var(--prim-space-5);
+    }
+    .security-item h4 {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-2);
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+    }
+    .security-item p {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-5">Level 5: Ngọn</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="thiet-ke-he-thong.html">5.1 Thiết kế hệ thống</a></li>
+          <li><a href="tao-tai-lieu-dao-tao.html">5.2 Tài liệu đào tạo</a></li>
+          <li><a href="enterprise-patterns.html" class="active">5.3 Enterprise patterns</a></li>
+          <li><a href="dong-gop-cong-dong.html">5.4 Đóng góp cộng đồng</a></li>
+          <li><a href="day-nguoi-khac.html">5.5 Dạy người khác</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 5</a> / Enterprise patterns
+          </nav>
+          <h1>Bài 5.3: Enterprise patterns</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 5</span>
+            <span class="tag">Enterprise</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-gold">
+          <span class="callout-icon">🏢</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Scale thay đổi mọi thứ. Những gì hoạt động tốt cho 1 người đôi khi cần kiến trúc khác cho 50 người. Bài này về cách thiết kế Claude Code deployment để hoạt động ở quy mô team lớn, với đầy đủ security, cost management, và auditability.</p>
+          </div>
+        </div>
+
+        <h2>Parallel development at scale</h2>
+
+        <p>Vấn đề phổ biến ở team developer lớn: nhiều người cùng làm nhiều feature, nhưng Claude Code sessions không thể share context với nhau. Giải pháp là <strong>git worktrees</strong>.</p>
+
+        <p>Git worktrees cho phép bạn có nhiều working directory từ cùng một repository — mỗi directory ở một branch khác nhau. Mỗi developer (hoặc Claude session) làm việc trong worktree riêng, không conflict với nhau:</p>
+
+        <pre><code># Setup worktrees cho parallel development
+git worktree add ../feature-auth feature/authentication
+git worktree add ../feature-dashboard feature/dashboard
+git worktree add ../hotfix-payment hotfix/payment-bug
+
+# Mỗi folder là một Claude Code session riêng biệt
+# cd ../feature-auth && claude  → Session 1
+# cd ../feature-dashboard && claude  → Session 2
+# cd ../hotfix-payment && claude  → Session 3</code></pre>
+
+        <p>5–20 concurrent sessions là khả thi với pattern này. CI/CD validates mỗi branch độc lập. Merge to main khi tests pass. Không có conflict vì mỗi session chỉ touch files của feature nó đang làm.</p>
+
+        <h2>GitHub Actions integration</h2>
+
+        <p>Claude Code tích hợp với GitHub Actions để tạo automation pipeline. Workflow phổ biến nhất:</p>
+
+        <div class="pipeline-flow">
+          <div class="pipeline-step">💬 @claude mention trên Issue</div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">🔍 Claude investigates codebase</div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">🔧 Tạo PR với fix</div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">✅ CI runs tests</div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">👀 Human review &amp; merge</div>
+        </div>
+
+        <p>Cụ thể hơn: khi developer mention <code>@claude</code> trong GitHub Issue với mô tả bug, Claude Code agent tự động:</p>
+        <ol>
+          <li>Đọc issue và reproduce vấn đề</li>
+          <li>Tìm root cause trong codebase</li>
+          <li>Implement fix</li>
+          <li>Tạo PR với description đầy đủ và tests</li>
+          <li>CI chạy — nếu pass, human review và merge</li>
+        </ol>
+
+        <p>Setup qua <code>claude.yml</code> GitHub Actions workflow. Yêu cầu GitHub Actions permission và Anthropic API key trong repository secrets.</p>
+
+        <p>Ngoài bug fixing, có thể setup: automated code review khi có PR, documentation generation từ code changes, test suite expansion khi thêm new features.</p>
+
+        <h2>Security &amp; compliance</h2>
+
+        <div class="security-grid">
+          <div class="security-item">
+            <h4>🔐 SSO Integration</h4>
+            <p>Team/Enterprise plan hỗ trợ SAML SSO — nhân viên login bằng company credentials, không cần quản lý account riêng. Offboarding: deactivate trong IdP là đủ.</p>
+          </div>
+          <div class="security-item">
+            <h4>👥 RBAC</h4>
+            <p>Ba role cơ bản: Admin (full access, billing, settings), Developer (run Claude, manage own projects), Viewer (read outputs, no execution). Custom roles với Enterprise.</p>
+          </div>
+          <div class="security-item">
+            <h4>📋 Audit Logging</h4>
+            <p>Track tất cả Claude actions: ai làm gì, lúc nào, trên project nào. Export log để compliance reporting. Essential cho regulated industries (finance, healthcare).</p>
+          </div>
+          <div class="security-item">
+            <h4>🏠 Data Residency</h4>
+            <p>Enterprise plan có data residency options (US, EU). Anthropic policy: không train model trên data của bạn. Prompts và outputs không dùng để improve models.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Data Privacy</b>
+            <p>Anthropic không dùng conversation data để train models của họ (với API usage và trả phí). Điều này quan trọng với doanh nghiệp có dữ liệu nhạy cảm. Tuy nhiên, best practice: không paste sensitive data (PII, credentials, confidential contracts) trực tiếp vào prompt. Dùng references hoặc anonymize trước.</p>
+          </div>
+        </div>
+
+        <h2>Cost management at scale</h2>
+
+        <p>Khi team scale lên, chi phí API cũng scale. Chiến lược tối ưu cost:</p>
+
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Task Type</th>
+              <th>Model</th>
+              <th>Lý do</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Simple Q&amp;A, formatting, classification</td>
+              <td><span class="model-tag model-haiku">Haiku</span></td>
+              <td>Nhanh, rẻ, đủ cho tasks đơn giản. ~20x rẻ hơn Opus.</td>
+            </tr>
+            <tr>
+              <td>Code generation, analysis, complex writing</td>
+              <td><span class="model-tag model-sonnet">Sonnet</span></td>
+              <td>Balance giữa capability và cost. Phù hợp 80% tasks.</td>
+            </tr>
+            <tr>
+              <td>Complex architecture, strategic analysis</td>
+              <td><span class="model-tag model-opus">Opus</span></td>
+              <td>Dùng khi thực sự cần. Không phải mọi task đều cần model mạnh nhất.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><strong>Prompt caching</strong> là tính năng tiết kiệm chi phí quan trọng nhất. Khi bạn gửi cùng một context dài (CLAUDE.md, system prompt, codebase context) nhiều lần, Anthropic cache nó — bạn chỉ trả cho phần thay đổi. Tiết kiệm đến <strong>90% cost</strong> cho repeated context. Tự động với API, chỉ cần structure prompts đúng (stable context ở đầu, dynamic content ở cuối).</p>
+
+        <p><strong>Batch API</strong>: Với workloads không cần real-time response (overnight processing, bulk analysis), dùng Batch API để có <strong>50% discount</strong>. Phù hợp với: monthly report generation, bulk content analysis, large dataset processing.</p>
+
+        <p><strong>Token budgets</strong>: Set spending limits per project, per team. Nhận alert khi gần limit. Với Enterprise có usage dashboards để track theo department.</p>
+
+        <h2>Multi-project coordination</h2>
+
+        <p>Monorepo với nhiều packages/apps có thể phức tạp với Claude Code. Strategies:</p>
+
+        <ul>
+          <li><strong>Module-level CLAUDE.md</strong>: Mỗi package có CLAUDE.md riêng với context của package đó. Claude tự động pick up context phù hợp dựa trên working directory.</li>
+          <li><strong>Shared skills library</strong>: Cross-project skills ở root level, project-specific skills trong folder riêng. Claude biết dùng skill nào tùy context.</li>
+          <li><strong>Dependency awareness</strong>: CLAUDE.md của từng package document interface của nó — "package này export gì, expect input gì." Claude Code hiểu cross-package dependencies khi refactor.</li>
+        </ul>
+
+        <h2>Disaster recovery</h2>
+
+        <p>Claude Code làm việc với files — đây là rủi ro khi agent có thể modify nhiều files cùng lúc. Mitigation:</p>
+
+        <ul>
+          <li><strong>Git commit trước khi chạy</strong>: Mọi thay đổi của Claude dễ dàng revert bằng <code>git checkout .</code> hoặc <code>git revert</code></li>
+          <li><strong>Branch protection</strong>: Main branch chỉ accept merge qua PR đã review, không phải direct push — kể cả từ Claude</li>
+          <li><strong>Permission restrictions</strong>: Claude không có permission để chạy destructive commands (drop database, delete production files) nếu không được explicitly allow</li>
+          <li><strong>Audit trail</strong>: Git history là complete audit trail — ai thay đổi gì, lúc nào, tại sao</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo cost optimization plan cho team: (1) Categorize tasks team đang làm theo complexity — simple/medium/complex. (2) Assign model tier cho mỗi category. (3) Estimate monthly token usage và cost dựa trên current usage. (4) Identify top 3 opportunities cho prompt caching — những context nào được gửi lặp đi lặp lại? (5) Tính potential savings và present cho management với ROI calculation.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="tao-tai-lieu-dao-tao.html" class="nav-prev">← 5.2 Tài liệu đào tạo</a>
+        <button class="btn-complete" data-lesson="5-3-enterprise-patterns">✓ Hoàn thành bài học</button>
+        <a href="dong-gop-cong-dong.html" class="nav-next">5.4 Đóng góp cộng đồng →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

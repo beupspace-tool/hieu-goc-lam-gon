@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4.6: Marketing stack đầy đủ — Level 4 Cành | BEUP</title>
+  <meta name="description" content="Xây dựng hệ thống marketing hoàn chỉnh với Claude Code: Strategy → Content → Publish → Analytics → Optimize. 1 người = output của 3-person team.">
+  <meta property="og:title" content="Bài 4.6: Marketing stack đầy đủ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-4 { background: rgba(22,163,74,0.12); color: #15803d; border: 1px solid rgba(22,163,74,0.3); }
+    [data-theme="dark"] .level-badge.level-4 { background: rgba(22,163,74,0.15); color: #4ade80; border-color: rgba(22,163,74,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(22,163,74,0.08) 0%, rgba(22,163,74,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .stack-layer {
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--prim-space-4);
+    }
+    .stack-layer-header {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .stack-layer-num {
+      width: 28px;
+      height: 28px;
+      background: #16a34a;
+      border-radius: var(--prim-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+      color: white;
+      flex-shrink: 0;
+    }
+    .stack-layer-title { font-weight: var(--prim-weight-semibold); color: var(--text-primary); }
+    .stack-layer-body { padding: var(--prim-space-4) var(--prim-space-5); }
+    .stack-layer-body ul { margin: 0; padding-left: var(--prim-space-4); }
+    .stack-layer-body li { font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-2); line-height: 1.6; }
+    .stack-layer-body li strong { color: var(--text-primary); }
+    .flow-arrow {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #16a34a;
+      margin: var(--prim-space-1) 0;
+    }
+    .roi-box {
+      background: linear-gradient(135deg, rgba(22,163,74,0.1) 0%, rgba(22,163,74,0.03) 100%);
+      border: 1px solid rgba(22,163,74,0.3);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-6) var(--prim-space-8);
+      text-align: center;
+      margin: var(--prim-space-8) 0;
+    }
+    .roi-box h3 { font-size: var(--prim-text-xl); margin-bottom: var(--prim-space-4); color: var(--text-primary); }
+    .roi-stats { display: flex; justify-content: center; gap: var(--prim-space-8); flex-wrap: wrap; }
+    .roi-stat { }
+    .roi-stat .number { font-size: var(--prim-text-3xl); font-weight: var(--prim-weight-extrabold); color: #15803d; line-height: 1; }
+    .roi-stat .label { font-size: var(--prim-text-sm); color: var(--text-muted); margin-top: var(--prim-space-1); }
+    .next-level-box {
+      background: var(--bg-card);
+      border: 2px solid rgba(22,163,74,0.3);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-8);
+      text-align: center;
+      margin: var(--prim-space-8) 0;
+    }
+    .next-level-box h3 { font-size: var(--prim-text-2xl); margin-bottom: var(--prim-space-3); color: var(--text-primary); }
+    .next-level-box p { color: var(--text-muted); max-width: 55ch; margin: 0 auto var(--prim-space-5); line-height: 1.65; }
+    .btn-next-level {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-8);
+      height: 48px;
+      background: #16a34a;
+      color: white;
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--prim-text-md);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+    }
+    .btn-next-level:hover { background: #15803d; box-shadow: var(--shadow-md); text-decoration: none; color: white; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-4">Level 4: Cành</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="skill-tu-chinh.html">4.1 Skill tùy chỉnh</a></li>
+          <li><a href="mcp-nang-cao.html">4.2 MCP nâng cao</a></li>
+          <li><a href="hooks-tu-dong-hoa.html">4.3 Hooks &amp; tự động hóa</a></li>
+          <li><a href="multi-agent.html">4.4 Multi-agent</a></li>
+          <li><a href="prompt-nang-cao.html">4.5 Prompt nâng cao</a></li>
+          <li><a href="marketing-stack.html" class="active">4.6 Marketing stack</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 4</a> / Marketing stack đầy đủ
+          </nav>
+          <h1>Bài 4.6: Marketing stack đầy đủ</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~10 phút đọc</span>
+            <span class="tag">Level 4</span>
+            <span class="tag">Bài tổng hợp</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Marketing hiệu quả không phải về số lượng content. Mà về hệ thống — một vòng lặp khép kín từ Strategy đến Analytics đến Optimize rồi lại Strategy. Claude Code không thay thế marketer, nó nhân rộng khả năng của một marketer giỏi lên 3-5 lần.</p>
+          </div>
+        </div>
+
+        <h2>Kiến trúc tổng quan: 5-layer marketing stack</h2>
+
+        <p>Thay vì dùng Claude Code cho từng task lẻ, hãy build một hệ thống có tất cả 5 lớp — mỗi lớp feed vào lớp tiếp theo, tạo feedback loop liên tục tự cải thiện.</p>
+
+        <div class="flow-arrow">↓</div>
+
+        <div class="stack-layer">
+          <div class="stack-layer-header">
+            <div class="stack-layer-num">1</div>
+            <span class="stack-layer-title">Strategy Layer — Biết mình đang làm gì và tại sao</span>
+          </div>
+          <div class="stack-layer-body">
+            <ul>
+              <li><strong>Competitor analysis:</strong> Claude đọc competitor websites qua Fetch tool, extract positioning statements, pricing, USPs. Output: competitive matrix trong Notion hoặc markdown file.</li>
+              <li><strong>Keyword research:</strong> Kết hợp SEO skill với Google Search Console API (qua MCP). Claude phân tích search intent, cluster keywords theo topic.</li>
+              <li><strong>Content calendar:</strong> Dựa trên competitive gaps và keyword opportunities, Claude generate 3-month content calendar. Format: CSV cho Buffer hoặc markdown cho team.</li>
+              <li><strong>ICP refinement:</strong> Claude đọc CRM data (qua MCP), phân tích patterns trong customers chuyển đổi tốt nhất, tinh chỉnh Ideal Customer Profile.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <div class="stack-layer">
+          <div class="stack-layer-header">
+            <div class="stack-layer-num">2</div>
+            <span class="stack-layer-title">Content Layer — Tạo content ở quy mô không tưởng</span>
+          </div>
+          <div class="stack-layer-body">
+            <ul>
+              <li><strong>Blog pipeline:</strong> 1 topic → Claude tạo outline → Claude draft (2000 từ) → SEO optimize với target keywords → format HTML → ready to publish. Skill <code>blog-pipeline</code> tự động hóa toàn bộ.</li>
+              <li><strong>Social multiplication:</strong> 1 blog post → Claude extract 5 key insights → tạo 5 platform-specific posts (LinkedIn long-form, Twitter/X thread, Facebook casual, Instagram caption + hashtags, Zalo OA message). Một lần viết, phủ 5 kênh.</li>
+              <li><strong>Email sequences:</strong> Skill <code>email-sequence</code> nhận ICP description + product → tạo welcome sequence (5 emails), nurture sequence (10 emails), conversion sequence (3 emails). Đúng tone, đúng timing.</li>
+              <li><strong>Video scripts:</strong> Blog post → hook-driven video script (60s, 3 phút, hoặc 10 phút tùy format). Claude biết script video khác article như thế nào — conversational, visual cues, CTAs.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <div class="stack-layer">
+          <div class="stack-layer-header">
+            <div class="stack-layer-num">3</div>
+            <span class="stack-layer-title">Publish Layer — Tự động lên lịch và đăng</span>
+          </div>
+          <div class="stack-layer-body">
+            <ul>
+              <li><strong>WordPress MCP:</strong> Claude publish trực tiếp bài blog — title, content, featured image alt text, categories, tags, SEO meta. Không cần mở WordPress backend.</li>
+              <li><strong>Buffer MCP:</strong> Schedule social posts across platforms. Claude tạo content → Buffer MCP schedule → posts tự đăng đúng giờ optimal cho mỗi platform.</li>
+              <li><strong>Email platform integration:</strong> Mailchimp hoặc Klaviyo MCP — Claude create campaign, set sequences, trigger automations dựa trên subscriber behavior.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <div class="stack-layer">
+          <div class="stack-layer-header">
+            <div class="stack-layer-num">4</div>
+            <span class="stack-layer-title">Analytics Layer — Biết gì đang work</span>
+          </div>
+          <div class="stack-layer-body">
+            <ul>
+              <li><strong>GA4 data analysis:</strong> Google Analytics MCP → Claude pull data, tóm tắt tuần này so với tuần trước, identify pages có bounce rate cao, tìm content gap từ organic search queries.</li>
+              <li><strong>Conversion tracking:</strong> Claude đọc funnel data, identify drop-off points, đề xuất A/B test ideas dựa trên patterns trong data.</li>
+              <li><strong>Social performance:</strong> Platform APIs → Claude tổng hợp engagement rates, best-performing content types, optimal posting times cho audience cụ thể của bạn.</li>
+              <li><strong>Weekly report automation:</strong> Skill <code>mkt-weekly-report</code> chạy mỗi thứ Sáu — tổng hợp tất cả metrics, tạo report với highlights và action items cho tuần tới.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <div class="stack-layer">
+          <div class="stack-layer-header">
+            <div class="stack-layer-num">5</div>
+            <span class="stack-layer-title">Optimize Layer — Cải thiện liên tục</span>
+          </div>
+          <div class="stack-layer-body">
+            <ul>
+              <li><strong>A/B test analysis:</strong> Claude đọc test results, tính statistical significance, recommend winning variant và next test to run.</li>
+              <li><strong>Content refreshing:</strong> Skill <code>content-refresh</code> — tìm blog posts &gt; 6 tháng tuổi có traffic giảm, update facts, add new sections, improve SEO. Nhanh hơn viết mới, kết quả tốt hơn cho SEO.</li>
+              <li><strong>CLAUDE.md brand evolution:</strong> Khi analytics cho thấy một tone hoặc angle cụ thể work tốt hơn, update CLAUDE.md — toàn bộ system tự adjust về sau.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+        <p style="text-align:center;font-size:var(--prim-text-sm);color:var(--text-muted);margin-bottom:var(--prim-space-6);">→ insights feed ngược lên Strategy Layer → vòng lặp tiếp tục</p>
+
+        <h2>Automation glue: Kết nối tất cả</h2>
+
+        <p>5 layers trên không tự nhiên kết nối — cần "glue" để chúng vận hành trơn tru:</p>
+
+        <p><strong>Skills cho mỗi layer:</strong> Mỗi layer có 1-2 skills chuyên biệt. <code>competitor-analysis</code>, <code>blog-pipeline</code>, <code>social-repurpose</code>, <code>mkt-weekly-report</code>. Invoke bằng slash command hoặc tự nhiên.</p>
+
+        <p><strong>Hooks là quality gates:</strong> PostToolUse hook kiểm tra word count trước khi publish (blog &lt; 800 từ → warning). PreToolUse hook block publish nếu thiếu meta description. Hook chạy spell-check tự động.</p>
+
+        <p><strong>CLAUDE.md là brand guardian:</strong> Brand voice, tone guidelines, forbidden words, messaging hierarchy — tất cả trong CLAUDE.md. Mọi content Claude tạo ra đều đi qua filter này.</p>
+
+        <pre><code># Ví dụ CLAUDE.md cho marketing stack
+## Brand Voice
+- Tone: Direct, không hoa mỹ. "Tăng 30% doanh thu" > "Unlocking boundless potential"
+- Audience: Business owners 30-50, practical, bận rộn
+- Forbidden phrases: "synergy", "game-changer", "disrupt", "leverage"
+
+## Content Standards
+- Blog: minimum 1500 từ, có H2s rõ ràng, 1 callout box per section
+- Social: LinkedIn max 1300 chars, không emoji trong LinkedIn posts
+- Email subject: max 45 chars, có số liệu nếu có thể
+
+## Publishing Checklist
+Trước khi publish blog, verify:
+- [ ] SEO title &lt; 60 chars
+- [ ] Meta description 150-160 chars có target keyword
+- [ ] Internal links minimum 2
+- [ ] Image alt text filled</code></pre>
+
+        <h2>Build thứ tự nào?</h2>
+
+        <p>Đừng cố build cả 5 layers cùng lúc. Thứ tự thực tế cho một người:</p>
+
+        <p><strong>Tuần 1-2: Content layer.</strong> Build skill <code>blog-pipeline</code> và <code>social-repurpose</code>. Đây là quick win rõ ràng nhất — bạn sẽ thấy kết quả ngay.</p>
+
+        <p><strong>Tuần 3-4: Publish layer.</strong> Kết nối WordPress MCP và Buffer MCP. Giờ bạn viết → Claude đăng tự động. Tiết kiệm 2-3 giờ/tuần ngay lập tức.</p>
+
+        <p><strong>Tháng 2: Analytics layer.</strong> Sau khi có đủ data từ content, build analytics reporting. Skill <code>mkt-weekly-report</code>.</p>
+
+        <p><strong>Tháng 3+: Strategy và Optimize layers.</strong> Khi bạn đã có data và process, mới có thể optimize có căn cứ. Đừng optimize trước khi có đủ signal.</p>
+
+        <div class="roi-box">
+          <h3>ROI thực tế từ marketing stack đầy đủ</h3>
+          <div class="roi-stats">
+            <div class="roi-stat">
+              <div class="number">70%</div>
+              <div class="label">Giảm thời gian<br>sản xuất content</div>
+            </div>
+            <div class="roi-stat">
+              <div class="number">3×</div>
+              <div class="label">Output so với<br>team 1 người thông thường</div>
+            </div>
+            <div class="roi-stat">
+              <div class="number">5×</div>
+              <div class="label">Kênh phân phối<br>từ 1 lần viết</div>
+            </div>
+          </div>
+          <p style="font-size:var(--prim-text-sm);color:var(--text-muted);margin-top:var(--prim-space-4);margin-bottom:0;">Số liệu từ các team marketing đã implement đầy đủ stack. Kết quả sẽ khác nhau tùy theo quy trình ban đầu.</p>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Điều quan trọng nhất</b>
+            <p>Claude Code không thay thế judgment của bạn — nó nhân rộng nó. Strategy sai, Claude sẽ execute sai nhanh hơn nhiều. Dành thời gian build đúng CLAUDE.md và brand guidelines trước khi để system chạy tự động. Garbage in, garbage out — chỉ là với tốc độ AI.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành — Bắt đầu với content layer</b>
+            <p>Chọn một blog post bạn muốn viết. Làm theo pipeline đơn giản này: (1) Tạo file <code>blog-topic.md</code> với topic, target keyword, audience. (2) Nói với Claude: "Đọc blog-topic.md, tạo outline 6 sections cho bài blog." (3) Sau khi duyệt outline, nói: "Viết full draft cho section 1 và 2." (4) Sau khi có draft, nói: "Tạo 3 LinkedIn posts và 1 Twitter thread từ bài này." Quan sát time savings so với làm thủ công.</p>
+          </div>
+        </div>
+
+        <div class="next-level-box">
+          <h3>Level 4 hoàn thành.</h3>
+          <p>Bạn đã biết tạo custom skills, build MCP servers, configure hooks tự động, orchestrate multi-agent workflows, tối ưu prompts và chi phí, và xây marketing stack đầy đủ. Đây là bộ công cụ của một AI-native professional.</p>
+          <p>Level 5: Thiết kế hệ thống cho cả team — onboarding, governance, knowledge management, và dạy người khác trở thành AI-native.</p>
+          <a href="../5-ngon/" class="btn-next-level">Level 5: Ngọn →</a>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="prompt-nang-cao.html" class="nav-prev">← 4.5 Prompt nâng cao</a>
+        <button class="btn-complete" data-lesson="4-6-marketing-stack">✓ Hoàn thành bài học</button>
+        <a href="../5-ngon/" class="nav-next">Level 5: Ngọn →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

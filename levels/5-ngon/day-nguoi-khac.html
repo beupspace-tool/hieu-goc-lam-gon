@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dạy người khác — Level 5 | BEUP</title>
+  <meta name="description" content="Show don't tell. Xử lý resistance. Teaching methodology theo level. Đo success. Xây internal champions. Dạy người khác là cách tốt nhất để master.">
+  <meta property="og:title" content="Bài 5.5: Dạy người khác | BEUP">
+  <meta property="og:description" content="Nguyên tắc dạy AI tools, xử lý resistance phổ biến, methodology theo level, và cách xây internal champions scale adoption.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    :root {
+      --level5-gold: #D4A843;
+      --level5-gold-dark: #B8922E;
+      --level5-gold-light: rgba(212,168,67,0.12);
+      --level5-gold-border: rgba(212,168,67,0.3);
+    }
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-5 { background: var(--level5-gold-light); color: var(--level5-gold-dark); border: 1px solid var(--level5-gold-border); }
+    [data-theme="dark"] .level-badge.level-5 { background: rgba(212,168,67,0.1); color: var(--level5-gold); border-color: rgba(212,168,67,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, var(--level5-gold-light) 0%, rgba(212,168,67,0.03) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--level5-gold); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    .callout-gold { background: var(--level5-gold-light); border-color: var(--level5-gold); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    [data-theme="dark"] .callout-gold { background: rgba(212,168,67,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-gold .ct { color: var(--level5-gold-dark); }
+    [data-theme="dark"] .callout-gold .ct { color: var(--level5-gold); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--level5-gold); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--level5-gold); color: #1a1208; font-weight: var(--prim-weight-bold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--level5-gold-dark); }
+    .btn-complete.completed { background: var(--color-success); color: var(--prim-white); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .resistance-grid {
+      display: grid;
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .resistance-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+    }
+    @media (max-width: 640px) {
+      .resistance-item { grid-template-columns: 1fr; }
+    }
+    .resistance-objection {
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: rgba(239,68,68,0.05);
+      border-right: 1px solid var(--border-default);
+    }
+    .resistance-response {
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: rgba(0,208,132,0.04);
+    }
+    .resistance-label {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-2);
+    }
+    .resistance-label.obj { color: #dc2626; }
+    .resistance-label.res { color: var(--prim-green-600); }
+    .resistance-objection p, .resistance-response p {
+      font-size: var(--prim-text-sm);
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .methodology-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--prim-space-6) 0;
+      font-size: var(--prim-text-sm);
+    }
+    .methodology-table th {
+      text-align: left;
+      padding: var(--prim-space-3) var(--prim-space-4);
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--prim-text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--border-default);
+    }
+    .methodology-table td {
+      padding: var(--prim-space-3) var(--prim-space-4);
+      border-bottom: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .methodology-table tr:last-child td { border-bottom: none; }
+    .methodology-table tr:hover td { background: var(--bg-secondary); }
+    .completion-box {
+      background: linear-gradient(135deg, #1a1208 0%, #2d1f06 100%);
+      border: 1px solid var(--level5-gold-border);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-10) var(--prim-space-8);
+      text-align: center;
+      margin: var(--prim-space-8) 0;
+    }
+    .completion-box .completion-icon {
+      font-size: 3rem;
+      margin-bottom: var(--prim-space-4);
+    }
+    .completion-box h2 {
+      font-size: var(--prim-text-2xl);
+      color: var(--level5-gold);
+      margin-bottom: var(--prim-space-4);
+      border: none;
+      padding: 0;
+    }
+    .completion-box p {
+      font-size: var(--prim-text-md);
+      color: rgba(255,255,255,0.8);
+      line-height: 1.75;
+      max-width: 55ch;
+      margin: 0 auto var(--prim-space-6);
+    }
+    .completion-links {
+      display: flex;
+      gap: var(--prim-space-3);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .completion-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: var(--prim-space-2) var(--prim-space-4);
+      background: rgba(212,168,67,0.15);
+      border: 1px solid var(--level5-gold-border);
+      border-radius: var(--prim-radius-full);
+      color: var(--level5-gold);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-medium);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast);
+    }
+    .completion-link:hover {
+      background: rgba(212,168,67,0.25);
+      text-decoration: none;
+      color: var(--level5-gold);
+    }
+    .completion-link-home {
+      background: var(--level5-gold);
+      color: #1a1208;
+      border-color: var(--level5-gold);
+      font-weight: var(--prim-weight-bold);
+    }
+    .completion-link-home:hover {
+      background: var(--level5-gold-dark);
+      color: #1a1208;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-5">Level 5: Ngọn</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="thiet-ke-he-thong.html">5.1 Thiết kế hệ thống</a></li>
+          <li><a href="tao-tai-lieu-dao-tao.html">5.2 Tài liệu đào tạo</a></li>
+          <li><a href="enterprise-patterns.html">5.3 Enterprise patterns</a></li>
+          <li><a href="dong-gop-cong-dong.html">5.4 Đóng góp cộng đồng</a></li>
+          <li><a href="day-nguoi-khac.html" class="active">5.5 Dạy người khác</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 5</a> / Dạy người khác
+          </nav>
+          <h1>Bài 5.5: Dạy người khác</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~5 phút đọc</span>
+            <span class="tag">Level 5</span>
+            <span class="tag">Teaching</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-gold">
+          <span class="callout-icon">🎓</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Dạy người khác là cách tốt nhất để master. Khi bạn phải giải thích TẠI SAO — không chỉ LÀM THẾ NÀO — bạn buộc phải hiểu sâu hơn. Những gap trong hiểu biết của bạn chỉ lộ ra khi bạn cố dạy. Mỗi lần dạy là cơ hội refine mental model của chính bạn.</p>
+          </div>
+        </div>
+
+        <h2>Nguyên tắc dạy AI tools</h2>
+
+        <p>Dạy Claude Code khác với dạy Excel hay Figma. Đây là công cụ đòi hỏi thay đổi mindset, không chỉ học thêm features. Nguyên tắc:</p>
+
+        <p><strong>Show, don't tell.</strong> Demo trực tiếp trước mắt người học, đặt vấn đề thực tế của họ, giải quyết real-time. Slides về "Claude Code là AI assistant mạnh mẽ" không có giá trị. Nhưng 15 phút watch bạn giải quyết task họ đang có sẽ thay đổi nhận thức của họ.</p>
+
+        <p><strong>Start with THEIR problem, not the tool's features.</strong> Đừng bắt đầu bằng "Claude Code có thể làm A, B, C." Hỏi trước: "Bạn đang mất thời gian nhiều nhất vào việc gì?" Rồi show cách Claude Code solve đúng vấn đề đó.</p>
+
+        <p><strong>First win trong 15 phút = hooked.</strong> Người học cần thấy giá trị cụ thể ngay trong session đầu tiên. Đừng dành toàn bộ session cho theory. Setup xong là chạy task thật ngay — dù nhỏ, phải có output cụ thể trong tay trước khi kết thúc session.</p>
+
+        <p><strong>Pair sessions tốt hơn classroom.</strong> 1-on-1 hoặc 1-on-2 hiệu quả hơn nhiều so với classroom 10+ người. Bạn có thể adjust pace, answer câu hỏi ngay, và focus vào context cụ thể của người học.</p>
+
+        <h2>Xử lý resistance phổ biến</h2>
+
+        <p>Mọi trainer đều gặp những objections này. Đây là cách address chúng hiệu quả:</p>
+
+        <div class="resistance-grid">
+          <div class="resistance-item">
+            <div class="resistance-objection">
+              <div class="resistance-label obj">Objection</div>
+              <p>"Tốn tiền — $20/tháng cộng với mọi thứ khác"</p>
+            </div>
+            <div class="resistance-response">
+              <div class="resistance-label res">Response</div>
+              <p>Tính ROI cụ thể: nếu tiết kiệm 5 giờ/tuần × 4 tuần × hourly rate của bạn. Với hầu hết business professionals, 5 giờ tiết kiệm mỗi tuần = pay for itself nhiều lần. Yêu cầu họ ước tính — đừng nói cho họ con số.</p>
+            </div>
+          </div>
+
+          <div class="resistance-item">
+            <div class="resistance-objection">
+              <div class="resistance-label obj">Objection</div>
+              <p>"Không an toàn — data của công ty có thể bị leak"</p>
+            </div>
+            <div class="resistance-response">
+              <div class="resistance-label res">Response</div>
+              <p>Explain Anthropic's privacy policy: không train trên data của bạn, enterprise data residency options. Highlight permission model. Nhấn mạnh: bạn control cái gì được paste vào — đừng paste sensitive PII hay trade secrets, y như email hay Google Docs.</p>
+            </div>
+          </div>
+
+          <div class="resistance-item">
+            <div class="resistance-objection">
+              <div class="resistance-label obj">Objection</div>
+              <p>"AI sẽ thay thế công việc của tôi"</p>
+            </div>
+            <div class="resistance-response">
+              <div class="resistance-label res">Response</div>
+              <p>Show evidence ngược lại: mọi người dùng Claude Code không bị thay thế — job của họ expand. Marketing manager dùng Claude không mất việc, họ handle 3x campaigns. AI amplifies, không replaces. Người không dùng tool sẽ bị cạnh tranh bởi người dùng tool.</p>
+            </div>
+          </div>
+
+          <div class="resistance-item">
+            <div class="resistance-objection">
+              <div class="resistance-label obj">Objection</div>
+              <p>"Quá phức tạp — tôi không biết code"</p>
+            </div>
+            <div class="resistance-response">
+              <div class="resistance-label res">Response</div>
+              <p>Bắt đầu với Claude Chat (không cần install gì). Khi đã comfortable với conversational AI, graduate to Claude Code. Frame it as: "Đây chỉ là cách chat với AI nhưng nó có thể làm nhiều việc hơn." Không mention terminal hay CLI cho đến khi họ đã thấy value.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Teaching methodology theo level</h2>
+
+        <table class="methodology-table">
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Format</th>
+              <th>Duration</th>
+              <th>Focus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Level 0–1</strong><br>Hoàn toàn mới</td>
+              <td>Workshop format, nhóm nhỏ 4–8 người</td>
+              <td>4 sessions × 2 giờ trong 4 tuần</td>
+              <td>Install, first conversation, basic prompting, role-specific use case đầu tiên</td>
+            </tr>
+            <tr>
+              <td><strong>Level 2–3</strong><br>Đã dùng cơ bản</td>
+              <td>Pair programming sessions, 1-on-1</td>
+              <td>1 giờ/tuần trong 4 tuần</td>
+              <td>CLAUDE.md, MCP setup, workflow automation, troubleshooting cụ thể của họ</td>
+            </tr>
+            <tr>
+              <td><strong>Level 4–5</strong><br>Người dùng nâng cao</td>
+              <td>Self-study + mentorship</td>
+              <td>Monthly 1:1, 45 phút</td>
+              <td>Advanced patterns, system design, review workflows đang chạy, giải quyết edge cases</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Đo lường success</h2>
+
+        <ul>
+          <li><strong>Time-to-first-output</strong>: Trong vòng 1 tuần sau session đầu, người học có output thực tế chưa? Target: 100% trong tuần đầu.</li>
+          <li><strong>Weekly usage rate</strong>: Sau 4 tuần, bao nhiêu % dùng Claude Code ít nhất 3 lần/tuần? Target: &gt;60%.</li>
+          <li><strong>Quality improvement</strong>: Output của họ tốt hơn không? Subjective nhưng quan trọng — lấy feedback định kỳ.</li>
+          <li><strong>Self-sufficiency</strong>: Họ có thể giải quyết vấn đề mới mà không cần hỏi bạn không? Đây là chỉ số quan trọng nhất.</li>
+        </ul>
+
+        <h2>Xây internal champions</h2>
+
+        <p>Không thể scale nếu chỉ có 1 người train tất cả. Chiến lược champion model:</p>
+
+        <ol>
+          <li><strong>Identify early adopters</strong>: Ai trong team hỏi nhiều nhất về Claude Code? Ai tự mày mò sau training? Đây là champion candidates.</li>
+          <li><strong>Invest in them deeply</strong>: Cho họ advanced training, share edge cases, involve họ trong system design. Họ cần cảm thấy ownership.</li>
+          <li><strong>Formalize the role</strong>: "Claude Code Champion" — official title hoặc responsibility trong JD. Public recognition. Đây là role thực sự, không phải unpaid extra work.</li>
+          <li><strong>Scale ratio</strong>: 1 champion cho mỗi 5–10 team members. Champion đủ gần để answer questions ngay, đủ ít để có depth.</li>
+        </ol>
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Insight</b>
+            <p>Peer learning hiệu quả hơn top-down training. Khi đồng nghiệp của bạn show cho bạn thấy Claude Code giúp họ làm X trong 10 phút thay vì 2 giờ — impact mạnh hơn nhiều so với management yêu cầu dùng tool. Champion model khai thác social proof: nếu người ngồi cạnh tôi dùng và hiệu quả, tôi cũng nên thử.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chọn 1 đồng nghiệp chưa dùng Claude Code. Dành 30 phút pair session: (1) Cài đặt cùng nhau — họ tự type commands, bạn chỉ hướng dẫn. (2) Giải quyết 1 vấn đề THỰC CỦA HỌ — hỏi trước "bạn đang cần làm gì hôm nay?" và dùng đó làm task đầu tiên. (3) Để họ tự thử lần hai — bạn im lặng và observe. Quan sát: họ stuck ở đâu? Họ hào hứng về điều gì? Ghi lại để improve lần sau.</p>
+          </div>
+        </div>
+
+        <div class="completion-box">
+          <div class="completion-icon">🌿</div>
+          <h2>Chúc mừng.</h2>
+          <p>Bạn đã hoàn thành "Hiểu Gốc — Làm Gọn". Từ hạt giống đến ngọn cây. Nhưng đây không phải kết thúc — đây là bắt đầu. Claude Code phát triển liên tục, community lớn mạnh mỗi ngày, và tiềm năng mới xuất hiện mỗi tuần. Hãy tiếp tục xây dựng, chia sẻ, và giúp người khác. Đó là cách hệ sinh thái này phát triển.</p>
+          <div class="completion-links">
+            <a href="../../" class="completion-link completion-link-home">← Về trang chủ</a>
+            <a href="https://github.com/heshengtao/awesome-claude-code" target="_blank" rel="noopener" class="completion-link">awesome-claude-code</a>
+            <a href="https://www.reddit.com/r/ClaudeAI/" target="_blank" rel="noopener" class="completion-link">r/ClaudeAI</a>
+            <a href="https://claudelog.com" target="_blank" rel="noopener" class="completion-link">ClaudeLog.com</a>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="dong-gop-cong-dong.html" class="nav-prev">← 5.4 Đóng góp cộng đồng</a>
+        <button class="btn-complete" data-lesson="5-5-day-nguoi-khac">✓ Hoàn thành bài học</button>
+        <span style="flex:1;max-width:48%;"></span>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

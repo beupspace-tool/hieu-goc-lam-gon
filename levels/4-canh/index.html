@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 4: Cành — Mở rộng & tùy chỉnh | BEUP</title>
+  <meta name="description" content="Custom skills, hooks tự động, multi-agent orchestration, và marketing stack đầy đủ. Level 4 dành cho power users sẵn sàng chuyển sang AI-native.">
+  <meta property="og:title" content="Level 4: Cành — Mở rộng & tùy chỉnh | BEUP">
+  <meta property="og:description" content="Custom skills, hooks tự động, multi-agent orchestration, và marketing stack đầy đủ.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-hub-hero {
+      background: linear-gradient(140deg, #166534 0%, #15803d 50%, #16a34a 100%);
+      color: var(--prim-white);
+      padding: var(--prim-space-16) var(--content-padding-x);
+      position: relative;
+      overflow: hidden;
+    }
+    .level-hub-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .level-hub-hero-inner {
+      max-width: var(--content-max-width);
+      position: relative;
+    }
+    .level-hub-eyebrow {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: var(--prim-space-3);
+    }
+    .level-hub-title {
+      font-size: clamp(var(--prim-text-3xl), 5vw, var(--prim-text-5xl));
+      font-weight: var(--prim-weight-extrabold);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--prim-white);
+      margin: 0 0 var(--prim-space-4);
+    }
+    .level-hub-subtitle {
+      font-size: var(--prim-text-lg);
+      color: rgba(255,255,255,0.85);
+      max-width: 60ch;
+      line-height: 1.65;
+      margin-bottom: var(--prim-space-6);
+    }
+    .level-hub-stats {
+      display: flex;
+      gap: var(--prim-space-6);
+      flex-wrap: wrap;
+    }
+    .level-hub-stat {
+      font-size: var(--prim-text-sm);
+      color: rgba(255,255,255,0.7);
+    }
+    .level-hub-stat strong {
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-bold);
+    }
+    .lesson-grid {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: var(--prim-space-12) var(--content-padding-x);
+    }
+    .lesson-grid-title {
+      font-size: var(--prim-text-2xl);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-2);
+    }
+    .lesson-grid-desc {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-8);
+    }
+    .lesson-cards {
+      display: grid;
+      gap: var(--prim-space-4);
+    }
+    .lesson-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      text-decoration: none;
+      transition: border-color var(--prim-transition-fast),
+                  box-shadow var(--prim-transition-fast),
+                  transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover {
+      border-color: #16a34a;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .lesson-card-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: rgba(22,163,74,0.1);
+      border: 2px solid rgba(22,163,74,0.3);
+      border-radius: var(--prim-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: #15803d;
+      font-family: var(--prim-font-mono);
+    }
+    [data-theme="dark"] .lesson-card-num {
+      background: rgba(22,163,74,0.12);
+      border-color: rgba(22,163,74,0.3);
+      color: #4ade80;
+    }
+    .lesson-card-body { flex: 1; min-width: 0; }
+    .lesson-card-title {
+      font-size: var(--prim-text-md);
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-1);
+      line-height: 1.4;
+    }
+    .lesson-card-desc {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .lesson-card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      margin-top: var(--prim-space-2);
+    }
+    .lesson-card-time {
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+    }
+    .lesson-card-arrow {
+      flex-shrink: 0;
+      font-size: var(--prim-text-lg);
+      color: var(--text-muted);
+      transition: color var(--prim-transition-fast), transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover .lesson-card-arrow {
+      color: #16a34a;
+      transform: translateX(3px);
+    }
+    .hub-cta {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding-x) var(--prim-space-12);
+    }
+    .hub-cta-box {
+      background: linear-gradient(135deg, rgba(22,163,74,0.08) 0%, var(--bg-card) 100%);
+      border: 1px solid rgba(22,163,74,0.3);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-8) var(--prim-space-8);
+      text-align: center;
+    }
+    .hub-cta-box h3 { font-size: var(--prim-text-xl); margin-bottom: var(--prim-space-2); }
+    .hub-cta-box p { color: var(--text-muted); margin-bottom: var(--prim-space-5); }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-6);
+      height: var(--btn-height);
+      background: #16a34a;
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+    }
+    .btn-primary:hover {
+      background: #15803d;
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+      color: var(--prim-white);
+    }
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-1);
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-4 {
+      background: rgba(22,163,74,0.12);
+      color: #15803d;
+      border: 1px solid rgba(22,163,74,0.3);
+    }
+    [data-theme="dark"] .level-badge.level-4 {
+      background: rgba(22,163,74,0.15);
+      color: #4ade80;
+      border-color: rgba(22,163,74,0.3);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--prim-teal-400); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-4">Level 4: Cành</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="skill-tu-chinh.html">4.1 Skill tùy chỉnh</a></li>
+          <li><a href="mcp-nang-cao.html">4.2 MCP nâng cao</a></li>
+          <li><a href="hooks-tu-dong-hoa.html">4.3 Hooks &amp; tự động hóa</a></li>
+          <li><a href="multi-agent.html">4.4 Multi-agent</a></li>
+          <li><a href="prompt-nang-cao.html">4.5 Prompt nâng cao</a></li>
+          <li><a href="marketing-stack.html">4.6 Marketing stack</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="level-hub-hero">
+        <div class="level-hub-hero-inner">
+          <div class="level-hub-eyebrow">Level 4 · Cành</div>
+          <h1 class="level-hub-title">Mở rộng &amp; tùy chỉnh Claude Code</h1>
+          <p class="level-hub-subtitle">
+            Bạn đã dùng Claude Code thành thạo. Giờ là lúc tạo tools riêng. Custom skills, hooks tự động, multi-agent orchestration, và xây dựng marketing stack đầy đủ.
+          </p>
+          <div class="level-hub-stats">
+            <span class="level-hub-stat"><strong>6</strong> bài học</span>
+            <span class="level-hub-stat"><strong>~45 phút</strong> tổng thời gian</span>
+            <span class="level-hub-stat"><strong>Power user</strong> level</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lesson-grid">
+        <h2 class="lesson-grid-title">6 Bài học trong Level 4</h2>
+        <p class="lesson-grid-desc">Mỗi bài độc lập — nhưng đọc tuần tự sẽ xây được mental model đầy đủ nhất.</p>
+
+        <div class="lesson-cards">
+
+          <a href="skill-tu-chinh.html" class="lesson-card">
+            <div class="lesson-card-num">4.1</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Xây dựng Skill tùy chỉnh</div>
+              <p class="lesson-card-desc">Tạo skills riêng cho workflow lặp lại. Anatomy của SKILL.md, thư mục scripts/, references/, và cách invoke skill từ Claude.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~8 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="mcp-nang-cao.html" class="lesson-card">
+            <div class="lesson-card-num">4.2</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">MCP nâng cao</div>
+              <p class="lesson-card-desc">Multi-server setup, build custom MCP server cho internal API, authentication patterns, và security best practices cho production.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="hooks-tu-dong-hoa.html" class="lesson-card">
+            <div class="lesson-card-num">4.3</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Hooks &amp; tự động hóa</div>
+              <p class="lesson-card-desc">Shell commands chạy tự động trước/sau mỗi action của Claude. 5 production hooks phổ biến nhất từ community.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="multi-agent.html" class="lesson-card">
+            <div class="lesson-card-num">4.4</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Multi-agent orchestration</div>
+              <p class="lesson-card-desc">1 agent research, 1 agent code, 1 agent test, 1 agent review — song song, nhanh hơn 3-5x. Patterns: sequential, parallel, hybrid.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~8 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="prompt-nang-cao.html" class="lesson-card">
+            <div class="lesson-card-num">4.5</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Prompt nâng cao</div>
+              <p class="lesson-card-desc">Context engineering, extended thinking, few-shot examples, model routing strategy, và prompt caching. Giảm 90% chi phí khi dùng đúng.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="marketing-stack.html" class="lesson-card">
+            <div class="lesson-card-num">4.6</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Marketing stack đầy đủ</div>
+              <p class="lesson-card-desc">Strategy → Content → Publish → Analytics → Optimize. Hệ thống marketing hoàn chỉnh với Claude Code. 1 người = output của 3-person team.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~10 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="hub-cta">
+        <div class="hub-cta-box">
+          <h3>Sẵn sàng mở rộng?</h3>
+          <p>Bắt đầu từ bài 4.1 — xây skill đầu tiên của bạn. Từ đó mọi workflow sẽ được tùy chỉnh hoàn toàn.</p>
+          <a href="skill-tu-chinh.html" class="btn-primary">Bắt đầu Bài 4.1 →</a>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

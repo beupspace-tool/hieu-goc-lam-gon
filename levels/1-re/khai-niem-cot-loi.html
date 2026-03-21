@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khái niệm cốt lõi của Claude Code — Level 1: Rễ | BEUP</title>
+  <meta name="description" content="4 khái niệm nền tảng: Context Window, Tokens, Prompts, Tools. Hiểu 4 khái niệm này = hiểu 90% cách Claude Code vận hành.">
+  <meta property="og:title" content="Khái niệm cốt lõi của Claude Code — Level 1: Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-1 { background: rgba(167,139,250,0.18); color: #6d28d9; border: 1px solid rgba(167,139,250,0.4); }
+    [data-theme="dark"] .level-badge.level-1 { background: rgba(167,139,250,0.12); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Concept card */
+    .concept-card {
+      padding: var(--prim-space-6);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      margin: var(--prim-space-6) 0;
+    }
+    .concept-card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      margin-bottom: var(--prim-space-4);
+    }
+    .concept-icon { font-size: 1.75rem; }
+    .concept-title { font-size: var(--prim-text-xl); font-weight: var(--prim-weight-bold); color: var(--text-primary); }
+    .concept-subtitle { font-size: var(--prim-text-sm); color: var(--text-muted); }
+    .concept-body { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.75; }
+    .concept-body p { margin: 0 0 var(--prim-space-3); }
+    .concept-body p:last-child { margin-bottom: 0; }
+    .analogy-box {
+      margin-top: var(--prim-space-4);
+      padding: var(--prim-space-3) var(--prim-space-4);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-md);
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .analogy-box strong { color: var(--text-primary); }
+    /* Flow diagram */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      flex-wrap: wrap;
+      padding: var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-lg);
+      margin: var(--prim-space-6) 0;
+      justify-content: center;
+    }
+    .flow-item {
+      padding: var(--prim-space-2) var(--prim-space-4);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+    .flow-arrow { color: var(--text-muted); font-size: var(--prim-text-lg); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html" class="active">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Khái niệm cốt lõi
+          </nav>
+          <h1>Bài 1.4: Khái niệm cốt lõi</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>4 khái niệm nền tảng của Claude Code: Context Window, Tokens, Prompts, và Tools. Hiểu 4 khái niệm này = hiểu 90% cách Claude vận hành. Mọi vấn đề bạn gặp sau này — output kém, chi phí cao, Claude "quên" — đều có thể lý giải qua 4 khái niệm này.</p>
+          </div>
+        </div>
+
+        <p>Bạn không cần nhớ thuộc lòng định nghĩa. Bạn chỉ cần hiểu <em>ý nghĩa thực tế</em> của từng khái niệm — nó ảnh hưởng thế nào đến cách bạn làm việc với Claude Code hàng ngày và trực tiếp đến chi phí bạn trả mỗi tháng.</p>
+
+        <div class="concept-card">
+          <div class="concept-card-header">
+            <span class="concept-icon">🪙</span>
+            <div>
+              <div class="concept-title">Tokens</div>
+              <div class="concept-subtitle">Đơn vị tiền tệ của AI</div>
+            </div>
+          </div>
+          <div class="concept-body">
+            <p>Token là đơn vị nhỏ nhất mà Claude xử lý và tính tiền. Không phải chữ cái, không phải từ — mà là "mảnh" của từ. Quy tắc thực tế:</p>
+            <ul>
+              <li><strong>Tiếng Anh:</strong> 1 token ≈ 4 ký tự. "Hello" = 1 token. "Quarterly report" = 3 tokens.</li>
+              <li><strong>Tiếng Việt:</strong> tốn 1.5–2x token hơn tiếng Anh do dấu thanh. "Xin chào" ≈ 3–4 tokens. "Báo cáo doanh thu quý 3" ≈ 10–12 tokens.</li>
+            </ul>
+            <p><strong>Pricing thực tế (tháng 3/2026):</strong></p>
+            <ul>
+              <li><strong>Claude Haiku 3.5:</strong> $0.80 input / $4 output per 1M tokens — nhanh, rẻ, tốt cho tác vụ đơn giản</li>
+              <li><strong>Claude Sonnet 4:</strong> $3 / $15 per 1M tokens — cân bằng tốt nhất, dùng cho đa số việc</li>
+              <li><strong>Claude Opus 4:</strong> $15 / $75 per 1M tokens — mạnh nhất, chỉ dùng khi thực sự cần</li>
+            </ul>
+            <p>Trung bình 1 session Claude Code xử lý 10K–50K tokens = <strong>$0.03–$1.25 mỗi session</strong>. Heavy user như lập trình viên chuyên nghiệp tốn ~$6/ngày ($180/tháng). Người dùng bình thường cho công việc văn phòng: $20–50/tháng là phổ biến.</p>
+            <div class="analogy-box">
+              <strong>Ví dụ doanh nghiệp:</strong> Giống như cước điện thoại quốc tế — tiếng Việt tốn nhiều "phút" hơn tiếng Anh. Nói ngắn gọn, đúng vấn đề tiết kiệm hơn giải thích vòng vo. Nhưng đừng cắt xén ngữ cảnh quan trọng chỉ để tiết kiệm — mất thêm 100 tokens để rõ ràng còn rẻ hơn làm lại cả task.
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-header">
+            <span class="concept-icon">🪟</span>
+            <div>
+              <div class="concept-title">Context Window</div>
+              <div class="concept-subtitle">Bộ nhớ làm việc của Claude</div>
+            </div>
+          </div>
+          <div class="concept-body">
+            <p>Context Window là tổng không gian Claude có thể giữ trong "đầu" tại một thời điểm. Mọi thứ bạn gõ vào, mọi câu Claude trả lời, mọi file Claude đọc — tất cả đều chiếm không gian này.</p>
+            <p><strong>Kích thước thực tế:</strong></p>
+            <ul>
+              <li>Haiku / Sonnet / Opus: <strong>200,000 tokens</strong> (standard)</li>
+              <li>Opus với Max plan: <strong>1,000,000 tokens</strong></li>
+              <li>200K tokens ≈ 150,000 từ ≈ 500 trang sách — rất rộng rãi cho công việc hàng ngày</li>
+            </ul>
+            <p>Hãy tưởng tượng context window như một <strong>bảng trắng có kích thước cố định</strong>. Khi bảng đầy, Claude bắt đầu "quên" những thứ cũ nhất — hoặc output trở nên kém chất lượng khi context quá tải.</p>
+            <p>Ý nghĩa thực tế: bắt đầu conversation mới khi chuyển sang task hoàn toàn khác. Đừng dùng một session cho cả ngày làm việc với nhiều chủ đề khác nhau.</p>
+            <div class="analogy-box">
+              <strong>Ví dụ doanh nghiệp:</strong> Giống như RAM máy tính — 16GB RAM đủ để chạy nhiều phần mềm, nhưng nếu bạn mở 50 tab Chrome, 5 video YouTube, và 3 phần mềm nặng cùng lúc, máy vẫn chậm. Context window cũng vậy — rộng nhưng không vô hạn.
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-header">
+            <span class="concept-icon">💰</span>
+            <div>
+              <div class="concept-title">Quản lý Token — Tiết kiệm thực tế</div>
+              <div class="concept-subtitle">4 chiến lược người dùng chuyên nghiệp dùng</div>
+            </div>
+          </div>
+          <div class="concept-body">
+            <p>Dùng Claude Code nhiều mà không quản lý token = lãng phí tiền không cần thiết. Đây là những gì người dùng thực sự tiết kiệm 40–70% chi phí:</p>
+            <ul>
+              <li><strong><code>/compact</code> — nén conversation history:</strong> Giảm 60–80% tokens trong context bằng cách tóm tắt lịch sử hội thoại. Dùng sau 10–15 tin nhắn hoặc khi bạn thấy context đã dài.</li>
+              <li><strong>Bắt đầu conversation mới cho task mới:</strong> Đừng gộp "viết email + phân tích data + làm website" vào 1 session. Mỗi task = 1 session riêng. Mang lại output tốt hơn và tốn ít token hơn.</li>
+              <li><strong>CLAUDE.md ngắn gọn (dưới 300 dòng):</strong> File CLAUDE.md được đọc tự động MỖI LẦN bắt đầu session mới. File 500 dòng ≈ 5,000 tokens lãng phí mỗi session, mỗi ngày. Mỗi dòng trong CLAUDE.md phải thực sự cần thiết.</li>
+              <li><strong>Prompt caching tự động:</strong> CLAUDE.md được cache sau lần đọc đầu tiên — các session sau tiết kiệm 90% chi phí đọc lại file này. Cache tự động, bạn không cần làm gì thêm.</li>
+            </ul>
+            <p><strong>Model routing thực tế:</strong> Dùng Sonnet cho hầu hết việc. Chuyển sang Opus chỉ khi task cần reasoning phức tạp (phân tích chiến lược, debug khó). Dùng Haiku cho task đơn giản (format data, trả lời ngắn). Opus đắt gấp 5x Sonnet — đừng dùng Opus để viết email.</p>
+            <div class="analogy-box">
+              <strong>Lệnh <code>/cost</code>:</strong> Gõ lệnh này bất cứ lúc nào để xem bạn đã tiêu bao nhiêu tokens trong session hiện tại. Dùng như đồng hồ đo điện — giúp bạn biết task nào tốn nhiều nhất và tối ưu theo đó.
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-header">
+            <span class="concept-icon">📝</span>
+            <div>
+              <div class="concept-title">Prompts</div>
+              <div class="concept-subtitle">Cách bạn giao việc</div>
+            </div>
+          </div>
+          <div class="concept-body">
+            <p>Prompt là những gì bạn gõ để giao việc cho Claude. Chất lượng prompt quyết định chất lượng kết quả — có lẽ là yếu tố quan trọng nhất trong toàn bộ trải nghiệm dùng Claude Code.</p>
+            <p>Prompt tốt không cần phức tạp. Nó cần <strong>cụ thể</strong>, <strong>có ngữ cảnh đủ</strong>, và <strong>rõ ràng về đầu ra mong muốn</strong>.</p>
+            <ul>
+              <li><strong>Mơ hồ:</strong> "Làm cho tôi một website đẹp"</li>
+              <li><strong>Tốt hơn:</strong> "Tạo landing page giới thiệu khóa học marketing online cho SME, có hero section với headline, 3 lợi ích chính, và form đăng ký email. Dùng màu xanh navy và cam. Lưu thành file index.html."</li>
+            </ul>
+            <p>Kỹ năng viết prompt là kỹ năng quan trọng nhất bạn sẽ học. Chúng ta sẽ thực hành nhiều ở các Level sau.</p>
+            <div class="analogy-box">
+              <strong>Ví dụ doanh nghiệp:</strong> Brief mơ hồ → nhân viên làm sai → mất thời gian cả hai. Brief rõ ràng → nhân viên làm đúng ngay lần đầu. Với Claude, chi phí làm lại còn bao gồm cả tokens — nên đầu tư vào prompt tốt từ đầu là tiết kiệm nhất.
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-header">
+            <span class="concept-icon">🛠️</span>
+            <div>
+              <div class="concept-title">Tools &amp; Slash Commands</div>
+              <div class="concept-subtitle">Khả năng hành động và điều khiển</div>
+            </div>
+          </div>
+          <div class="concept-body">
+            <p>Tools là các "tay chân" của Claude Code — khả năng thực sự làm điều gì đó ngoài nói chuyện. Claude Code có đầy đủ bộ công cụ để làm việc với file, web, và hệ thống:</p>
+            <ul>
+              <li><strong>Read / Write / Edit</strong> — đọc, tạo, chỉnh sửa file trên máy bạn</li>
+              <li><strong>Bash</strong> — chạy bất kỳ lệnh terminal nào (npm, git, python, ffmpeg...)</li>
+              <li><strong>Glob / Grep</strong> — tìm file và tìm kiếm trong code theo pattern</li>
+              <li><strong>WebSearch / WebFetch</strong> — tìm kiếm web và đọc nội dung trang (khi được bật)</li>
+              <li><strong>MCP tools</strong> — kết nối với dịch vụ bên ngoài (database, API, Slack...) qua Model Context Protocol</li>
+            </ul>
+            <p><strong>Slash commands quan trọng cần biết ngay:</strong></p>
+            <ul>
+              <li><code>/init</code> — tạo CLAUDE.md tự động từ cấu trúc project hiện tại</li>
+              <li><code>/plan</code> — chế độ planning, Claude chỉ đề xuất không tự sửa code</li>
+              <li><code>/compact</code> — nén context, giảm token usage 60–80%</li>
+              <li><code>/cost</code> — xem chi phí token của session hiện tại</li>
+              <li><code>/model</code> — chuyển đổi giữa Sonnet / Opus / Haiku</li>
+              <li><code>/help</code> — danh sách đầy đủ lệnh có sẵn</li>
+            </ul>
+            <div class="analogy-box">
+              <strong>Shift+Tab:</strong> Phím tắt để bật/tắt Plan Mode ngay trong terminal — Claude chỉ plan, không thực thi. Dùng khi bạn muốn xem Claude dự định làm gì trước khi cho phép nó hành động.
+            </div>
+          </div>
+        </div>
+
+        <h2>Cách 4 khái niệm kết nối với nhau</h2>
+        <p>Đây là luồng xảy ra mỗi khi bạn gõ một lệnh cho Claude Code:</p>
+
+        <div class="flow-diagram">
+          <div class="flow-item">Bạn gõ Prompt</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">CC tiêu tốn Tokens để xử lý</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">CC chọn Tool phù hợp</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">Kết quả lưu vào Context Window</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">Bạn xem và phản hồi</div>
+        </div>
+
+        <p>Hiểu luồng này giúp bạn biết tại sao Claude đôi khi "không nhớ" điều gì đó (context window quá tải), tại sao một số yêu cầu tốn chi phí cao hơn (nhiều token), tại sao prompt rõ ràng quan trọng (định hướng CC chọn Tool đúng và tránh làm lại).</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành ngay</b>
+            <p>Mở Claude Code, gõ <code>/cost</code> để xem token usage hiện tại. Hỏi một câu bất kỳ, rồi gõ <code>/cost</code> lại và quan sát con số thay đổi — đó là tokens vừa được tiêu tốn. Tiếp theo, gõ <code>/compact</code> để nén context, rồi kiểm tra <code>/cost</code> lần nữa. Quan sát sự khác biệt trước và sau compact.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Cảnh báo CLAUDE.md</b>
+            <p>CLAUDE.md dài 500 dòng = lãng phí ~5,000 tokens MỖI SESSION. Với 10 session/ngày = 50,000 tokens/ngày tiêu tốn chỉ để đọc file config. Nhân 30 ngày = 1.5 triệu tokens/tháng chỉ từ CLAUDE.md dài. Giữ dưới 300 dòng. Mỗi dòng phải earn its place.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="cai-dat-xac-thuc.html" class="nav-prev">← 1.3 Cài đặt &amp; Xác thực</a>
+        <button class="btn-complete" data-lesson="1-4-khai-niem-cot-loi">✓ Hoàn thành bài học</button>
+        <a href="cuoc-hoi-thoai-dau-tien.html" class="nav-next">1.5 Cuộc hội thoại đầu tiên →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

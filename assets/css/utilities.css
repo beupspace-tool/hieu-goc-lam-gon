@@ -1,0 +1,221 @@
+/*
+ * utilities.css — Dark Mode Overrides + Responsive Helpers + Print
+ * Hiểu Gốc — Làm Gọn | Depends on tokens.css
+ */
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================================
+   TEXT UTILITIES
+   ============================================================ */
+.text-center  { text-align: center; }
+.text-right   { text-align: right; }
+.text-left    { text-align: left; }
+
+.text-muted   { color: var(--text-muted) !important; }
+.text-primary { color: var(--text-primary) !important; }
+.text-success { color: var(--color-success) !important; }
+.text-warning { color: var(--color-warning) !important; }
+.text-danger  { color: var(--color-danger) !important; }
+.text-brand   { color: var(--color-primary) !important; }
+
+.text-sm   { font-size: var(--prim-text-sm); }
+.text-xs   { font-size: var(--prim-text-xs); }
+.text-lg   { font-size: var(--prim-text-lg); }
+.text-bold { font-weight: var(--prim-weight-bold); }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   SPACING UTILITIES (minimal — only what's commonly needed)
+   ============================================================ */
+.mt-0  { margin-top: 0 !important; }
+.mt-2  { margin-top: var(--prim-space-2) !important; }
+.mt-4  { margin-top: var(--prim-space-4) !important; }
+.mt-6  { margin-top: var(--prim-space-6) !important; }
+.mt-8  { margin-top: var(--prim-space-8) !important; }
+
+.mb-0  { margin-bottom: 0 !important; }
+.mb-2  { margin-bottom: var(--prim-space-2) !important; }
+.mb-4  { margin-bottom: var(--prim-space-4) !important; }
+.mb-6  { margin-bottom: var(--prim-space-6) !important; }
+.mb-8  { margin-bottom: var(--prim-space-8) !important; }
+
+.ml-auto { margin-left: auto !important; }
+.mr-auto { margin-right: auto !important; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+
+/* ============================================================
+   DISPLAY UTILITIES
+   ============================================================ */
+.flex          { display: flex; }
+.flex-col      { flex-direction: column; }
+.items-center  { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2         { gap: var(--prim-space-2); }
+.gap-4         { gap: var(--prim-space-4); }
+.flex-1        { flex: 1; }
+
+/* ============================================================
+   RESPONSIVE VISIBILITY
+   ============================================================ */
+.hide-mobile {
+  display: revert;
+}
+
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: revert !important; }
+}
+
+@media (max-width: 480px) {
+  .hide-xs { display: none !important; }
+}
+
+/* ============================================================
+   DARK MODE SPECIFIC OVERRIDES
+   Fine-tuning that doesn't belong in component files.
+   ============================================================ */
+
+/* Slightly brighter borders on cards in dark mode */
+[data-theme="dark"] .level-card,
+[data-theme="dark"] .lesson-card {
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* Code inline gets a slightly brighter bg in dark */
+[data-theme="dark"] pre {
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+/* Blockquote in dark */
+[data-theme="dark"] blockquote {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-secondary);
+}
+
+/* Table hover in dark */
+[data-theme="dark"] .table-wrapper tbody tr:hover td {
+  background: rgba(255,255,255,0.04);
+}
+
+/* Details in dark */
+[data-theme="dark"] details {
+  border-color: rgba(255,255,255,0.08);
+}
+
+[data-theme="dark"] summary {
+  background: rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] summary:hover {
+  background: rgba(255,255,255,0.07);
+}
+
+[data-theme="dark"] details > *:not(summary) {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+/* Progress bar track in dark */
+[data-theme="dark"] .progress-bar {
+  background: rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .progress-ring-track {
+  stroke: rgba(255,255,255,0.1);
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  /* Hide navigation and interactive chrome */
+  .sidebar,
+  .lesson-nav,
+  .lang-switch,
+  .theme-toggle,
+  .code-copy-btn,
+  .btn-complete,
+  .site-footer,
+  .breadcrumb {
+    display: none !important;
+  }
+
+  /* Full width content */
+  .layout {
+    display: block;
+  }
+
+  .main {
+    width: 100%;
+  }
+
+  .content {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* Hero: strip gradient, plain text */
+  .hero,
+  .lesson-hero {
+    background: none !important;
+    color: #000 !important;
+    padding: 1rem 0;
+    border-bottom: 2px solid #000;
+  }
+
+  .hero-title,
+  .lesson-hero-title {
+    color: #000 !important;
+  }
+
+  /* Code blocks: simple border */
+  pre {
+    background: #f5f5f5 !important;
+    color: #222 !important;
+    border: 1px solid #ccc;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  code {
+    background: #f5f5f5 !important;
+    color: #222 !important;
+    border-color: #ccc !important;
+  }
+
+  /* Force page breaks */
+  h2 { page-break-before: auto; }
+  pre, blockquote { page-break-inside: avoid; }
+
+  /* Links: show URL */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+  }
+
+  /* Don't print href for internal anchors */
+  a[href^="#"]::after { content: ""; }
+}

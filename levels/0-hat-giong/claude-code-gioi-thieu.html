@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ sinh thái Claude — Từ Chat đến Code | Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="Claude không phải một sản phẩm — đó là hệ sinh thái gồm Chat, Code CLI, GUI, Cowork và API. Hiểu rõ từng công cụ để chọn đúng cho từng nhu cầu kinh doanh.">
+  <meta property="og:title" content="Hệ sinh thái Claude — Từ Chat đến Code | Hiểu Gốc Làm Gọn | BEUP">
+  <meta property="og:description" content="Claude không phải một sản phẩm — đó là hệ sinh thái gồm Chat, Code CLI, GUI, Cowork và API. Hiểu rõ từng công cụ để chọn đúng cho từng nhu cầu kinh doanh.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-0 { background: rgba(127,212,211,0.18); color: var(--prim-teal-700); border: 1px solid var(--prim-teal-200); }
+    [data-theme="dark"] .level-badge.level-0 { background: rgba(127,212,211,0.12); color: var(--prim-teal-300); border-color: rgba(127,212,211,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(127,212,211,0.12) 0%, rgba(63,183,182,0.05) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+
+    /* Comparison cards */
+    .compare-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-5) 0;
+    }
+    .compare-col {
+      padding: var(--prim-space-5);
+      border-radius: var(--prim-radius-md);
+      border: 1px solid var(--border-default);
+      background: var(--bg-card);
+    }
+    .compare-col h4 { margin-bottom: var(--prim-space-3); font-size: var(--prim-text-md); }
+    .compare-col ul { margin: 0; padding-left: var(--prim-space-5); }
+    .compare-col li { font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-2); }
+    @media (max-width: 640px) { .compare-cols { grid-template-columns: 1fr; } }
+
+    /* Use case examples */
+    .use-cases {
+      display: grid;
+      gap: var(--prim-space-3);
+      margin: var(--prim-space-5) 0;
+    }
+    .use-case {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-3);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-md);
+      border: 1px solid var(--border-default);
+    }
+    .use-case-icon { font-size: 1.25rem; flex-shrink: 0; }
+    .use-case-text { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.6; }
+    .use-case-text strong { color: var(--text-primary); font-weight: var(--prim-weight-semibold); }
+
+    /* Flow steps */
+    .cc-flow {
+      display: flex;
+      flex-direction: column;
+      gap: var(--prim-space-2);
+      margin: var(--prim-space-5) 0;
+      padding: var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-md);
+      border: 1px solid var(--border-default);
+    }
+    .cc-flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-3);
+    }
+    .cc-flow-num {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      background: var(--color-primary);
+      color: var(--prim-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-bold);
+    }
+    .cc-flow-desc { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.6; padding-top: 4px; }
+    .cc-flow-connector { width: 28px; display: flex; justify-content: center; }
+    .cc-flow-line { width: 2px; height: 16px; background: var(--border-default); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html" class="active">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 0</a> / Claude Code
+          </nav>
+          <h1>Bài 0.6: Hệ sinh thái Claude — Từ Chat đến Code</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~6 phút đọc</span>
+            <span class="tag">Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <h2>1. Bức tranh toàn cảnh Claude (2026)</h2>
+
+        <p>Claude không phải một sản phẩm — đó là hệ sinh thái gồm nhiều công cụ phục vụ các mục đích hoàn toàn khác nhau. Dùng sai công cụ không phải vấn đề về kỹ năng — đó là vấn đề về hiểu biết. Phần này cho bạn cái nhìn tổng thể để chọn đúng từ đầu.</p>
+
+        <h3>💬 Claude Chat (claude.ai)</h3>
+        <p>Trò chuyện qua browser, có Projects để lưu context và Artifacts để tạo nội dung có cấu trúc.</p>
+        <div class="use-cases">
+          <div class="use-case">
+            <div class="use-case-icon">✅</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> brainstorm, viết content ngắn, phân tích nhanh, hỏi đáp. Không cần setup, mở browser là dùng được.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🚫</div>
+            <div class="use-case-text"><strong>Giới hạn:</strong> không truy cập file trên máy bạn, không chạy code thực sự, không lưu kết quả vào hệ thống. Mọi output là văn bản bạn phải xử lý tiếp bằng tay.</div>
+          </div>
+        </div>
+
+        <h3>⚡ Claude Code CLI</h3>
+        <p>Terminal-based — gõ <code>claude</code> trong terminal là xong. Đây là công cụ trọng tâm của toàn bộ guide này.</p>
+        <div class="use-cases">
+          <div class="use-case">
+            <div class="use-case-icon">✅</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> developer workflow, automation, project management, xây dựng website, xử lý dữ liệu. Context window 200K tokens (Sonnet) đến 1M tokens (Opus) — đọc được cả codebase lớn trong một lần.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🎙️</div>
+            <div class="use-case-text"><strong>Voice mode:</strong> giữ phím cách (spacebar) để nói thay vì gõ. Hữu ích khi đang làm việc tay không rảnh hoặc muốn diễn đạt nhanh hơn.</div>
+          </div>
+        </div>
+
+        <h3>🖥️ Claude Code trên GUI (VS Code / JetBrains)</h3>
+        <p>Cùng engine như CLI nhưng tích hợp trực tiếp bên trong IDE. Bạn thấy code changes ngay trong editor, có inline diff và chat panel.</p>
+        <div class="use-cases">
+          <div class="use-case">
+            <div class="use-case-icon">✅</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> người quen làm việc trong VS Code, muốn thấy thay đổi trực tiếp trên file đang mở, cần codebase awareness sâu hơn.</div>
+          </div>
+        </div>
+
+        <h3>🤖 Claude Cowork (Desktop)</h3>
+        <p>Chế độ agentic trên Claude Desktop app — Claude tự quản lý file, restructure dữ liệu, tạo report mà không cần bạn ngồi theo dõi từng bước.</p>
+        <div class="use-cases">
+          <div class="use-case">
+            <div class="use-case-icon">✅</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> non-technical users muốn AI làm việc độc lập. Dispatch mode cho phép điều khiển từ xa qua mobile — quét QR, giao việc, Claude tự làm.</div>
+          </div>
+        </div>
+
+        <h3>🔌 Claude API</h3>
+        <p>Dành cho developer xây dựng ứng dụng có AI tích hợp bên trong. Pricing per token: Haiku $1/$5, Sonnet $3/$15, Opus $5/$25 (per 1M tokens input/output).</p>
+        <div class="use-cases">
+          <div class="use-case">
+            <div class="use-case-icon">ℹ️</div>
+            <div class="use-case-text"><strong>Bạn chưa cần dùng ngay</strong> — nhưng hiểu nó tồn tại. Khi bạn muốn nhúng AI vào sản phẩm của mình (chatbot cho khách hàng, tự động phân loại email, v.v.), đây là con đường.</div>
+          </div>
+        </div>
+
+        <h2>2. Khi nào dùng gì?</h2>
+
+        <div style="overflow-x: auto; margin: var(--prim-space-5) 0;">
+          <table style="width:100%; border-collapse: collapse; font-size: var(--prim-text-sm);">
+            <thead>
+              <tr style="background: var(--bg-secondary);">
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Nhu cầu</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Công cụ</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Tại sao</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Hỏi nhanh, brainstorm</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Chat</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Nhanh, không cần setup</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Viết email, content ngắn</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Chat + Projects</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Lưu context brand voice</td>
+              </tr>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Tạo/sửa file, build website</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code CLI</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Truy cập filesystem trực tiếp</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Code trong IDE</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code GUI</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Thấy diff inline, context nhất quán</td>
+              </tr>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Tự động hóa báo cáo</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Cowork</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">AI làm việc độc lập, không cần giám sát</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Build app có AI bên trong</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude API</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Tích hợp vào sản phẩm, scale tùy ý</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>3. Plans &amp; Chi phí thực tế</h2>
+
+        <div style="overflow-x: auto; margin: var(--prim-space-5) 0;">
+          <table style="width:100%; border-collapse: collapse; font-size: var(--prim-text-sm);">
+            <thead>
+              <tr style="background: var(--bg-secondary);">
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Plan</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Giá</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Bao gồm</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Phù hợp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Free</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$0</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Chat limited, không có Code</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Thử nghiệm lần đầu</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Pro</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$20/tháng</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Chat + Code (Sonnet)</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Cá nhân, freelancer</td>
+              </tr>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Max</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$100–200/tháng</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Opus, 1M context, Cowork</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Power user, team lead</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Team</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$25+/người/tháng</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Shared workspace, admin controls</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Team 5–50 người</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Chi phí thực tế trung bình: <strong>~$6/ngày</strong> cho developer dùng nhiều. Business user dùng vừa phải: <strong>~$2–3/ngày</strong>. Tính theo tháng là $60–90/tháng — tương đương một bữa ăn team.</p>
+
+        <h2>4. Claude Code vs Đối thủ</h2>
+
+        <div style="overflow-x: auto; margin: var(--prim-space-5) 0;">
+          <table style="width:100%; border-collapse: collapse; font-size: var(--prim-text-sm);">
+            <thead>
+              <tr style="background: var(--bg-secondary);">
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Tool</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Điểm mạnh</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Giá/tháng</th>
+                <th style="padding: var(--prim-space-3) var(--prim-space-4); text-align:left; border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold);">Cho ai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-semibold); color: var(--color-primary);">Claude Code</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Code quality tốt nhất, voice mode, MCP ecosystem, hoạt động ngoài IDE</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$20–200</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Production, ops, non-dev</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Cursor</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">IDE mạnh nhất, agentic workflow tốt trong editor</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$20–200</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Dev shipping nhanh</td>
+              </tr>
+              <tr>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">GitHub Copilot</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Rẻ nhất, GitHub native, autocomplete quen thuộc</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$10–39</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Light automation, budget tight</td>
+              </tr>
+              <tr style="background: var(--bg-secondary);">
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Windsurf</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">~80% năng lực Cursor, giá thấp hơn</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">$15–60</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Budget teams</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>5. Tại sao guide này chọn Claude Code?</h2>
+
+        <div class="use-cases">
+          <div class="use-case">
+            <div class="use-case-icon">🏆</div>
+            <div class="use-case-text"><strong>Best code quality</strong> — Anthropic benchmark nhất quán qua các phiên bản. Ít hallucination hơn trong code generation so với đối thủ.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🌍</div>
+            <div class="use-case-text"><strong>Works outside IDE</strong> — không chỉ cho developer. Business user không viết code cũng dùng được để tự động hóa quy trình, quản lý file, tạo report.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🎙️</div>
+            <div class="use-case-text"><strong>Voice mode</strong> — nói thay vì gõ. Giảm rào cản đầu vào cho người chưa quen terminal.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🔌</div>
+            <div class="use-case-text"><strong>MCP ecosystem</strong> — kết nối Claude Code với hầu hết mọi tool: Google Sheets, Notion, Slack, database, browser. Không bị lock-in vào một workflow cứng nhắc.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🧩</div>
+            <div class="use-case-text"><strong>Skills system</strong> — mở rộng không giới hạn. Cộng đồng tạo ra skills cho từng domain cụ thể, bạn cài và dùng như plugin.</div>
+          </div>
+          <div class="use-case">
+            <div class="use-case-icon">🏢</div>
+            <div class="use-case-text"><strong>Team &amp; Enterprise ready</strong> — từ cá nhân freelancer đến team 50+ người, có plan phù hợp với audit log, SSO, và shared workspace.</div>
+          </div>
+        </div>
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Chọn công cụ phù hợp với vấn đề, không phải công cụ phổ biến nhất. Claude Chat cho câu trả lời. Claude Code cho kết quả cụ thể. Claude Cowork cho tự động hóa. Biết sự khác nhau này tiết kiệm được hàng giờ làm việc sai công cụ mỗi tháng.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Vào <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>, tạo tài khoản Pro ($20/tháng). Thử ba bước: (1) Hỏi Claude Chat về ngành của bạn và đánh giá chất lượng câu trả lời. (2) Tạo một Project với brand guidelines của công ty — lưu tone of voice, sản phẩm chính, đối tượng khách hàng. (3) Dùng Artifacts để tạo template email chuẩn cho team. Đây là bước khởi đầu thực tế trước khi chuyển sang Claude Code CLI ở các bài tiếp theo.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Cảnh báo</b>
+            <p>Đừng mua Max plan ($100–200/tháng) ngay. Bắt đầu với Pro ($20/tháng), dùng thực tế 2 tuần, đánh giá ROI cụ thể: tiết kiệm được bao nhiêu giờ, thay thế được chi phí gì. Upgrade lên Max chỉ khi bạn thấy rõ bottleneck ở context window (file quá lớn không load được) hoặc model speed (Sonnet quá chậm cho workflow của bạn). Tránh upgrade vì FOMO.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="code-la-gi.html" class="nav-prev">← 0.5 "Code" là gì?</a>
+        <button class="btn-complete" data-lesson="0-6-claude-code-gioi-thieu">✓ Hoàn thành bài học</button>
+        <a href="tu-danh-gia.html" class="nav-next">0.7 Tự đánh giá →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

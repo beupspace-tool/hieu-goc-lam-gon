@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đóng góp cộng đồng — Level 5 | BEUP</title>
+  <meta name="description" content="Open source skills, MCP servers cho Vietnamese services, viết về kinh nghiệm. Vietnamese Claude Code community còn nhỏ — bạn có thể trở thành thought leader.">
+  <meta property="og:title" content="Bài 5.4: Đóng góp cộng đồng | BEUP">
+  <meta property="og:description" content="Tạo skill hữu ích, build MCP server cho Vietnamese services, chia sẻ kinh nghiệm. Cộng đồng lớn mạnh nhờ mỗi đóng góp nhỏ.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    :root {
+      --level5-gold: #D4A843;
+      --level5-gold-dark: #B8922E;
+      --level5-gold-light: rgba(212,168,67,0.12);
+      --level5-gold-border: rgba(212,168,67,0.3);
+    }
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-5 { background: var(--level5-gold-light); color: var(--level5-gold-dark); border: 1px solid var(--level5-gold-border); }
+    [data-theme="dark"] .level-badge.level-5 { background: rgba(212,168,67,0.1); color: var(--level5-gold); border-color: rgba(212,168,67,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, var(--level5-gold-light) 0%, rgba(212,168,67,0.03) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--level5-gold); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    .callout-gold { background: var(--level5-gold-light); border-color: var(--level5-gold); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    [data-theme="dark"] .callout-gold { background: rgba(212,168,67,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-gold .ct { color: var(--level5-gold-dark); }
+    [data-theme="dark"] .callout-gold .ct { color: var(--level5-gold); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--level5-gold); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--level5-gold); color: #1a1208; font-weight: var(--prim-weight-bold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--level5-gold-dark); }
+    .btn-complete.completed { background: var(--color-success); color: var(--prim-white); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .contribution-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--prim-space-4);
+      margin: var(--prim-space-6) 0;
+    }
+    .contribution-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+    }
+    .contribution-card:hover {
+      border-color: var(--level5-gold-border);
+      box-shadow: 0 4px 12px rgba(212,168,67,0.1);
+    }
+    .contribution-card-icon {
+      font-size: 1.75rem;
+      margin-bottom: var(--prim-space-3);
+    }
+    .contribution-card h4 {
+      font-size: var(--prim-text-md);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-2);
+    }
+    .contribution-card p {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0 0 var(--prim-space-3);
+    }
+    .contribution-card .effort {
+      display: inline-block;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-medium);
+      padding: 2px 8px;
+      background: var(--level5-gold-light);
+      color: var(--level5-gold-dark);
+      border-radius: var(--prim-radius-sm);
+    }
+    [data-theme="dark"] .contribution-card .effort { color: var(--level5-gold); }
+    .community-links {
+      display: grid;
+      gap: var(--prim-space-3);
+      margin: var(--prim-space-6) 0;
+    }
+    .community-link {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      text-decoration: none;
+      transition: border-color var(--prim-transition-fast), transform var(--prim-transition-fast);
+    }
+    .community-link:hover {
+      border-color: var(--level5-gold-border);
+      transform: translateX(2px);
+      text-decoration: none;
+    }
+    .community-link-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .community-link-body { flex: 1; }
+    .community-link-name {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .community-link-desc {
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+    }
+    .community-link-arrow {
+      color: var(--text-muted);
+      transition: color var(--prim-transition-fast);
+    }
+    .community-link:hover .community-link-arrow {
+      color: var(--level5-gold);
+    }
+    .vn-highlight {
+      background: linear-gradient(135deg, var(--level5-gold-light), transparent);
+      border: 1px solid var(--level5-gold-border);
+      border-radius: var(--prim-radius-lg);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      margin: var(--prim-space-6) 0;
+    }
+    .vn-highlight h3 {
+      color: var(--level5-gold-dark);
+      margin-bottom: var(--prim-space-3);
+      font-size: var(--prim-text-md);
+    }
+    [data-theme="dark"] .vn-highlight h3 { color: var(--level5-gold); }
+    .vn-highlight p {
+      font-size: var(--prim-text-sm);
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-5">Level 5: Ngọn</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="thiet-ke-he-thong.html">5.1 Thiết kế hệ thống</a></li>
+          <li><a href="tao-tai-lieu-dao-tao.html">5.2 Tài liệu đào tạo</a></li>
+          <li><a href="enterprise-patterns.html">5.3 Enterprise patterns</a></li>
+          <li><a href="dong-gop-cong-dong.html" class="active">5.4 Đóng góp cộng đồng</a></li>
+          <li><a href="day-nguoi-khac.html">5.5 Dạy người khác</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 5</a> / Đóng góp cộng đồng
+          </nav>
+          <h1>Bài 5.4: Đóng góp cộng đồng</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~5 phút đọc</span>
+            <span class="tag">Level 5</span>
+            <span class="tag">Community</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-gold">
+          <span class="callout-icon">🌐</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Kiến thức chỉ có giá trị khi được chia sẻ. Mỗi workflow bạn xây dựng, mỗi pattern bạn phát hiện, mỗi tool bạn tạo ra — có thể giúp hàng trăm người khác. Vietnamese Claude Code community còn nhỏ, tài nguyên tiếng Việt còn thiếu. Đây là cơ hội để bạn tạo ra impact thực sự, không phải chỉ consume.</p>
+          </div>
+        </div>
+
+        <div class="vn-highlight">
+          <h3>Cơ hội của người đi sớm</h3>
+          <p>Global Claude Code community có hàng triệu người. Nhưng tài nguyên tiếng Việt, ví dụ thực tế từ doanh nghiệp Việt Nam, workflows phù hợp với context Việt — còn rất ít. Người viết bài blog đầu tiên về "Cách dùng Claude Code cho kế toán SME Việt Nam" không chỉ giúp người khác — họ trở thành reference point cho cả community. First-mover advantage trong knowledge sharing là có thật.</p>
+        </div>
+
+        <h2>Các cách đóng góp</h2>
+
+        <div class="contribution-grid">
+          <div class="contribution-card">
+            <div class="contribution-card-icon">📦</div>
+            <h4>Open source skills</h4>
+            <p>Skill hữu ích bạn đã xây → share lên GitHub. Format đơn giản: README giải thích skill làm gì, SKILL.md với instructions, ví dụ output. 1 skill tốt có thể có hàng nghìn users.</p>
+            <span class="effort">Effort: Trung bình</span>
+          </div>
+
+          <div class="contribution-card">
+            <div class="contribution-card-icon">🔌</div>
+            <h4>MCP servers cho Vietnamese services</h4>
+            <p>VNPay, Vietcombank, MISA API, Shopee VN, TikTok Shop API — chưa có MCP server chính thức. Build một server cho service phổ biến = đóng góp lớn nhất có thể làm. Community sẽ rất cần.</p>
+            <span class="effort">Effort: Cao</span>
+          </div>
+
+          <div class="contribution-card">
+            <div class="contribution-card-icon">📝</div>
+            <h4>Viết về kinh nghiệm thực tế</h4>
+            <p>Blog post, LinkedIn article về workflow cụ thể bạn đã xây. "Chúng tôi đã tiết kiệm 20 giờ/tuần bằng cách..." có giá trị hơn nhiều so với review generic. Doanh nghiệp Việt muốn đọc case study từ doanh nghiệp Việt.</p>
+            <span class="effort">Effort: Thấp</span>
+          </div>
+
+          <div class="contribution-card">
+            <div class="contribution-card-icon">🎤</div>
+            <h4>Present tại meetups</h4>
+            <p>AI/tech meetups tại Hà Nội, HCM, Đà Nẵng đang tìm speakers về Claude Code. 20-minute talk về workflow thực tế tạo network mạnh và reputation trong community. Không cần bạn là expert hoàn hảo — honest practitioner perspective rất có giá trị.</p>
+            <span class="effort">Effort: Trung bình</span>
+          </div>
+        </div>
+
+        <h2>Contributing to awesome-claude-code</h2>
+
+        <p><a href="https://github.com/heshengtao/awesome-claude-code" target="_blank" rel="noopener">awesome-claude-code</a> là curated list các resources, tools, workflows cho Claude Code. PR đơn giản nhất để bắt đầu đóng góp cho open source. Format: thêm link kèm 1-2 câu mô tả vào section phù hợp. Nếu bạn có CLAUDE.md template tốt, workflow document, hay tool, add vào đây.</p>
+
+        <h2>Cộng đồng để tham gia ngay</h2>
+
+        <div class="community-links">
+          <a href="https://www.reddit.com/r/ClaudeAI/" target="_blank" rel="noopener" class="community-link">
+            <div class="community-link-icon">🟠</div>
+            <div class="community-link-body">
+              <div class="community-link-name">r/ClaudeAI — 612K+ members</div>
+              <div class="community-link-desc">Share tips, answer questions, learn từ users khắp thế giới. Top posts thường là workflow tricks và CLAUDE.md examples.</div>
+            </div>
+            <div class="community-link-arrow">→</div>
+          </a>
+
+          <a href="https://claudelog.com" target="_blank" rel="noopener" class="community-link">
+            <div class="community-link-icon">📋</div>
+            <div class="community-link-body">
+              <div class="community-link-name">ClaudeLog.com</div>
+              <div class="community-link-desc">Submit workflows, tips, CLAUDE.md templates. Community hub cho Claude Code practitioners. Good place để discover new patterns.</div>
+            </div>
+            <div class="community-link-arrow">→</div>
+          </a>
+
+          <a href="https://discord.gg/anthropic" target="_blank" rel="noopener" class="community-link">
+            <div class="community-link-icon">💬</div>
+            <div class="community-link-body">
+              <div class="community-link-name">Anthropic Discord</div>
+              <div class="community-link-desc">Official community. #claude-code channel cho real-time discussion. Anthropic team thỉnh thoảng respond trực tiếp.</div>
+            </div>
+            <div class="community-link-arrow">→</div>
+          </a>
+
+          <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener" class="community-link">
+            <div class="community-link-icon">⭐</div>
+            <div class="community-link-body">
+              <div class="community-link-name">Claude Code GitHub</div>
+              <div class="community-link-desc">Issues, feature requests, official documentation. Star repo để nhận update. Watch for announcements về new features.</div>
+            </div>
+            <div class="community-link-arrow">→</div>
+          </a>
+        </div>
+
+        <h2>Bắt đầu từ điều nhỏ nhất</h2>
+
+        <p>Đừng chờ đến khi bạn có "đủ kiến thức." Mọi người ở community đều đang học, đều có questions, đều trân trọng perspective mới. Câu hỏi bạn coi là "cơ bản" rất có thể là thứ người khác đang tìm kiếm nhưng chưa biết hỏi như thế nào.</p>
+
+        <p>Template CLAUDE.md của bạn, dù đơn giản, có thể giúp người mới bắt đầu. Workflow automation của team bạn, dù chỉ tiết kiệm 2 giờ/tuần, có thể inspire người khác build thứ gì đó lớn hơn. Bài blog tiếng Việt của bạn có thể là resource duy nhất về topic đó trong tiếng Việt.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chọn 1 đóng góp để làm trong tuần này: (1) Share CLAUDE.md template lên GitHub với README giải thích context, (2) Viết blog post ngắn về 1 workflow đã giúp ích nhất cho bạn, (3) Submit tip hoặc workflow lên r/ClaudeAI, hoặc (4) Nghiên cứu API docs của 1 Vietnamese service và estimate effort để build MCP server. Đóng góp đầu tiên là khó nhất — sau đó sẽ tự nhiên hơn.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="enterprise-patterns.html" class="nav-prev">← 5.3 Enterprise patterns</a>
+        <button class="btn-complete" data-lesson="5-4-dong-gop-cong-dong">✓ Hoàn thành bài học</button>
+        <a href="day-nguoi-khac.html" class="nav-next">5.5 Dạy người khác →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

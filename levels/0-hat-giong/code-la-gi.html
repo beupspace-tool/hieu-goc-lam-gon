@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>"Code" là gì? — Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="Code là ngôn ngữ viết chỉ dẫn cho máy tính. Bạn không cần biết viết code — Claude Code làm thay. Nhưng hiểu code giúp bạn giao tiếp với AI hiệu quả hơn nhiều.">
+  <meta property="og:title" content='"Code" là gì? — Hiểu Gốc Làm Gọn | BEUP'>
+  <meta property="og:description" content="Code là ngôn ngữ viết chỉ dẫn cho máy tính. Bạn không cần viết code — Claude Code làm thay.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-0 { background: rgba(127,212,211,0.18); color: var(--prim-teal-700); border: 1px solid var(--prim-teal-200); }
+    [data-theme="dark"] .level-badge.level-0 { background: rgba(127,212,211,0.12); color: var(--prim-teal-300); border-color: rgba(127,212,211,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(127,212,211,0.12) 0%, rgba(63,183,182,0.05) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+
+    /* Code block styled */
+    .code-block {
+      background: var(--bg-code);
+      border-radius: var(--prim-radius-lg);
+      overflow: hidden;
+      margin: var(--prim-space-5) 0;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,0.05);
+      padding: var(--prim-space-3) var(--prim-space-5);
+      font-size: var(--prim-text-xs);
+      font-family: var(--prim-font-mono);
+      color: rgba(255,255,255,0.5);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+    }
+    .code-block-body {
+      padding: var(--prim-space-5) var(--prim-space-6);
+      font-family: var(--prim-font-mono);
+      font-size: var(--prim-text-sm);
+      line-height: 1.8;
+      color: var(--text-code);
+      overflow-x: auto;
+    }
+    .code-kw { color: #c792ea; }
+    .code-str { color: #c3e88d; }
+    .code-var { color: #82aaff; }
+    .code-cmt { color: rgba(255,255,255,0.35); font-style: italic; }
+    .code-num { color: #f78c6c; }
+
+    /* Language pills */
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--prim-space-3);
+      margin: var(--prim-space-5) 0;
+    }
+    .lang-pill {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      padding: var(--prim-space-4);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+    }
+    .lang-pill-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .lang-pill-name { font-weight: var(--prim-weight-semibold); font-size: var(--prim-text-sm); color: var(--text-primary); }
+    .lang-pill-use { font-size: var(--prim-text-xs); color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html" class="active">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 0</a> / "Code" là gì?
+          </nav>
+          <h1>Bài 0.5: "Code" là gì?</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~4 phút đọc</span>
+            <span class="tag">Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Logic kinh doanh bạn đang áp dụng mỗi ngày — "nếu đơn hàng trên 5 triệu thì miễn phí vận chuyển", "nếu khách mua 3 lần thì upgrade lên VIP" — chính là code. Bạn đã suy nghĩ theo cấu trúc lập trình từ lâu, chỉ chưa biết gọi nó bằng tên đó. Hiểu điều này giúp bạn mô tả yêu cầu cho Claude Code chính xác hơn nhiều.</p>
+          </div>
+        </div>
+
+        <h2>Code là logic kinh doanh được formalised</h2>
+
+        <p>Khi bạn viết quy trình vận hành cho nhân viên: <em>"Nếu đơn hàng trên 2 triệu đồng, áp mã giảm giá 10%. Nếu khách VIP, áp thêm 5% nữa. Nếu cả hai, cộng lại thành 15%."</em> — bạn vừa viết logic điều kiện. Trong Python, nó trông như thế này:</p>
+
+        <div class="code-block">
+          <div class="code-block-header">🐍 Python — logic giảm giá đơn hàng</div>
+          <div class="code-block-body"><span class="code-kw">def</span> <span class="code-var">tinh_giam_gia</span>(<span class="code-var">tong_don_hang</span>, <span class="code-var">la_khach_vip</span>):
+    <span class="code-var">giam_gia</span> = <span class="code-num">0</span>
+    <span class="code-kw">if</span> <span class="code-var">tong_don_hang</span> &gt; <span class="code-num">2000000</span>:
+        <span class="code-var">giam_gia</span> += <span class="code-num">0.10</span>
+    <span class="code-kw">if</span> <span class="code-var">la_khach_vip</span>:
+        <span class="code-var">giam_gia</span> += <span class="code-num">0.05</span>
+    <span class="code-kw">return</span> <span class="code-var">tong_don_hang</span> * (<span class="code-num">1</span> - <span class="code-var">giam_gia</span>)
+
+<span class="code-cmt"># Đơn hàng 3 triệu, khách VIP → giảm 15%</span>
+<span class="code-kw">print</span>(<span class="code-var">tinh_giam_gia</span>(<span class="code-num">3000000</span>, <span class="code-kw">True</span>))
+<span class="code-cmt"># Kết quả: 2550000</span></div>
+        </div>
+
+        <p>Nếu bạn đọc được logic đó — và bạn đọc được vì nó giống hệt cách bạn nghĩ về kinh doanh — thì khoảng cách giữa bạn và code không lớn như bạn nghĩ.</p>
+
+        <h2>SQL — ngôn ngữ bạn nên biết đọc ngay hôm nay</h2>
+
+        <p>SQL (Structured Query Language) là cách nói chuyện với database. Mọi dữ liệu kinh doanh của bạn — đơn hàng, khách hàng, kho hàng — đều nằm trong database và SQL là cách truy xuất chúng.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">⚙️ SQL — câu hỏi kinh doanh thực tế</div>
+          <div class="code-block-body"><span class="code-cmt">-- Đơn hàng nào trên 5 triệu trong tháng 3?</span>
+<span class="code-kw">SELECT</span> <span class="code-var">ma_don_hang</span>, <span class="code-var">ten_khach</span>, <span class="code-var">tong_tien</span>
+<span class="code-kw">FROM</span> <span class="code-var">don_hang</span>
+<span class="code-kw">WHERE</span> <span class="code-var">tong_tien</span> &gt; <span class="code-num">5000000</span>
+  <span class="code-kw">AND</span> <span class="code-var">thang</span> = <span class="code-num">3</span>
+<span class="code-kw">ORDER BY</span> <span class="code-var">tong_tien</span> <span class="code-kw">DESC</span>;
+
+<span class="code-cmt">-- Top 10 sản phẩm bán chạy nhất Q1?</span>
+<span class="code-kw">SELECT</span> <span class="code-var">ten_sp</span>, <span class="code-kw">SUM</span>(<span class="code-var">so_luong</span>) <span class="code-kw">AS</span> <span class="code-var">tong_ban</span>
+<span class="code-kw">FROM</span> <span class="code-var">chi_tiet_don_hang</span>
+<span class="code-kw">GROUP BY</span> <span class="code-var">ten_sp</span>
+<span class="code-kw">ORDER BY</span> <span class="code-var">tong_ban</span> <span class="code-kw">DESC</span>
+<span class="code-kw">LIMIT</span> <span class="code-num">10</span>;</div>
+        </div>
+
+        <p>SQL đọc gần như tiếng Anh tự nhiên. Bạn không cần viết SQL — Claude Code viết thay bạn. Nhưng khi nhìn vào kết quả báo cáo bất thường, biết đặt câu hỏi đúng giúp Claude Code tạo query chính xác hơn.</p>
+
+        <h2>Kiến trúc ba lớp của mọi ứng dụng web</h2>
+
+        <p>Mọi website hoặc app kinh doanh đều có ba lớp. Hiểu điều này giúp bạn phân bổ ngân sách và đặt câu hỏi đúng khi thuê agency:</p>
+
+        <div class="lang-grid">
+          <div class="lang-pill">
+            <div class="lang-pill-icon">🏗️</div>
+            <div>
+              <div class="lang-pill-name">Frontend (HTML/CSS/JS)</div>
+              <div class="lang-pill-use">Giao diện người dùng thấy. Màu sắc, layout, tương tác. Chi phí: ~20–40% dự án.</div>
+            </div>
+          </div>
+          <div class="lang-pill">
+            <div class="lang-pill-icon">⚙️</div>
+            <div>
+              <div class="lang-pill-name">Backend (Python/Node/Java)</div>
+              <div class="lang-pill-use">Logic kinh doanh, xử lý đơn hàng, tính toán. Chi phí: ~40–60% dự án.</div>
+            </div>
+          </div>
+          <div class="lang-pill">
+            <div class="lang-pill-icon">🗄️</div>
+            <div>
+              <div class="lang-pill-name">Database (SQL/NoSQL)</div>
+              <div class="lang-pill-use">Lưu trữ tất cả dữ liệu. Thiết kế database tốt quyết định hiệu suất hệ thống.</div>
+            </div>
+          </div>
+        </div>
+
+        <p>Khi agency báo giá "làm website", hỏi rõ: lớp nào họ đang làm, lớp nào là template có sẵn, và bạn có quyền sở hữu source code không sau khi dự án kết thúc.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành — đọc code thực</b>
+            <p>Đọc đoạn SQL sau và trả lời: nó đang hỏi gì? <br><code style="font-family:monospace; font-size:0.9em; background:var(--bg-code); color:var(--text-code); padding:2px 6px; border-radius:4px;">SELECT ten_khach, COUNT(*) as so_don FROM don_hang WHERE trang_thai = 'completed' GROUP BY ten_khach HAVING COUNT(*) >= 5 ORDER BY so_don DESC;</code><br><br>Nếu bạn đọc được: "Tìm những khách hàng đã hoàn thành ít nhất 5 đơn, sắp xếp theo số đơn nhiều nhất" — bạn đã đọc được SQL. Đây là câu truy vấn thực tế để tìm khách hàng trung thành cho chương trình loyalty.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Source code là tài sản doanh nghiệp</b>
+            <p>Khi thuê agency xây dựng phần mềm hoặc website, luôn yêu cầu bàn giao source code (code gốc) trong hợp đồng. Nhiều doanh nghiệp Việt bị "con tin" bởi agency vì không có source code — mỗi lần cần sửa nhỏ phải trả tiền cho agency cũ, không thể chuyển sang đội khác. Source code là tài sản kỹ thuật số của bạn, không khác gì bản vẽ nhà hay sổ đỏ.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="terminal.html" class="nav-prev">← 0.4 Terminal</a>
+        <button class="btn-complete" data-lesson="0-5-code-la-gi">✓ Hoàn thành bài học</button>
+        <a href="claude-code-gioi-thieu.html" class="nav-next">0.6 Claude Code →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

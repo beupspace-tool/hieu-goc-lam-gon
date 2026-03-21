@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4.4: Multi-agent orchestration — Level 4 Cành | BEUP</title>
+  <meta name="description" content="Multi-agent orchestration trong Claude Code — sequential, parallel, hybrid patterns. Git worktrees, agent teams, và cách chạy 100 PRs/tuần như Boris Cherny.">
+  <meta property="og:title" content="Bài 4.4: Multi-agent orchestration | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-4 { background: rgba(22,163,74,0.12); color: #15803d; border: 1px solid rgba(22,163,74,0.3); }
+    [data-theme="dark"] .level-badge.level-4 { background: rgba(22,163,74,0.15); color: #4ade80; border-color: rgba(22,163,74,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(22,163,74,0.08) 0%, rgba(22,163,74,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--prim-space-4); margin: var(--prim-space-4) 0; }
+    .pattern-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); padding: var(--prim-space-5); }
+    .pattern-card h4 { font-size: var(--prim-text-md); font-weight: var(--prim-weight-semibold); margin-bottom: var(--prim-space-2); color: var(--text-primary); }
+    .pattern-card p { font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-3); }
+    .pattern-flow { font-size: var(--prim-text-xs); font-family: var(--prim-font-mono); color: #15803d; background: rgba(22,163,74,0.08); padding: var(--prim-space-2) var(--prim-space-3); border-radius: var(--prim-radius-sm); }
+    .agent-tags { display: flex; flex-wrap: wrap; gap: var(--prim-space-2); margin: var(--prim-space-4) 0; }
+    .agent-tag { font-size: var(--prim-text-xs); font-family: var(--prim-font-mono); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); padding: 3px 10px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-4">Level 4: Cành</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="skill-tu-chinh.html">4.1 Skill tùy chỉnh</a></li>
+          <li><a href="mcp-nang-cao.html">4.2 MCP nâng cao</a></li>
+          <li><a href="hooks-tu-dong-hoa.html">4.3 Hooks &amp; tự động hóa</a></li>
+          <li><a href="multi-agent.html" class="active">4.4 Multi-agent</a></li>
+          <li><a href="prompt-nang-cao.html">4.5 Prompt nâng cao</a></li>
+          <li><a href="marketing-stack.html">4.6 Marketing stack</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 4</a> / Multi-agent orchestration
+          </nav>
+          <h1>Bài 4.4: Multi-agent orchestration</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 4</span>
+            <span class="tag">Advanced</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Một agent làm tuần tự từng bước. Nhiều agents làm song song các bước độc lập. Kết quả: task phức tạp hoàn thành nhanh hơn 3-5x, với chất lượng cao hơn vì mỗi agent chuyên sâu một vai trò. Đây là cách Boris Cherny tại Anthropic tạo 100 PRs/tuần.</p>
+          </div>
+        </div>
+
+        <h2>Tại sao multi-agent?</h2>
+
+        <p>Hãy tưởng tượng bạn cần implement một feature mới: research giải pháp → viết code → viết tests → review code → update docs. Một agent làm tuần tự: 45 phút. Bốn agents song song: 15 phút, mỗi agent làm việc mình giỏi nhất.</p>
+
+        <p>Nhưng performance không phải lý do duy nhất. Multi-agent còn giải quyết vấn đề <strong>context window</strong>. Khi task phức tạp, một agent dễ bị "lạc" trong context quá dài. Subagents làm nhiệm vụ hẹp hơn, ít noise hơn, ra kết quả tốt hơn.</p>
+
+        <h2>Agent types trong Claude Code</h2>
+
+        <div class="agent-tags">
+          <span class="agent-tag">planner</span>
+          <span class="agent-tag">researcher</span>
+          <span class="agent-tag">fullstack-developer</span>
+          <span class="agent-tag">tester</span>
+          <span class="agent-tag">code-reviewer</span>
+          <span class="agent-tag">debugger</span>
+          <span class="agent-tag">docs-manager</span>
+          <span class="agent-tag">general-purpose</span>
+        </div>
+
+        <p>Mỗi agent type có "vai diễn" khác nhau — được định nghĩa qua system prompt hoặc skill. <code>planner</code> phân tích và chia tasks. <code>researcher</code> chỉ tìm kiếm, đọc, không viết code. <code>tester</code> chỉ sở hữu test files. <code>code-reviewer</code> chỉ đọc và comment.</p>
+
+        <p>Quan trọng: <strong>mỗi agent cần file ownership rõ ràng</strong>. Khi 3 developer agents cùng chạy song song, ai sở hữu file nào? Nếu không định nghĩa rõ, conflict xảy ra.</p>
+
+        <h2>3 orchestration patterns</h2>
+
+        <div class="pattern-grid">
+          <div class="pattern-card">
+            <h4>Sequential Pipeline</h4>
+            <p>Agents chạy lần lượt, output của agent trước là input của agent sau. Dùng khi mỗi bước phụ thuộc vào kết quả bước trước.</p>
+            <div class="pattern-flow">plan → implement → test → review</div>
+          </div>
+          <div class="pattern-card">
+            <h4>Parallel Fan-out/Fan-in</h4>
+            <p>Lead agent phân task → nhiều worker agents chạy đồng thời → lead agent tổng hợp kết quả. Dùng khi tasks độc lập với nhau.</p>
+            <div class="pattern-flow">lead → [dev-A, dev-B, dev-C] → merge</div>
+          </div>
+          <div class="pattern-card">
+            <h4>Hybrid</h4>
+            <p>Kết hợp cả hai. Research song song → plan tuần tự → implement song song → review tuần tự. Pattern phổ biến nhất cho feature development đầy đủ.</p>
+            <div class="pattern-flow">research(×3) → plan → impl(×3) → review</div>
+          </div>
+        </div>
+
+        <h2>Git worktrees: Zero merge conflicts cho parallel agents</h2>
+
+        <p>Vấn đề lớn nhất khi nhiều agents code song song: merge conflicts. Giải pháp: mỗi agent làm việc trong một git worktree riêng — một copy của repo với branch riêng.</p>
+
+        <pre><code># Setup 3 worktrees cho 3 developer agents
+git worktree add ../feature-auth -b feature/auth
+git worktree add ../feature-payment -b feature/payment
+git worktree add ../feature-dashboard -b feature/dashboard
+
+# Mỗi agent chạy trong một worktree
+# Agent 1: cd ../feature-auth && claude
+# Agent 2: cd ../feature-payment && claude
+# Agent 3: cd ../feature-dashboard && claude
+
+# Sau khi xong, merge về main
+git worktree remove ../feature-auth
+git merge feature/auth
+</code></pre>
+
+        <p>Với worktrees, ba agents có thể edit cùng file paths mà không conflict — vì chúng ở trong directories khác nhau. Khi merge về main, conflicts có thể xảy ra nhưng tại thời điểm bạn đã review xong, không phải giữa chừng.</p>
+
+        <h2>Cách spawn subagent trong Claude Code</h2>
+
+        <p>Trong session Claude Code, bạn có thể spawn subagent bằng cách mô tả task:</p>
+
+        <pre><code># Trong CLAUDE.md hoặc trong prompt:
+"Spawn một researcher agent để tìm hiểu best practices
+cho PostgreSQL indexing, báo cáo vào plans/research/"
+
+# Claude sẽ:
+# 1. Tạo Task tool call với prompt cho researcher
+# 2. Researcher agent chạy, đọc docs, viết report
+# 3. Main agent nhận kết quả, tiếp tục với đầy đủ context</code></pre>
+
+        <p>Subagent delegation giảm 40-60% main context usage — researcher đọc 50 trang docs rồi tóm tắt thành 2 trang cho main agent. Main agent không cần đọc 50 trang đó.</p>
+
+        <h2>Real workflow: 100 PRs/tuần</h2>
+
+        <p>Boris Cherny, Software Engineer tại Anthropic, chia sẻ workflow thực tế: mở 10-15 terminal windows, mỗi window là một Claude Code session với một task. Buổi sáng setup tasks, buổi chiều review kết quả và merge PRs tốt. Không phải mọi PR đều được merge — nhưng throughput tổng thể tăng đột biến.</p>
+
+        <p>Key insight: <strong>parallelism ở cấp độ task, không phải token</strong>. Không cần một AI siêu mạnh — cần nhiều AI chạy song song trên nhiều tasks độc lập.</p>
+
+        <h2>Agent Teams: Coordination có tổ chức</h2>
+
+        <p>Với <code>/team</code> skill, bạn có thể tạo team agents có cấu trúc hơn:</p>
+
+        <ul>
+          <li><strong>Lead agent</strong>: Nhận task tổng, phân task cho workers qua <code>TaskCreate</code>, đợi kết quả</li>
+          <li><strong>Worker agents</strong>: Claim task, implement, báo cáo qua <code>SendMessage</code></li>
+          <li><strong>Communication</strong>: Agents nhắn tin cho nhau qua built-in messaging system</li>
+        </ul>
+
+        <pre><code># Lead agent tạo tasks cho team
+TaskCreate(
+  title="Implement user authentication",
+  description="Build JWT auth. File ownership: src/auth/*",
+  assigned_to="developer-1"
+)
+TaskCreate(
+  title="Write auth tests",
+  description="Test all auth flows. File ownership: tests/auth/*",
+  assigned_to="tester-1"
+)
+# Tester waits for developer to complete first</code></pre>
+
+        <h2>Limits và best practices</h2>
+
+        <p><strong>Số lượng concurrent agents:</strong> Tối đa 5-10 agents đồng thời cho stability. Nhiều hơn không có nghĩa là nhanh hơn — API rate limits và context management trở thành bottleneck.</p>
+
+        <p><strong>File ownership là bắt buộc:</strong> Mỗi agent phải có danh sách files mình được phép edit. Không bao giờ để hai agents edit cùng file — ngay cả với worktrees.</p>
+
+        <p><strong>Task granularity:</strong> Task quá nhỏ (5 phút) = overhead quản lý không xứng. Task quá lớn (4 giờ) = agent dễ lạc hướng. Target 30-90 phút per task.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Khi nào không dùng multi-agent</b>
+            <p>Nếu task có dependencies phức tạp giữa tất cả các phần, multi-agent tạo thêm overhead hơn là tiết kiệm thời gian. Tasks cần nhiều back-and-forth với bạn (creative work, design decisions) cũng phù hợp hơn với single agent. Multi-agent tốt nhất cho tasks có thể decompose thành independent subtasks rõ ràng.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Thử sequential pattern với 4 bước: (1) Mở Claude Code, nói "Spawn một researcher agent, tìm hiểu 3 best practices để tối ưu React component performance, viết report ngắn." (2) Đọc report. (3) Nói "Dựa trên report vừa rồi, implement một React component demo ứng dụng practice đầu tiên." (4) Nói "Review code vừa viết, check performance issues." Quan sát cách context được truyền giữa các steps mà không cần bạn copy-paste.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="hooks-tu-dong-hoa.html" class="nav-prev">← 4.3 Hooks &amp; tự động hóa</a>
+        <button class="btn-complete" data-lesson="4-4-multi-agent">✓ Hoàn thành bài học</button>
+        <a href="prompt-nang-cao.html" class="nav-next">4.5 Prompt nâng cao →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

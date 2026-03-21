@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internet &amp; Web — Hiểu Gốc Làm Gọn | BEUP</title>
+  <meta name="description" content="Internet và web không phải là một. Hiểu sự khác biệt, cách website hoạt động, và tại sao điều này quan trọng khi dùng Claude Code để xây dựng công cụ số.">
+  <meta property="og:title" content="Internet &amp; Web — Hiểu Gốc Làm Gọn | BEUP">
+  <meta property="og:description" content="Internet và web không phải là một. Hiểu sự khác biệt, cách website hoạt động, và tại sao điều này quan trọng khi dùng Claude Code.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-0 {
+      background: rgba(127,212,211,0.18);
+      color: var(--prim-teal-700);
+      border: 1px solid var(--prim-teal-200);
+    }
+    [data-theme="dark"] .level-badge.level-0 {
+      background: rgba(127,212,211,0.12);
+      color: var(--prim-teal-300);
+      border-color: rgba(127,212,211,0.25);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero {
+      padding: var(--prim-space-10) var(--content-padding-x);
+      background: linear-gradient(140deg, rgba(127,212,211,0.12) 0%, rgba(63,183,182,0.05) 100%);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-4);
+    }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 {
+      font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl));
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--text-primary);
+      margin: var(--prim-space-3) 0 var(--prim-space-3);
+      letter-spacing: -0.025em;
+    }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-medium);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-full);
+      color: var(--text-muted);
+    }
+    .callout {
+      display: flex;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border-radius: var(--callout-radius);
+      border-left: var(--callout-border-width) solid;
+      margin: var(--prim-space-6) 0;
+    }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct {
+      display: block;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-1);
+    }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-8) var(--content-padding-x);
+      border-top: 1px solid var(--border-default);
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+    }
+    .nav-prev, .nav-next {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--card-radius);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+      flex: 1;
+      max-width: 48%;
+    }
+    .nav-prev:hover, .nav-next:hover {
+      border-color: var(--border-brand);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-next { text-align: right; }
+    .btn-complete {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-5);
+      height: var(--btn-height);
+      background: var(--color-primary);
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      border: none;
+      cursor: pointer;
+      transition: background var(--prim-transition-fast);
+      white-space: nowrap;
+    }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+
+    /* Flow diagram */
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      flex-wrap: wrap;
+      margin: var(--prim-space-4) 0;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      background: var(--bg-secondary);
+      border-radius: var(--prim-radius-md);
+      border: 1px solid var(--border-default);
+    }
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--prim-space-3) var(--prim-space-4);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-md);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-medium);
+      text-align: center;
+      min-width: 100px;
+    }
+    .flow-step-icon { font-size: 1.5rem; margin-bottom: var(--prim-space-1); }
+    .flow-arrow { font-size: 1.2rem; color: var(--text-muted); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-0">Level 0: Hạt Giống</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="phan-mem-la-gi.html">0.1 Phần mềm là gì?</a></li>
+          <li><a href="internet-va-web.html" class="active">0.2 Internet &amp; Web</a></li>
+          <li><a href="ai-va-llm.html">0.3 AI &amp; LLM</a></li>
+          <li><a href="terminal.html">0.4 Terminal</a></li>
+          <li><a href="code-la-gi.html">0.5 "Code" là gì?</a></li>
+          <li><a href="claude-code-gioi-thieu.html">0.6 Claude Code</a></li>
+          <li><a href="tu-danh-gia.html">0.7 Tự đánh giá</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 0</a> / Internet &amp; Web
+          </nav>
+          <h1>Bài 0.2: Internet &amp; Web</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~4 phút đọc</span>
+            <span class="tag">Level 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Kiến trúc web ảnh hưởng trực tiếp đến chi phí vận hành và quyết định kỹ thuật của bạn. Khi website bạn chậm, nguyên nhân có thể là hosting kém, thiếu CDN, code không tối ưu, hoặc database quá tải. Biết phân biệt giúp bạn hỏi đúng câu hỏi — và không bị agency "thổi giá" khi không cần thiết.</p>
+          </div>
+        </div>
+
+        <h2>Client-server — mọi thứ bạn dùng đều hoạt động theo mô hình này</h2>
+
+        <p>Mỗi khi bạn mở website, app, hay dịch vụ cloud, đều có một cuộc trao đổi xảy ra: <strong>client</strong> (thiết bị của bạn) gửi yêu cầu, <strong>server</strong> (máy chủ của nhà cung cấp) xử lý và trả về kết quả. Đây là nền tảng của toàn bộ web hiện đại.</p>
+
+        <p>Tại sao điều này quan trọng với doanh nghiệp? Vì nó quyết định <strong>dữ liệu của bạn nằm ở đâu</strong>. Khi bạn dùng Google Sheets — dữ liệu nằm trên server của Google ở Mỹ. Khi bạn dùng MISA cloud — dữ liệu nằm trên server của MISA tại Việt Nam. Khi bạn dùng phần mềm on-premise — dữ liệu nằm trong văn phòng bạn.</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <span class="flow-step-icon">🖥️</span>
+            Trình duyệt / App của bạn (Client)
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-step-icon">📡</span>
+            HTTP Request qua internet
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-step-icon">🗄️</span>
+            Web Server xử lý
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-step-icon">📄</span>
+            Response: HTML/JSON/File
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-step-icon">🎨</span>
+            Hiển thị cho người dùng
+          </div>
+        </div>
+
+        <h2>Domain, hosting, CDN — ba thứ bạn phải hiểu khi có website</h2>
+
+        <h3>Domain (tên miền)</h3>
+        <p>Địa chỉ website của bạn — ví dụ <code>congtyabc.vn</code>. Bạn thuê quyền sử dụng tên miền từ nhà đăng ký (Godaddy, Namecheap, hay các nhà cung cấp Việt như VNPT, Matbao). Chi phí: ~200.000–500.000đ/năm cho tên miền .vn. Tên miền và hosting là hai thứ riêng biệt — bạn có thể mua domain ở một nơi và hosting ở nơi khác.</p>
+
+        <h3>Hosting (nơi đặt server)</h3>
+        <p>Máy chủ chạy website của bạn 24/7. Ba lựa chọn chính:</p>
+        <ul>
+          <li><strong>Shared hosting</strong> (~50.000–200.000đ/tháng): nhiều website chung một server. Rẻ nhưng chậm khi hàng xóm traffic cao.</li>
+          <li><strong>VPS</strong> (~200.000–1.000.000đ/tháng): server riêng ảo hoá. Phù hợp cho SME có traffic ổn định.</li>
+          <li><strong>Cloud hosting</strong> (AWS, Google Cloud, Azure): trả theo dùng, tự động scale. Chi phí biến động theo traffic — phù hợp khi có spike đột biến như sale 11/11.</li>
+        </ul>
+
+        <h3>CDN (Content Delivery Network)</h3>
+        <p>Mạng lưới server phân tán toàn cầu. Khi khách hàng ở Hà Nội truy cập website, họ lấy file từ server gần nhất thay vì từ server gốc ở TP.HCM. Kết quả: tải nhanh hơn 30–60%. Cloudflare có gói miễn phí hoạt động tốt cho hầu hết SME Việt Nam.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Chẩn đoán website chậm</b>
+            <p>Nếu website của bạn chậm, dùng <a href="https://pagespeed.web.dev" target="_blank" rel="noopener">pagespeed.web.dev</a> (miễn phí của Google) để kiểm tra. Công cụ này chỉ ra đúng nguyên nhân: hình ảnh chưa nén, thiếu CDN, code CSS/JS quá nặng, hay server response time kém. Báo cáo này cũng là tài liệu để bạn làm việc với agency — thay vì nghe "cần nâng cấp toàn bộ", bạn biết chính xác cần fix gì.</p>
+          </div>
+        </div>
+
+        <h2>HTTP vs HTTPS — và tại sao HTTPS là bắt buộc</h2>
+
+        <p>HTTP là giao thức truyền dữ liệu giữa browser và server. HTTPS là phiên bản mã hoá — dữ liệu được mã hoá trên đường truyền, không ai "nghe lén" được. Google phạt SEO website HTTP, Chrome hiển thị cảnh báo "Not secure", và khách hàng mất tin tưởng. Chứng chỉ SSL (HTTPS) hiện nay miễn phí qua Let's Encrypt — không có lý do gì để website doanh nghiệp vẫn chạy HTTP.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Rủi ro dữ liệu với SaaS web</b>
+            <p>Mọi dịch vụ SaaS bạn dùng — Google Workspace, Notion, Hubspot — đều lưu dữ liệu trên server của họ theo mô hình client-server. Điều này có nghĩa: khi tài khoản bị khoá, bị hack, hoặc nhà cung cấp ngừng hoạt động, bạn có thể mất quyền truy cập dữ liệu. Giải pháp thực tế: thiết lập backup tự động định kỳ ra file local hoặc cloud storage riêng của bạn (Google Drive, S3). Đây không phải phòng ngừa thừa — đây là quản lý rủi ro cơ bản.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="phan-mem-la-gi.html" class="nav-prev">← 0.1 Phần mềm là gì?</a>
+        <button class="btn-complete" data-lesson="0-2-internet-va-web">✓ Hoàn thành bài học</button>
+        <a href="ai-va-llm.html" class="nav-next">0.3 AI &amp; LLM →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

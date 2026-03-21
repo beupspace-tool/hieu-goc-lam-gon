@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài tập tổng hợp | Level 2 | BEUP</title>
+  <meta name="description" content="6 tình huống thực tế kết hợp tất cả kỹ năng Level 2: khởi tạo dự án, dọn dẹp data, content week, báo cáo tháng, email campaign, và setup hoàn chỉnh Claude Code workflow.">
+  <meta property="og:title" content="Bài tập tổng hợp | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #7c3aed; border: 1px solid rgba(168,85,247,0.25); }
+    [data-theme="dark"] .level-badge.level-2 { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .scenario-card { border: 1px solid var(--border-default); border-radius: var(--prim-radius-xl); overflow: hidden; margin-bottom: var(--prim-space-8); }
+    .scenario-header { background: linear-gradient(135deg, rgba(168,85,247,0.08) 0%, rgba(63,183,182,0.05) 100%); border-bottom: 1px solid var(--border-default); padding: var(--prim-space-5) var(--prim-space-6); display: flex; gap: var(--prim-space-4); align-items: flex-start; }
+    .scenario-num { flex-shrink: 0; width: 44px; height: 44px; background: rgba(168,85,247,0.12); border: 2px solid rgba(168,85,247,0.25); border-radius: var(--prim-radius-md); display: flex; align-items: center; justify-content: center; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-bold); color: #7c3aed; }
+    .scenario-title-wrap {}
+    .scenario-title { font-size: var(--prim-text-lg); font-weight: var(--prim-weight-bold); color: var(--text-primary); margin-bottom: var(--prim-space-1); }
+    .scenario-skills { display: flex; gap: var(--prim-space-2); flex-wrap: wrap; }
+    .skill-chip { font-size: var(--prim-text-xs); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); padding: 2px var(--prim-space-2); color: var(--text-muted); }
+    .scenario-body { padding: var(--prim-space-6); }
+    .scenario-section-label { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: var(--prim-space-2); margin-top: var(--prim-space-4); }
+    .scenario-section-label:first-child { margin-top: 0; }
+    .level-complete-box { background: linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(63,183,182,0.08) 100%); border: 2px solid rgba(168,85,247,0.3); border-radius: var(--prim-radius-xl); padding: var(--prim-space-8); text-align: center; margin: var(--prim-space-10) 0; }
+    .level-complete-box h2 { font-size: var(--prim-text-2xl); margin-bottom: var(--prim-space-3); }
+    .level-complete-box p { color: var(--text-muted); margin-bottom: var(--prim-space-5); max-width: 55ch; margin-left: auto; margin-right: auto; }
+    .btn-next-level { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-6); height: var(--btn-height); background: #7c3aed; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); text-decoration: none; transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast); }
+    .btn-next-level:hover { background: #6d28d9; box-shadow: var(--shadow-md); text-decoration: none; color: var(--prim-white); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html" class="active">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / Bài tập tổng hợp
+          </nav>
+          <h1>Bài 2.9: Bài tập tổng hợp</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 2</span>
+            <span class="tag">Thực hành</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Mục đích bài này</b>
+            <p>6 tình huống thực tế kết hợp tất cả kỹ năng Level 2. Chọn ít nhất 2 tình huống gần nhất với công việc của bạn và thực hiện thật sự — không chỉ đọc qua. Kỹ năng chỉ hình thành khi bạn làm, không phải khi đọc.</p>
+          </div>
+        </div>
+
+        <!-- Scenario 1 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <div class="scenario-num">S1</div>
+            <div class="scenario-title-wrap">
+              <div class="scenario-title">Khởi tạo dự án marketing</div>
+              <div class="scenario-skills">
+                <span class="skill-chip">2.1 CLAUDE.md</span>
+                <span class="skill-chip">2.2 Templates</span>
+                <span class="skill-chip">2.3 Cấu trúc</span>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <div class="scenario-section-label">Mục tiêu</div>
+            <p>Tạo folder dự án marketing hoàn chỉnh cho 1 sản phẩm/dịch vụ bạn đang kinh doanh — sẵn sàng để CC làm việc hiệu quả ngay từ đầu.</p>
+
+            <div class="scenario-section-label">Bước thực hiện</div>
+            <ol>
+              <li>Tạo folder <code>marketing-[ten-san-pham]/</code></li>
+              <li>Tạo cấu trúc con: <code>/emails/</code>, <code>/social/</code>, <code>/blog/</code>, <code>/briefs/</code>, <code>/templates/</code></li>
+              <li>Tạo <code>CLAUDE.md</code> từ template marketing (bài 2.2) — điền thông tin thực của doanh nghiệp bạn</li>
+              <li>Tạo <code>brief-chien-dich-thang-4.md</code> với mục tiêu content tháng 4</li>
+              <li>Yêu cầu CC đề xuất lịch nội dung 4 tuần dựa trên brief</li>
+            </ol>
+
+            <div class="scenario-section-label">Kết quả mong đợi</div>
+            <p>Folder marketing được tổ chức rõ ràng, CLAUDE.md phản ánh đúng thương hiệu của bạn, và có lịch content 4 tuần cụ thể để bắt đầu thực hiện.</p>
+
+            <div class="scenario-section-label">Gợi ý</div>
+            <p>Đừng hoàn hảo hóa CLAUDE.md ngay từ đầu. Viết phiên bản đầu tiên trong 15 phút, rồi cập nhật dần khi bạn phát hiện CC hiểu sai điều gì đó.</p>
+          </div>
+        </div>
+
+        <!-- Scenario 2 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <div class="scenario-num">S2</div>
+            <div class="scenario-title-wrap">
+              <div class="scenario-title">Dọn dẹp danh sách khách hàng</div>
+              <div class="scenario-skills">
+                <span class="skill-chip">2.5 File</span>
+                <span class="skill-chip">2.7 Dữ liệu</span>
+                <span class="skill-chip">2.4 Prompt</span>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <div class="scenario-section-label">Mục tiêu</div>
+            <p>Biến danh sách khách hàng lộn xộn thành dataset sạch, có phân loại, có báo cáo tóm tắt — trong dưới 30 phút.</p>
+
+            <div class="scenario-section-label">Bước thực hiện</div>
+            <ol>
+              <li>Xuất danh sách khách hàng từ phần mềm hoặc tạo file <code>customers-raw.csv</code> mẫu (ít nhất 20 dòng)</li>
+              <li>Yêu cầu CC đọc file và báo cáo vấn đề: trùng lặp, thiếu thông tin, format không nhất quán</li>
+              <li>Yêu cầu CC dọn dẹp: xóa trùng, chuẩn hóa tên, fix format — lưu vào <code>customers-clean.csv</code></li>
+              <li>Yêu cầu CC phân loại theo tiêu chí bạn chọn (tỉnh thành, giá trị mua, tần suất mua)</li>
+              <li>Yêu cầu CC tạo báo cáo tóm tắt <code>customer-insights.md</code></li>
+            </ol>
+
+            <div class="scenario-section-label">Kết quả mong đợi</div>
+            <p>File khách hàng sạch, phân loại rõ ràng, và báo cáo tóm tắt có thể dùng để quyết định chiến lược marketing.</p>
+
+            <div class="scenario-section-label">Gợi ý</div>
+            <p>Nếu chưa có data thật, dùng prompt này: "Tạo file customers-raw.csv mẫu với 25 dòng, cố ý thêm một số vấn đề dữ liệu để tôi luyện tập dọn dẹp: 3 email trùng, 5 tên không nhất quán về case, 2 dòng thiếu tỉnh thành."</p>
+          </div>
+        </div>
+
+        <!-- Scenario 3 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <div class="scenario-num">S3</div>
+            <div class="scenario-title-wrap">
+              <div class="scenario-title">Content week — Một tuần nội dung hoàn chỉnh</div>
+              <div class="scenario-skills">
+                <span class="skill-chip">2.6 Nội dung</span>
+                <span class="skill-chip">2.4 Prompt</span>
+                <span class="skill-chip">2.5 File</span>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <div class="scenario-section-label">Mục tiêu</div>
+            <p>Tạo toàn bộ nội dung cho 1 tuần — 3 bài blog hoặc 7 caption social — theo đúng quy trình 5 bước.</p>
+
+            <div class="scenario-section-label">Bước thực hiện</div>
+            <ol>
+              <li>Tạo <code>brief-tuan-[X].md</code> với theme tuần, audience, tone, số lượng bài</li>
+              <li>Yêu cầu CC đề xuất 5 ý tưởng nội dung cho tuần — bạn chọn 3</li>
+              <li>Với mỗi ý tưởng được chọn: CC viết bản nháp → bạn review → CC revise</li>
+              <li>Lưu bản cuối mỗi bài vào <code>/content/tuan-[X]/</code></li>
+              <li>Yêu cầu CC tạo file <code>schedule-tuan-[X].md</code> với lịch đăng cụ thể</li>
+            </ol>
+
+            <div class="scenario-section-label">Kết quả mong đợi</div>
+            <p>Toàn bộ nội dung 1 tuần được chuẩn bị trước, tổ chức trong folder, sẵn sàng đăng theo lịch.</p>
+
+            <div class="scenario-section-label">Gợi ý</div>
+            <p>Bắt đầu với social media (ngắn, nhanh feedback) trước khi thử blog. Mỗi vòng review chỉ cần 3–5 điểm cụ thể — đừng viết nhận xét dài hơn bài gốc.</p>
+          </div>
+        </div>
+
+        <!-- Scenario 4 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <div class="scenario-num">S4</div>
+            <div class="scenario-title-wrap">
+              <div class="scenario-title">Báo cáo cuối tháng</div>
+              <div class="scenario-skills">
+                <span class="skill-chip">2.7 Dữ liệu</span>
+                <span class="skill-chip">2.8 Báo cáo</span>
+                <span class="skill-chip">2.5 File</span>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <div class="scenario-section-label">Mục tiêu</div>
+            <p>Tạo báo cáo tháng executive-level từ nhiều nguồn dữ liệu khác nhau — tự động thay vì thủ công.</p>
+
+            <div class="scenario-section-label">Bước thực hiện</div>
+            <ol>
+              <li>Thu thập data: doanh thu (CSV), đơn hàng (CSV), note tay về sự kiện quan trọng (TXT)</li>
+              <li>Yêu cầu CC đọc tất cả file và tổng hợp số liệu chính</li>
+              <li>Yêu cầu CC so sánh với tháng trước (nếu có file tháng trước)</li>
+              <li>Yêu cầu CC viết báo cáo executive summary — tối đa 1 trang A4</li>
+              <li>Review và bổ sung nhận xét cá nhân của bạn (insight mà data không thể hiện)</li>
+              <li>Lưu vào <code>/reports/monthly/report-[thang]-[nam].md</code></li>
+            </ol>
+
+            <div class="scenario-section-label">Kết quả mong đợi</div>
+            <p>Báo cáo chuyên nghiệp, có số liệu cụ thể, có so sánh xu hướng, và có nhận xét từ bạn — sẵn sàng gửi cho sếp hoặc đối tác.</p>
+
+            <div class="scenario-section-label">Gợi ý</div>
+            <p>Tạo file <code>report-template.md</code> một lần với cấu trúc chuẩn — CC sẽ điền vào template đó thay vì tạo format mới mỗi tháng. Consistency quan trọng hơn là mỗi tháng một format đẹp hơn.</p>
+          </div>
+        </div>
+
+        <!-- Scenario 5 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <div class="scenario-num">S5</div>
+            <div class="scenario-title-wrap">
+              <div class="scenario-title">Email campaign preparation</div>
+              <div class="scenario-skills">
+                <span class="skill-chip">2.8 Email</span>
+                <span class="skill-chip">2.2 Templates</span>
+                <span class="skill-chip">2.7 Dữ liệu</span>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <div class="scenario-section-label">Mục tiêu</div>
+            <p>Chuẩn bị đầy đủ cho một email campaign — templates, phân khúc khách hàng, lịch gửi — trong một buổi làm việc.</p>
+
+            <div class="scenario-section-label">Bước thực hiện</div>
+            <ol>
+              <li>Tạo <code>campaign-brief.md</code>: mục tiêu campaign, offer, timeline, KPIs</li>
+              <li>Yêu cầu CC phân tích <code>customers.csv</code> và gợi ý 3 phân khúc để target khác nhau</li>
+              <li>Yêu cầu CC tạo 3 email templates khác nhau cho 3 phân khúc — một offer nhưng angle khác nhau</li>
+              <li>Review và chỉnh sửa từng email theo feedback cụ thể</li>
+              <li>Yêu cầu CC tạo <code>campaign-schedule.md</code>: email nào gửi ngày nào, cho segment nào, subject line A/B test</li>
+              <li>Tổ chức tất cả vào folder <code>/campaigns/[ten-campaign]/</code></li>
+            </ol>
+
+            <div class="scenario-section-label">Kết quả mong đợi</div>
+            <p>Campaign folder hoàn chỉnh: brief, 3 email templates theo phân khúc, lịch gửi — sẵn sàng import vào tool email marketing.</p>
+
+            <div class="scenario-section-label">Gợi ý</div>
+            <p>Sau khi gửi campaign thật, ghi lại kết quả (open rate, click rate) vào file. Lần campaign sau, cho CC đọc kết quả cũ để học và đề xuất cải thiện. Data từ thực tế là input quý giá nhất.</p>
+          </div>
+        </div>
+
+        <!-- Scenario 6 -->
+        <div class="scenario-card">
+          <div class="scenario-header">
+            <div class="scenario-num">S6</div>
+            <div class="scenario-title-wrap">
+              <div class="scenario-title">Setup hoàn chỉnh Claude Code cho dự án mới</div>
+              <div class="scenario-skills">
+                <span class="skill-chip">2.1 CLAUDE.md</span>
+                <span class="skill-chip">2.3 Cấu trúc</span>
+                <span class="skill-chip">2.4 Prompt</span>
+                <span class="skill-chip">/plan</span>
+                <span class="skill-chip">/cost</span>
+                <span class="skill-chip">/compact</span>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <div class="scenario-section-label">Mục tiêu</div>
+            <p>Thực hành toàn bộ workflow khởi tạo dự án mới với Claude Code — từ zero đến setup hoàn chỉnh, áp dụng tất cả kỹ năng Level 2 trong một luồng liên tục.</p>
+
+            <div class="scenario-section-label">Bước thực hiện</div>
+            <ol>
+              <li>Tạo folder và khởi tạo git:<br><code>mkdir my-project &amp;&amp; cd my-project &amp;&amp; git init</code></li>
+              <li>Mở Claude Code: <code>claude</code></li>
+              <li>Chạy <code>/init</code> — CC tự động tạo CLAUDE.md từ cấu trúc hiện tại</li>
+              <li>Review CLAUDE.md: xóa những gì không cần, thêm business context, kiểm tra dưới 150 dòng</li>
+              <li>Gõ <code>/plan</code> rồi mô tả project — CC lên kế hoạch cấu trúc dự án, bạn review và approve</li>
+              <li>Execute plan — CC tạo cấu trúc folder, file khởi đầu</li>
+              <li>Gõ <code>/cost</code> — kiểm tra đã dùng bao nhiêu token và chi phí ước tính</li>
+              <li>Gõ <code>/compact</code> — nén context để tiếp tục làm việc hiệu quả hơn</li>
+              <li>Commit với meaningful message: <code>git add -A &amp;&amp; git commit -m "feat: initial project setup"</code></li>
+            </ol>
+
+            <div class="scenario-section-label">Kết quả mong đợi</div>
+            <p>Dự án mới có CLAUDE.md tối ưu, cấu trúc folder rõ ràng, git khởi tạo, và bạn đã trải qua đầy đủ vòng lặp: init → plan → execute → check cost → compact → commit.</p>
+
+            <div class="scenario-section-label">Tại sao scenario này quan trọng</div>
+            <p>Đây là workflow bạn sẽ lặp lại mỗi khi bắt đầu dự án mới. Làm quen với thứ tự <code>/init</code> → <code>/plan</code> → execute → <code>/cost</code> → <code>/compact</code> → commit giúp bạn làm việc có hệ thống thay vì mò mẫm. Scenario này kết hợp: CLAUDE.md (2.1), templates (2.2), project structure (2.3), và prompt hiệu quả (2.4) trong một luồng thực tế.</p>
+          </div>
+        </div>
+
+        <!-- Level Complete -->
+        <div class="level-complete-box">
+          <h2>Level 2 hoàn thành!</h2>
+          <p>Bạn đã có kỹ năng cốt lõi để vận hành hàng ngày với Claude Code. CLAUDE.md, prompt hiệu quả, làm việc với file, quản lý content, data, email và báo cáo — đây là những công cụ bạn sẽ dùng mỗi ngày.</p>
+          <p><strong>Level 3 sẽ nâng cấp từ task lẻ lên QUY TRÌNH</strong> — MCP (kết nối CC với dịch vụ bên ngoài), Git (version control), Skills (mở rộng khả năng CC), và tự động hóa theo team. Bạn đã có nền tảng vững để bước tiếp.</p>
+          <a href="../3-than/" class="btn-next-level">Tiến lên Level 3: Thân →</a>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="email-bao-cao.html" class="nav-prev">← 2.8 Email &amp; Báo cáo</a>
+        <button class="btn-complete" data-lesson="2-9-bai-tap-tong-hop">✓ Hoàn thành Level 2</button>
+        <span style="flex:1;max-width:48%;"></span>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

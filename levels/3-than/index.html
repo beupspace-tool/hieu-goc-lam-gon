@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 3: Thân — Xây dựng quy trình | BEUP</title>
+  <meta name="description" content="MCP kết nối Claude với Notion, GitHub, databases. Git theo dõi thay đổi. Skills mở rộng khả năng. Level 3 biến Claude Code thành cỗ máy vận hành.">
+  <meta property="og:title" content="Level 3: Thân — Xây dựng quy trình | BEUP">
+  <meta property="og:description" content="Từ task lẻ sang hệ thống. MCP, Git, Skills, Team workflows — Level 3 cho power users xây dựng quy trình lặp lại.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-hub-hero {
+      background: var(--gradient-hero);
+      color: var(--prim-white);
+      padding: var(--prim-space-16) var(--content-padding-x);
+      position: relative;
+      overflow: hidden;
+    }
+    .level-hub-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .level-hub-hero-inner {
+      max-width: var(--content-max-width);
+      position: relative;
+    }
+    .level-hub-eyebrow {
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: var(--prim-space-3);
+    }
+    .level-hub-title {
+      font-size: clamp(var(--prim-text-3xl), 5vw, var(--prim-text-5xl));
+      font-weight: var(--prim-weight-extrabold);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--prim-white);
+      margin: 0 0 var(--prim-space-4);
+    }
+    .level-hub-subtitle {
+      font-size: var(--prim-text-lg);
+      color: rgba(255,255,255,0.85);
+      max-width: 60ch;
+      line-height: 1.65;
+      margin-bottom: var(--prim-space-6);
+    }
+    .level-hub-stats {
+      display: flex;
+      gap: var(--prim-space-6);
+      flex-wrap: wrap;
+    }
+    .level-hub-stat {
+      font-size: var(--prim-text-sm);
+      color: rgba(255,255,255,0.7);
+    }
+    .level-hub-stat strong {
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-bold);
+    }
+    .lesson-grid {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: var(--prim-space-12) var(--content-padding-x);
+    }
+    .lesson-grid-title {
+      font-size: var(--prim-text-2xl);
+      font-weight: var(--prim-weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-2);
+    }
+    .lesson-grid-desc {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-8);
+    }
+    .lesson-cards {
+      display: grid;
+      gap: var(--prim-space-4);
+    }
+    .lesson-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-5) var(--prim-space-6);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-lg);
+      text-decoration: none;
+      transition: border-color var(--prim-transition-fast),
+                  box-shadow var(--prim-transition-fast),
+                  transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover {
+      border-color: var(--border-brand);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .lesson-card-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: rgba(34,197,94,0.1);
+      border: 2px solid rgba(34,197,94,0.3);
+      border-radius: var(--prim-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-bold);
+      color: #16a34a;
+      font-family: var(--prim-font-mono);
+    }
+    [data-theme="dark"] .lesson-card-num {
+      background: rgba(34,197,94,0.1);
+      border-color: rgba(34,197,94,0.25);
+      color: #4ade80;
+    }
+    .lesson-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .lesson-card-title {
+      font-size: var(--prim-text-md);
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--prim-space-1);
+      line-height: 1.4;
+    }
+    .lesson-card-desc {
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .lesson-card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-3);
+      margin-top: var(--prim-space-2);
+    }
+    .lesson-card-time {
+      font-size: var(--prim-text-xs);
+      color: var(--text-muted);
+    }
+    .lesson-card-arrow {
+      flex-shrink: 0;
+      font-size: var(--prim-text-lg);
+      color: var(--text-muted);
+      transition: color var(--prim-transition-fast), transform var(--prim-transition-fast);
+    }
+    .lesson-card:hover .lesson-card-arrow {
+      color: #16a34a;
+      transform: translateX(3px);
+    }
+    .hub-cta {
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding-x) var(--prim-space-12);
+    }
+    .hub-cta-box {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, var(--bg-card) 100%);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: var(--prim-radius-xl);
+      padding: var(--prim-space-8) var(--prim-space-8);
+      text-align: center;
+    }
+    [data-theme="dark"] .hub-cta-box {
+      background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, var(--bg-card) 100%);
+    }
+    .hub-cta-box h3 {
+      font-size: var(--prim-text-xl);
+      margin-bottom: var(--prim-space-2);
+    }
+    .hub-cta-box p {
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-5);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-6);
+      height: var(--btn-height);
+      background: #16a34a;
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+    }
+    .btn-primary:hover {
+      background: #15803d;
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+      color: var(--prim-white);
+    }
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-1);
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-3 {
+      background: rgba(34,197,94,0.12);
+      color: #16a34a;
+      border: 1px solid rgba(34,197,94,0.28);
+    }
+    [data-theme="dark"] .level-badge.level-3 {
+      background: rgba(34,197,94,0.1);
+      color: #4ade80;
+      border-color: rgba(34,197,94,0.3);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .footer-logo {
+      width: 120px;
+      margin: 0 auto var(--prim-space-3);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="level-hub-hero">
+        <div class="level-hub-hero-inner">
+          <div class="level-hub-eyebrow">Level 3 · Thân</div>
+          <h1 class="level-hub-title">Xây dựng quy trình</h1>
+          <p class="level-hub-subtitle">
+            Từ task lẻ sang hệ thống. MCP kết nối Claude với công cụ bên ngoài. Git theo dõi thay đổi. Skills mở rộng khả năng. Level này biến Claude Code từ trợ lý thành cỗ máy vận hành.
+          </p>
+          <div class="level-hub-stats">
+            <span class="level-hub-stat"><strong>8</strong> bài học</span>
+            <span class="level-hub-stat"><strong>~55 phút</strong> tổng thời gian</span>
+            <span class="level-hub-stat"><strong>Power users</strong> xây hệ thống tự động</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lesson-grid">
+        <h2 class="lesson-grid-title">8 Bài học trong Level 3</h2>
+        <p class="lesson-grid-desc">Level này dành cho bạn đã vận hành Claude Code hàng ngày và muốn xây hệ thống. Mỗi bài mở ra một lớp năng lực mới.</p>
+
+        <div class="lesson-cards">
+
+          <a href="mcp-nguyen-ly.html" class="lesson-card">
+            <div class="lesson-card-num">3.1</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">MCP — Nguyên lý</div>
+              <p class="lesson-card-desc">Model Context Protocol là gì và tại sao nó thay đổi mọi thứ. Hiểu kiến trúc MCP trước khi setup — biết nguyên lý, không phụ thuộc tutorial.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="mcp-thuc-hanh.html" class="lesson-card">
+            <div class="lesson-card-num">3.2</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">MCP thực hành</div>
+              <p class="lesson-card-desc">Setup Notion MCP, GitHub MCP step-by-step. Debugging khi có lỗi. Bảo mật API keys. Sau bài này Claude Code kết nối được với workspace của bạn.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~8 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="git-co-ban.html" class="lesson-card">
+            <div class="lesson-card-num">3.3</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Git cho người vận hành</div>
+              <p class="lesson-card-desc">Git không phải dành riêng cho developer. Đây là safety net khi Claude Code thay đổi files. 5 lệnh cần biết và cách đọc output để không mất dữ liệu.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="skills-kha-nang.html" class="lesson-card">
+            <div class="lesson-card-num">3.4</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Skills — Khả năng mở rộng</div>
+              <p class="lesson-card-desc">Skills là plugin cho Claude Code. Từ /plan đến SEO audit đến marketing calendar — cộng đồng đã xây 1000+ skills. Biết cách dùng và install.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="quy-trinh-lap-lai.html" class="lesson-card">
+            <div class="lesson-card-num">3.5</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Từ task lẻ sang quy trình</div>
+              <p class="lesson-card-desc">4 bước thiết kế workflow tái sử dụng. Hooks tự động hoá từng bước. Ví dụ thực tế: Weekly Content và Monthly Report chạy ổn định mỗi tuần/tháng.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~8 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="cong-tac-nhom.html" class="lesson-card">
+            <div class="lesson-card-num">3.6</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Cộng tác nhóm</div>
+              <p class="lesson-card-desc">Team dùng Claude Code cùng nhau: shared CLAUDE.md, phân quyền MCP, Git branching, Agent Teams cho task lớn. Code review bằng Claude Code.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="marketing-tu-dong.html" class="lesson-card">
+            <div class="lesson-card-num">3.7</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Marketing tự động</div>
+              <p class="lesson-card-desc">Content pipeline từ brief đến publish. 1 blog post → 5 social posts tự động. SEO workflow. Email campaigns. Buffer MCP để schedule trực tiếp. Tiết kiệm 70% thời gian.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~7 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+          <a href="backoffice-workflows.html" class="lesson-card">
+            <div class="lesson-card-num">3.8</div>
+            <div class="lesson-card-body">
+              <div class="lesson-card-title">Backoffice workflows</div>
+              <p class="lesson-card-desc">Xử lý hóa đơn, data entry, báo cáo tự động, HR screening, đối chiếu tài chính. Những việc tốn 40% thời gian hành chính — Claude Code rút xuống còn 10%.</p>
+              <div class="lesson-card-meta">
+                <span class="lesson-card-time">⏱ ~6 phút</span>
+              </div>
+            </div>
+            <div class="lesson-card-arrow">→</div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="hub-cta">
+        <div class="hub-cta-box">
+          <h3>Sẵn sàng xây hệ thống?</h3>
+          <p>Bắt đầu từ MCP — đây là nền tảng kết nối Claude với thế giới bên ngoài. Hiểu nguyên lý trước, setup sau. Không đốt thời gian debug mù quáng.</p>
+          <a href="mcp-nguyen-ly.html" class="btn-primary">Bắt đầu Bài 3.1 →</a>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

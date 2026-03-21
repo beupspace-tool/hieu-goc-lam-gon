@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 4.3: Hooks & tự động hóa — Level 4 Cành | BEUP</title>
+  <meta name="description" content="Hooks trong Claude Code — shell commands chạy tự động trước/sau mỗi action. 5 production hooks phổ biến nhất và cách cấu hình trong settings.json.">
+  <meta property="og:title" content="Bài 4.3: Hooks & tự động hóa | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-4 { background: rgba(22,163,74,0.12); color: #15803d; border: 1px solid rgba(22,163,74,0.3); }
+    [data-theme="dark"] .level-badge.level-4 { background: rgba(22,163,74,0.15); color: #4ade80; border-color: rgba(22,163,74,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(22,163,74,0.08) 0%, rgba(22,163,74,0.02) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    .hook-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); padding: var(--prim-space-5); margin-bottom: var(--prim-space-4); }
+    .hook-card-header { display: flex; align-items: center; gap: var(--prim-space-3); margin-bottom: var(--prim-space-3); }
+    .hook-num { width: 28px; height: 28px; background: rgba(22,163,74,0.1); border-radius: var(--prim-radius-md); display: flex; align-items: center; justify-content: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-bold); color: #15803d; flex-shrink: 0; }
+    .hook-name { font-weight: var(--prim-weight-semibold); color: var(--text-primary); }
+    .hook-type { font-size: var(--prim-text-xs); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); padding: 2px 8px; color: var(--text-muted); }
+    .hook-desc { font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-3); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-4">Level 4: Cành</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="skill-tu-chinh.html">4.1 Skill tùy chỉnh</a></li>
+          <li><a href="mcp-nang-cao.html">4.2 MCP nâng cao</a></li>
+          <li><a href="hooks-tu-dong-hoa.html" class="active">4.3 Hooks &amp; tự động hóa</a></li>
+          <li><a href="multi-agent.html">4.4 Multi-agent</a></li>
+          <li><a href="prompt-nang-cao.html">4.5 Prompt nâng cao</a></li>
+          <li><a href="marketing-stack.html">4.6 Marketing stack</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 4</a> / Hooks &amp; tự động hóa
+          </nav>
+          <h1>Bài 4.3: Hooks &amp; tự động hóa</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 4</span>
+            <span class="tag">Automation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Hooks là lớp tự động hóa chạy ngầm — bạn không cần nhớ bước nào, Claude không cần nhắc bạn. Khi Claude edit file, hook chạy formatter tự động. Khi Claude xong task, hook gửi notification. Bạn định nghĩa một lần, hệ thống chạy mãi.</p>
+          </div>
+        </div>
+
+        <h2>Hooks là gì và hoạt động như thế nào?</h2>
+
+        <p>Hooks là shell commands được cấu hình để chạy tự động tại các điểm cụ thể trong workflow của Claude. Có 4 loại hook events:</p>
+
+        <ul>
+          <li><strong>PreToolUse</strong> — Chạy trước khi Claude dùng một tool. Dùng để block, validate, hoặc chuẩn bị.</li>
+          <li><strong>PostToolUse</strong> — Chạy sau khi Claude dùng tool. Dùng để format, test, notify.</li>
+          <li><strong>SessionStart</strong> — Chạy khi session Claude Code bắt đầu. Dùng để load context, check environment.</li>
+          <li><strong>SessionStop</strong> — Chạy khi session kết thúc. Dùng để cleanup, save state, send summary.</li>
+        </ul>
+
+        <p>Hook nhận thông tin về context qua environment variables: <code>$FILE_PATH</code> (file đang được edit), <code>$TOOL_NAME</code> (tool đang được dùng), <code>$EXIT_CODE</code> (kết quả của tool trước đó).</p>
+
+        <h2>Cấu trúc cấu hình hooks</h2>
+
+        <p>Hooks được định nghĩa trong <code>~/.claude/settings.json</code> (global) hoặc <code>.claude/settings.json</code> (per-project):</p>
+
+        <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "npx prettier --write \"$FILE_PATH\" 2>/dev/null || true"
+      },
+      {
+        "matcher": "Edit",
+        "command": "bash ~/.claude/hooks/check-file-size.sh \"$FILE_PATH\""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "bash ~/.claude/hooks/security-gate.sh \"$COMMAND\""
+      }
+    ],
+    "SessionStop": [
+      {
+        "matcher": "*",
+        "command": "bash ~/.claude/hooks/session-summary.sh"
+      }
+    ]
+  }
+}</code></pre>
+
+        <p>Field <code>matcher</code> là tên tool hoặc pattern. Dùng <code>*</code> để match tất cả tools. Dùng <code>Edit|Write</code> để match nhiều tools.</p>
+
+        <h2>5 production hooks phổ biến nhất</h2>
+
+        <div class="hook-card">
+          <div class="hook-card-header">
+            <div class="hook-num">1</div>
+            <span class="hook-name">Auto-format sau khi edit</span>
+            <span class="hook-type">PostToolUse</span>
+          </div>
+          <p class="hook-desc">Chạy prettier/eslint sau mỗi lần Claude edit file. Code luôn đúng format mà không cần nhắc.</p>
+          <pre><code>{
+  "matcher": "Edit|Write",
+  "command": "npx prettier --write \"$FILE_PATH\" 2>/dev/null || true"
+}</code></pre>
+        </div>
+
+        <div class="hook-card">
+          <div class="hook-card-header">
+            <div class="hook-num">2</div>
+            <span class="hook-name">Security gate — block sensitive files</span>
+            <span class="hook-type">PreToolUse</span>
+          </div>
+          <p class="hook-desc">Block Claude access vào .env, credentials, private keys. Hook return exit code 1 để ngăn tool execution.</p>
+          <pre><code># ~/.claude/hooks/security-gate.sh
+FILE="$1"
+BLOCKED_PATTERNS=(".env" "credentials" "id_rsa" "*.pem" "*.key")
+
+for pattern in "${BLOCKED_PATTERNS[@]}"; do
+  if [[ "$FILE" == *"$pattern"* ]]; then
+    echo "BLOCKED: Access to $FILE denied by security policy"
+    exit 1  # exit 1 = block tool execution
+  fi
+done
+exit 0</code></pre>
+          <p style="font-size:var(--prim-text-sm);color:var(--text-muted);margin-top:var(--prim-space-2);">Trong settings.json: <code>"command": "bash ~/.claude/hooks/security-gate.sh \"$FILE_PATH\""</code></p>
+        </div>
+
+        <div class="hook-card">
+          <div class="hook-card-header">
+            <div class="hook-num">3</div>
+            <span class="hook-name">Auto-run tests sau khi code thay đổi</span>
+            <span class="hook-type">PostToolUse</span>
+          </div>
+          <p class="hook-desc">Chạy test suite sau mỗi lần Claude edit file code. Phát hiện regression ngay lập tức.</p>
+          <pre><code># Chỉ chạy test khi edit file TypeScript/JavaScript
+{
+  "matcher": "Edit",
+  "command": "bash -c 'if [[ \"$FILE_PATH\" =~ \\.(ts|js)$ ]]; then npm test -- --passWithNoTests --silent 2>&1 | tail -5; fi'"
+}</code></pre>
+        </div>
+
+        <div class="hook-card">
+          <div class="hook-card-header">
+            <div class="hook-num">4</div>
+            <span class="hook-name">Git stash trước destructive operations</span>
+            <span class="hook-type">PreToolUse</span>
+          </div>
+          <p class="hook-desc">Tự động git stash trước khi Claude chạy commands có thể xóa data. Safety net tự động.</p>
+          <pre><code># ~/.claude/hooks/pre-bash-backup.sh
+COMMAND="$1"
+DANGEROUS_KEYWORDS=("rm -rf" "DROP TABLE" "DELETE FROM" "git reset --hard")
+
+for keyword in "${DANGEROUS_KEYWORDS[@]}"; do
+  if echo "$COMMAND" | grep -q "$keyword"; then
+    echo "Auto-stashing before dangerous operation..."
+    git stash push -m "auto-backup-$(date +%Y%m%d-%H%M%S)" 2>/dev/null || true
+    break
+  fi
+done
+exit 0</code></pre>
+        </div>
+
+        <div class="hook-card">
+          <div class="hook-card-header">
+            <div class="hook-num">5</div>
+            <span class="hook-name">Slack notification khi task hoàn thành</span>
+            <span class="hook-type">SessionStop</span>
+          </div>
+          <p class="hook-desc">Gửi message Slack khi session Claude kết thúc — biết ngay khi agent xong việc dù bạn không nhìn màn hình.</p>
+          <pre><code># ~/.claude/hooks/session-summary.sh
+WEBHOOK_URL="${SLACK_WEBHOOK_URL}"
+if [ -z "$WEBHOOK_URL" ]; then exit 0; fi
+
+MESSAGE="Claude Code session completed at $(date '+%H:%M %d/%m/%Y')"
+curl -s -X POST "$WEBHOOK_URL" \
+  -H 'Content-type: application/json' \
+  --data "{\"text\":\"$MESSAGE\"}" \
+  > /dev/null 2>&1
+</code></pre>
+        </div>
+
+        <h2>Hooks vs Skills: Khi nào dùng cái nào?</h2>
+
+        <p><strong>Dùng Hooks khi:</strong> Bạn muốn hành động xảy ra tự động, luôn luôn, không cần trigger thủ công. Format code, chạy tests, block sensitive files — những thứ này là "luật" của workflow, không phải "tùy chọn".</p>
+
+        <p><strong>Dùng Skills khi:</strong> Bạn muốn Claude có khả năng mới, gọi khi cần. Tạo báo cáo, xử lý data, generate content — những thứ này là "công cụ" trong toolbox, dùng khi có nhu cầu cụ thể.</p>
+
+        <p>Kết hợp tốt nhất: Skill định nghĩa workflow, Hook enforce quality gates trong workflow đó. Ví dụ: skill <code>weekly-report</code> tạo báo cáo, hook <code>PostToolUse</code> đảm bảo file output luôn được format đúng.</p>
+
+        <h2>Debugging hooks</h2>
+
+        <p>Khi hook không hoạt động như mong đợi:</p>
+
+        <p><strong>1. Kiểm tra exit code:</strong> Hook return 0 = success (tiếp tục), return 1 = block tool. Nếu hook của bạn vô tình return 1, Claude sẽ bị block. Luôn có <code>|| true</code> hoặc <code>|| exit 0</code> cho các commands không quan trọng.</p>
+
+        <p><strong>2. Test script độc lập:</strong> Trước khi đưa vào settings.json, chạy script trực tiếp từ terminal với test inputs để confirm nó hoạt động.</p>
+
+        <p><strong>3. Add logging:</strong> Thêm <code>echo "[HOOK] triggered: $FILE_PATH" >> /tmp/claude-hooks.log</code> vào đầu script để trace khi nào hook được gọi.</p>
+
+        <p><strong>Pitfall phổ biến:</strong> Environment variables trong hook script không giống environment của shell thông thường. Nếu cần PATH hoặc env vars cụ thể, source chúng explicitly: <code>source ~/.bashrc</code> hoặc dùng absolute paths cho mọi executables.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Tạo hook đơn giản: sau mỗi lần Claude edit file, tự động đếm số dòng và warn nếu vượt 200 dòng. Tạo file <code>~/.claude/hooks/check-file-size.sh</code> với nội dung: đọc <code>$FILE_PATH</code>, đếm dòng bằng <code>wc -l</code>, nếu &gt; 200 in cảnh báo ra stdout. Thêm vào <code>~/.claude/settings.json</code> như PostToolUse hook. Thử edit một file lớn và xem output.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="mcp-nang-cao.html" class="nav-prev">← 4.2 MCP nâng cao</a>
+        <button class="btn-complete" data-lesson="4-3-hooks-tu-dong-hoa">✓ Hoàn thành bài học</button>
+        <a href="multi-agent.html" class="nav-next">4.4 Multi-agent →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

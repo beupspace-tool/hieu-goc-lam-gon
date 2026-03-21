@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code vs Claude Chat vs API — Level 1: Rễ | BEUP</title>
+  <meta name="description" content="Claude có 3 cách sử dụng khác nhau. Hiểu sự khác biệt để chọn đúng công cụ cho đúng công việc — hiệu quả gấp đôi.">
+  <meta property="og:title" content="Claude Code vs Claude Chat vs API — Level 1: Rễ | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-1 { background: rgba(167,139,250,0.18); color: #6d28d9; border: 1px solid rgba(167,139,250,0.4); }
+    [data-theme="dark"] .level-badge.level-1 { background: rgba(167,139,250,0.12); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(167,139,250,0.1) 0%, rgba(109,40,217,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: var(--border-brand); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: var(--color-primary); color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--prim-space-6) 0;
+      font-size: var(--prim-text-sm);
+      overflow-x: auto;
+      display: block;
+    }
+    .compare-table th {
+      background: var(--bg-secondary);
+      padding: var(--prim-space-3) var(--prim-space-4);
+      text-align: left;
+      font-weight: var(--prim-weight-semibold);
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--border-default);
+      white-space: nowrap;
+    }
+    .compare-table td {
+      padding: var(--prim-space-3) var(--prim-space-4);
+      border-bottom: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+    .compare-table tr:hover td { background: var(--bg-secondary); }
+    .compare-table td:first-child { font-weight: var(--prim-weight-medium); color: var(--text-primary); }
+    .badge-chat { background: rgba(59,130,246,0.1); color: #1d4ed8; padding: 2px 8px; border-radius: 99px; font-size: var(--prim-text-xs); font-weight: 600; white-space: nowrap; }
+    .badge-cc { background: rgba(167,139,250,0.15); color: #6d28d9; padding: 2px 8px; border-radius: 99px; font-size: var(--prim-text-xs); font-weight: 600; white-space: nowrap; }
+    .badge-api { background: rgba(245,158,11,0.12); color: #92400e; padding: 2px 8px; border-radius: 99px; font-size: var(--prim-text-xs); font-weight: 600; white-space: nowrap; }
+    [data-theme="dark"] .badge-chat { background: rgba(59,130,246,0.2); color: #93c5fd; }
+    [data-theme="dark"] .badge-cc { background: rgba(167,139,250,0.2); color: #c4b5fd; }
+    [data-theme="dark"] .badge-api { background: rgba(245,158,11,0.2); color: #fcd34d; }
+    /* Product card */
+    .product-cards { display: grid; gap: var(--prim-space-5); margin: var(--prim-space-6) 0; }
+    .product-card { padding: var(--prim-space-5) var(--prim-space-6); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-lg); }
+    .product-card-header { display: flex; align-items: center; gap: var(--prim-space-3); margin-bottom: var(--prim-space-3); }
+    .product-card-title { font-size: var(--prim-text-lg); font-weight: var(--prim-weight-bold); color: var(--text-primary); }
+    .product-card-body { font-size: var(--prim-text-sm); color: var(--text-secondary); line-height: 1.7; }
+    .product-pros { margin-top: var(--prim-space-3); }
+    .product-pros h4 { font-size: var(--prim-text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: var(--prim-space-2); }
+    .product-pros ul { margin: 0; padding-left: var(--prim-space-5); }
+    .product-pros ul li { font-size: var(--prim-text-sm); color: var(--text-secondary); margin-bottom: var(--prim-space-1); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-1">Level 1: Rễ</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="chu-ky-phat-trien.html">1.1 Chu kỳ phát triển</a></li>
+          <li><a href="cc-vs-chat-vs-api.html" class="active">1.2 CC vs Chat vs API</a></li>
+          <li><a href="cai-dat-xac-thuc.html">1.3 Cài đặt &amp; Xác thực</a></li>
+          <li><a href="khai-niem-cot-loi.html">1.4 Khái niệm cốt lõi</a></li>
+          <li><a href="cuoc-hoi-thoai-dau-tien.html">1.5 Cuộc hội thoại đầu tiên</a></li>
+          <li><a href="tro-ly-van-hanh.html">1.6 Trợ lý vận hành</a></li>
+          <li><a href="sai-lam-thuong-gap.html">1.7 Sai lầm thường gặp</a></li>
+          <li><a href="bai-tap-thuc-hanh.html">1.8 Bài tập thực hành</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 1</a> / Claude Code vs Chat vs API
+          </nav>
+          <h1>Bài 1.2: Claude Code vs Claude Chat vs API</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~5 phút đọc</span>
+            <span class="tag">Level 1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Claude có 3 cách sử dụng khác nhau, phục vụ 3 mục đích khác nhau. Chọn đúng công cụ = hiệu quả gấp đôi. Dùng sai công cụ = tốn thời gian và tiền bạc.</p>
+          </div>
+        </div>
+
+        <h2>Ba sản phẩm, ba mục đích khác nhau</h2>
+        <p>Nhiều người nghe đến "Claude" là nghĩ ngay đến chatbot trên website. Nhưng Anthropic (công ty tạo ra Claude) cung cấp ba cách tiếp cận hoàn toàn khác nhau. Hiểu sự khác biệt này sẽ giúp bạn không "dùng búa để vặn vít".</p>
+
+        <div class="product-cards">
+          <div class="product-card">
+            <div class="product-card-header">
+              <span class="badge-chat">Claude Chat</span>
+              <div class="product-card-title">claude.ai — Trò chuyện qua trình duyệt</div>
+            </div>
+            <div class="product-card-body">
+              Bạn mở trình duyệt, vào <strong>claude.ai</strong>, và gõ câu hỏi. Claude trả lời ngay trong cửa sổ chat. Không cần cài gì, không cần terminal, không cần kỹ thuật.
+            </div>
+            <div class="product-pros">
+              <h4>Tốt cho</h4>
+              <ul>
+                <li>Hỏi đáp nhanh, brainstorm ý tưởng</li>
+                <li>Viết và chỉnh sửa nội dung (email, bài đăng, báo cáo)</li>
+                <li>Dịch thuật, tóm tắt văn bản bạn paste vào</li>
+                <li>Phân tích ngắn, giải thích khái niệm</li>
+              </ul>
+              <h4 style="margin-top: var(--prim-space-3);">Giới hạn</h4>
+              <ul>
+                <li>Không truy cập file trên máy bạn trực tiếp</li>
+                <li>Không chạy lệnh, không tạo output tự động</li>
+                <li>Không lưu trữ kết quả vào file cho bạn</li>
+                <li>Phù hợp cho câu trả lời — không phải hành động</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card-header">
+              <span class="badge-cc">Claude Code</span>
+              <div class="product-card-title">CLI — Trợ lý trong Terminal</div>
+            </div>
+            <div class="product-card-body">
+              Bạn mở Terminal, gõ <code>claude</code>, và Claude trở thành trợ lý trực tiếp trên máy tính của bạn. Nó đọc file thật, viết file thật, chạy lệnh thật — không chỉ nói chuyện.
+            </div>
+            <div class="product-pros">
+              <h4>Tốt cho</h4>
+              <ul>
+                <li>Tạo website, landing page, web app hoàn chỉnh</li>
+                <li>Quản lý và tổ chức file hàng loạt</li>
+                <li>Phân tích dữ liệu từ file CSV, Excel</li>
+                <li>Tự động hóa quy trình lặp lại</li>
+                <li>Dự án phức tạp cần nhiều bước và nhiều file</li>
+              </ul>
+              <h4 style="margin-top: var(--prim-space-3);">Sức mạnh đặc biệt</h4>
+              <ul>
+                <li>Đọc và viết file trực tiếp trên máy bạn</li>
+                <li>Chạy lệnh terminal, npm, git...</li>
+                <li>Tạo output cụ thể (file HTML, CSV, báo cáo)</li>
+                <li>Nhớ ngữ cảnh trong cả session làm việc</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card-header">
+              <span class="badge-api">Claude API</span>
+              <div class="product-card-title">API — Giao diện lập trình</div>
+            </div>
+            <div class="product-card-body">
+              API (Application Programming Interface) cho phép các developer <em>tích hợp Claude vào ứng dụng của họ</em>. Ví dụ: một công ty muốn xây dựng chatbot chăm sóc khách hàng có sử dụng Claude bên trong — họ dùng API.
+            </div>
+            <div class="product-pros">
+              <h4>Dành cho</h4>
+              <ul>
+                <li>Developer xây dựng ứng dụng tích hợp AI</li>
+                <li>Tích hợp Claude vào website, app sẵn có</li>
+                <li>Xây dựng workflow tự động phức tạp</li>
+              </ul>
+              <h4 style="margin-top: var(--prim-space-3);">Lưu ý</h4>
+              <ul>
+                <li>Cần biết lập trình để sử dụng</li>
+                <li>Bạn chưa cần quan tâm đến API ở giai đoạn này</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h2>Bảng so sánh nhanh</h2>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Tiêu chí</th>
+              <th><span class="badge-chat">Claude Chat</span></th>
+              <th><span class="badge-cc">Claude Code</span></th>
+              <th><span class="badge-api">API</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cách truy cập</td>
+              <td>Trình duyệt web</td>
+              <td>Terminal (CLI)</td>
+              <td>Code lập trình</td>
+            </tr>
+            <tr>
+              <td>Có thể sửa file?</td>
+              <td>Không</td>
+              <td>Có — file thật trên máy</td>
+              <td>Tùy ứng dụng</td>
+            </tr>
+            <tr>
+              <td>Tốt nhất cho</td>
+              <td>Hỏi đáp, viết nội dung</td>
+              <td>Tạo sản phẩm, tự động hóa</td>
+              <td>Xây dựng ứng dụng</td>
+            </tr>
+            <tr>
+              <td>Yêu cầu kỹ thuật</td>
+              <td>Không — dùng ngay</td>
+              <td>Thấp — biết Terminal cơ bản</td>
+              <td>Cao — biết lập trình</td>
+            </tr>
+            <tr>
+              <td>Chi phí</td>
+              <td>Free / Pro $20/tháng</td>
+              <td>Trả theo token dùng</td>
+              <td>Trả theo token dùng</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Khi nào nên dùng Claude Code?</h2>
+        <p>Câu hỏi đơn giản để quyết định: <strong>Bạn cần KẾT QUẢ CỤ THỂ hay chỉ cần CÂU TRẢ LỜI?</strong></p>
+
+        <p>Nếu mục tiêu là <em>hiểu điều gì đó</em>, <em>lấy ý kiến</em>, hoặc <em>viết đoạn văn để bạn copy</em> → dùng Claude Chat, nhanh và tiện hơn.</p>
+
+        <p>Nếu mục tiêu là <em>tạo ra file HTML</em>, <em>tổ chức 200 file ảnh</em>, <em>tạo báo cáo tổng hợp từ dữ liệu</em>, <em>xây dựng landing page</em> → Claude Code là lựa chọn đúng vì nó thực sự <em>làm</em> thay bạn, không chỉ <em>nói</em>.</p>
+
+        <p>Ví dụ thực tế:</p>
+        <ul>
+          <li>"Viết cho tôi email chào hàng cho khách mới" → Claude Chat (bạn copy rồi dùng)</li>
+          <li>"Tạo 50 email chào hàng cá nhân hóa từ danh sách CSV khách hàng và lưu thành file" → Claude Code (tự động, file thật)</li>
+          <li>"Trang web bán hàng tốt nhất trông như thế nào?" → Claude Chat (hỏi để hiểu)</li>
+          <li>"Tạo landing page bán hàng cho sản phẩm X, lưu thành index.html" → Claude Code (tạo file thật)</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Nhìn lại 3 việc bạn đã dùng Claude Chat tuần này. Phân loại: việc nào chỉ cần "câu trả lời" (đúng với Chat), việc nào thực ra bạn cần "file/kết quả cụ thể" (nên dùng Claude Code)? Sự phân biệt này sẽ tiết kiệm nhiều công sức về sau.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Lưu ý về chi phí</b>
+            <p>Claude Chat có gói Free và Pro ($20/tháng). Claude Code tính phí theo token sử dụng — mỗi câu hỏi, mỗi file đọc, mỗi lệnh chạy đều tốn token. Với plan Pro, bạn có credit đủ dùng cho hầu hết công việc thông thường. Chúng ta sẽ nói chi tiết về chi phí ở Bài 1.3.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="chu-ky-phat-trien.html" class="nav-prev">← 1.1 Chu kỳ phát triển</a>
+        <button class="btn-complete" data-lesson="1-2-cc-vs-chat-vs-api">✓ Hoàn thành bài học</button>
+        <a href="cai-dat-xac-thuc.html" class="nav-next">1.3 Cài đặt &amp; Xác thực →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

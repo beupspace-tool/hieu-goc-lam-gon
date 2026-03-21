@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills — Khả năng mở rộng của Claude Code | Level 3: Thân | BEUP</title>
+  <meta name="description" content="Skills là plugin cho Claude Code. Từ /plan đến SEO audit đến marketing calendar — 1000+ community skills. Cách install, dùng, và anatomy của một skill.">
+  <meta property="og:title" content="Bài 3.4: Skills — Khả năng mở rộng | BEUP">
+  <meta property="og:description" content="Mở rộng khả năng Claude Code bằng Skills. Built-in skills, community skills, và cách tự tạo skill cho quy trình riêng của bạn.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge { display: inline-flex; align-items: center; font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); padding: var(--prim-space-1) var(--prim-space-3); border-radius: var(--prim-radius-full); text-transform: uppercase; letter-spacing: 0.06em; }
+    .level-badge.level-3 { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.28); }
+    [data-theme="dark"] .level-badge.level-3 { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .sidebar-level { padding: var(--prim-space-3) var(--prim-space-5); border-bottom: 1px solid var(--sidebar-border); }
+    .sidebar-toc h3 { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--sidebar-text-muted); padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1); margin: 0; border: none; }
+    .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc ul li a { display: block; padding: var(--prim-space-2) var(--prim-space-5); font-size: var(--prim-text-sm); color: var(--sidebar-text); text-decoration: none; transition: background var(--prim-transition-fast), color var(--prim-transition-fast); }
+    .sidebar-toc ul li a:hover { color: var(--sidebar-text-active); background: var(--sidebar-hover-bg); text-decoration: none; }
+    .sidebar-toc ul li a.active { color: var(--sidebar-text-active); background: var(--sidebar-active-bg); font-weight: var(--prim-weight-medium); }
+    .sidebar-footer { font-size: var(--prim-text-xs); color: var(--sidebar-text-muted); line-height: 1.6; }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero { padding: var(--prim-space-10) var(--content-padding-x); background: linear-gradient(140deg, rgba(34,197,94,0.1) 0%, rgba(16,185,129,0.04) 100%); border-bottom: 1px solid var(--border-default); }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--prim-space-2); font-size: var(--prim-text-sm); color: var(--text-muted); margin-bottom: var(--prim-space-4); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: #16a34a; }
+    .lesson-hero h1 { font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl)); font-weight: var(--prim-weight-extrabold); color: var(--text-primary); margin: var(--prim-space-3) 0 var(--prim-space-3); letter-spacing: -0.025em; }
+    .lesson-meta { display: flex; gap: var(--prim-space-3); flex-wrap: wrap; }
+    .tag { font-size: var(--prim-text-xs); font-weight: var(--prim-weight-medium); padding: var(--prim-space-1) var(--prim-space-3); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-full); color: var(--text-muted); }
+    .callout { display: flex; gap: var(--prim-space-4); padding: var(--prim-space-4) var(--prim-space-5); border-radius: var(--callout-radius); border-left: var(--callout-border-width) solid; margin: var(--prim-space-6) 0; }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct { display: block; font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--prim-space-1); }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav { display: flex; justify-content: space-between; align-items: stretch; gap: var(--prim-space-4); padding: var(--prim-space-8) var(--content-padding-x); border-top: 1px solid var(--border-default); max-width: var(--content-max-width); margin: 0 auto; }
+    .nav-prev, .nav-next { display: flex; flex-direction: column; justify-content: center; padding: var(--prim-space-4) var(--prim-space-5); border: 1px solid var(--border-default); border-radius: var(--card-radius); text-decoration: none; color: var(--text-primary); background: var(--bg-card); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-semibold); transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast); flex: 1; max-width: 48%; }
+    .nav-prev:hover, .nav-next:hover { border-color: #16a34a; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete { display: inline-flex; align-items: center; gap: var(--prim-space-2); padding: 0 var(--prim-space-5); height: var(--btn-height); background: #16a34a; color: var(--prim-white); font-weight: var(--prim-weight-semibold); font-size: var(--btn-font-size); border-radius: var(--btn-radius); border: none; cursor: pointer; transition: background var(--prim-transition-fast); white-space: nowrap; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+    /* Skill cards */
+    .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--prim-space-3); margin: var(--prim-space-5) 0; }
+    .skill-card { padding: var(--prim-space-4); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--prim-radius-md); }
+    .skill-card .cmd { font-family: var(--prim-font-mono); font-size: var(--prim-text-sm); font-weight: var(--prim-weight-bold); color: #16a34a; margin-bottom: var(--prim-space-1); }
+    .skill-card p { font-size: var(--prim-text-sm); color: var(--text-muted); margin: 0; line-height: 1.5; }
+    /* File tree */
+    .file-tree { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--prim-radius-md); padding: var(--prim-space-4) var(--prim-space-5); font-family: var(--prim-font-mono); font-size: var(--prim-text-sm); line-height: 1.8; margin: var(--prim-space-4) 0; }
+    .file-tree .dir { color: #16a34a; font-weight: var(--prim-weight-semibold); }
+    .file-tree .file { color: var(--text-muted); }
+    .file-tree .comment { color: var(--text-muted); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-3">Level 3: Thân</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="mcp-nguyen-ly.html">3.1 MCP — Nguyên lý</a></li>
+          <li><a href="mcp-thuc-hanh.html">3.2 MCP thực hành</a></li>
+          <li><a href="git-co-ban.html">3.3 Git cơ bản</a></li>
+          <li><a href="skills-kha-nang.html" class="active">3.4 Skills</a></li>
+          <li><a href="quy-trinh-lap-lai.html">3.5 Quy trình lặp lại</a></li>
+          <li><a href="cong-tac-nhom.html">3.6 Cộng tác nhóm</a></li>
+          <li><a href="marketing-tu-dong.html">3.7 Marketing tự động</a></li>
+          <li><a href="backoffice-workflows.html">3.8 Backoffice workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 3</a> / Skills
+          </nav>
+          <h1>Bài 3.4: Skills — Khả năng mở rộng</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~7 phút đọc</span>
+            <span class="tag">Level 3</span>
+            <span class="tag">Skills</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>Skills là cách bạn dạy Claude Code làm đúng việc, đúng cách, mỗi lần đều nhất quán — không cần nhắc lại từ đầu. Mỗi skill là một bộ hướng dẫn chuyên biệt: Claude đọc nó khi task match, sau đó thực thi theo quy trình được định nghĩa sẵn. Thay vì bạn prompting mỗi lần, skill prompts thay bạn.</p>
+          </div>
+        </div>
+
+        <h2>Skill là gì — định nghĩa đơn giản</h2>
+
+        <p>Một skill = một thư mục chứa hướng dẫn cho Claude làm một việc cụ thể. Khi bạn gõ <code>/plan</code>, Claude đọc skill "plan", hiểu rằng task này cần approach như thế nào, và thực thi theo.</p>
+
+        <p>Skills giải quyết một vấn đề quan trọng: Claude rất giỏi, nhưng không biết cách làm việc <em>theo quy trình của bạn</em> trừ khi bạn định nghĩa quy trình đó. Skills là nơi bạn viết ra "khi Claude làm X, tôi muốn Claude làm theo cách Y, với format Z, không bao giờ làm W".</p>
+
+        <h2>Built-in skills trong Claude Code</h2>
+
+        <p>Claude Code đi kèm với một số skills built-in — dùng được ngay mà không cần cài gì thêm:</p>
+
+        <div class="skill-grid">
+          <div class="skill-card">
+            <div class="cmd">/plan</div>
+            <p>Tạo implementation plan trước khi bắt tay làm. Phân tích task, chia phase, liệt kê file sẽ thay đổi. Không thực thi — chỉ lập kế hoạch để bạn review.</p>
+          </div>
+          <div class="skill-card">
+            <div class="cmd">/test</div>
+            <p>Chạy tests và phân tích kết quả. Báo cáo what passed, what failed, và suggest fixes.</p>
+          </div>
+          <div class="skill-card">
+            <div class="cmd">/debug</div>
+            <p>Debug có cấu trúc: reproduce lỗi → trace root cause → propose fix → implement → verify. Không đoán mò.</p>
+          </div>
+          <div class="skill-card">
+            <div class="cmd">/fix</div>
+            <p>Fix một lỗi cụ thể. Khác với /debug ở chỗ bạn đã biết lỗi là gì, chỉ cần sửa.</p>
+          </div>
+          <div class="skill-card">
+            <div class="cmd">/docs</div>
+            <p>Tạo documentation cho code hoặc project. Tự động extract từ code và tạo docs có cấu trúc.</p>
+          </div>
+          <div class="skill-card">
+            <div class="cmd">/review</div>
+            <p>Code review với nhận xét cụ thể về quality, security, performance. Trả về danh sách actionable items.</p>
+          </div>
+        </div>
+
+        <h2>Community skills — 1000+ lựa chọn</h2>
+
+        <p>Cộng đồng đã build một kho skills lớn. Một số nguồn đáng chú ý:</p>
+
+        <p><strong>awesome-claude-code-toolkit</strong> (rohitg00 trên GitHub): 135+ agent definitions, 42 slash commands. Có các skills cho SEO, marketing, data analysis, customer support, và nhiều hơn nữa.</p>
+
+        <p><strong>Claude Code Community</strong> trên Discord và Reddit — nơi developers chia sẻ skills họ tự build cho workflows cụ thể.</p>
+
+        <p>Ví dụ một số community skills phổ biến cho business:</p>
+
+        <ul>
+          <li><strong>SEO skill</strong>: Audit website, keyword research, optimize meta tags, generate schema markup</li>
+          <li><strong>Marketing skill</strong>: Tạo content calendar, viết copy theo brand voice, adapt content cho từng platform</li>
+          <li><strong>Database skill</strong>: Query optimization, report generation, data cleanup</li>
+          <li><strong>HR skill</strong>: Phân tích JD, screening criteria, candidate evaluation rubric</li>
+          <li><strong>Finance skill</strong>: Phân tích báo cáo tài chính, budget variance analysis</li>
+        </ul>
+
+        <h2>Anatomy của một skill</h2>
+
+        <p>Một skill được lưu trong <code>~/.claude/skills/{skill-name}/</code> với cấu trúc:</p>
+
+        <div class="file-tree">
+          <span class="dir">~/.claude/skills/seo-audit/</span><br>
+          &nbsp;&nbsp;<span class="file">├── SKILL.md</span>&nbsp;&nbsp;&nbsp;<span class="comment">← hướng dẫn chính cho Claude</span><br>
+          &nbsp;&nbsp;<span class="file">├── scripts/</span>&nbsp;&nbsp;<span class="comment">← bash/python scripts tự động hóa</span><br>
+          &nbsp;&nbsp;<span class="file">│&nbsp;&nbsp; └── run-audit.sh</span><br>
+          &nbsp;&nbsp;<span class="file">├── references/</span>&nbsp;<span class="comment">← data tham chiếu</span><br>
+          &nbsp;&nbsp;<span class="file">│&nbsp;&nbsp; └── seo-checklist.md</span><br>
+          &nbsp;&nbsp;<span class="file">└── templates/</span>&nbsp;<span class="comment">← output templates</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">└── audit-report.md</span>
+        </div>
+
+        <p><strong>SKILL.md</strong> là file quan trọng nhất — định nghĩa khi nào skill này được kích hoạt, Claude nên làm gì, bước nào theo bước nào, và output format mong muốn là gì.</p>
+
+        <p>Ví dụ đầu của một SKILL.md đơn giản:</p>
+
+        <pre><code># SEO Audit Skill
+
+## Kích hoạt khi
+- User dùng `/seo` hoặc `/seo-audit`
+- User hỏi về SEO của website
+
+## Quy trình
+1. Đọc file sitemap.xml nếu có
+2. Kiểm tra meta tags trong HTML files
+3. Phân tích heading structure (H1, H2, H3)
+4. Check image alt texts
+5. Tạo báo cáo theo template trong templates/audit-report.md
+
+## Không bao giờ
+- Không tự sửa file mà chưa có approval
+- Không suggest keywords mà không có research data</code></pre>
+
+        <h2>Cách install community skill</h2>
+
+        <pre><code># Cách 1: Clone trực tiếp vào skills folder
+git clone https://github.com/user/skill-name ~/.claude/skills/skill-name
+
+# Cách 2: Copy thủ công
+mkdir -p ~/.claude/skills/my-skill
+# Copy SKILL.md và các files liên quan vào đó
+
+# Verify skill đã available
+# Restart Claude Code → gõ /skill-name để test</code></pre>
+
+        <p>Skills lưu trong <code>~/.claude/skills/</code> available cho tất cả projects. Muốn skill chỉ dùng cho một project, lưu trong <code>{project}/.claude/skills/</code>.</p>
+
+        <h2>Tự tạo skill cho workflow riêng</h2>
+
+        <p>Đây là lúc skills trở nên thực sự mạnh. Bạn có quy trình riêng — weekly report, content review, khách hàng onboarding — bạn có thể đóng gói thành skill để Claude thực thi nhất quán mỗi lần.</p>
+
+        <p>Nguyên tắc khi viết skill:</p>
+        <ul>
+          <li>Cụ thể về steps, không mơ hồ ("viết summary" → "viết executive summary 3 bullet points, tối đa 30 từ mỗi bullet")</li>
+          <li>Định nghĩa rõ output format — Claude nên trả về gì, lưu ở đâu, tên file ra sao</li>
+          <li>Ghi rõ "không bao giờ làm gì" — ranh giới quan trọng không kém steps</li>
+          <li>Thêm ví dụ input/output tốt vào SKILL.md — Claude học từ examples</li>
+        </ul>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Thử <code>/plan</code> ngay trong Claude Code session hiện tại. Gõ một request phức tạp — ví dụ: "Tôi muốn tạo hệ thống theo dõi leads từ website, lưu vào CSV, tự động gửi email follow-up sau 24h." Thêm <code>/plan</code> vào đầu. Quan sát cách Claude tạo plan có cấu trúc thay vì bắt tay làm ngay. Approve plan rồi mới cho Claude execute. So sánh kết quả với khi không dùng /plan.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="git-co-ban.html" class="nav-prev">← 3.3 Git cơ bản</a>
+        <button class="btn-complete" data-lesson="3-4-skills-kha-nang">✓ Hoàn thành bài học</button>
+        <a href="quy-trinh-lap-lai.html" class="nav-next">3.5 Quy trình lặp lại →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>

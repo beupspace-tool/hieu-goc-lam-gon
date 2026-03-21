@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLAUDE.md — Sổ tay vận hành | Level 2 | BEUP</title>
+  <meta name="description" content="CLAUDE.md là file hướng dẫn Claude Code biết bạn là ai, dự án là gì, và nên làm việc thế nào. Học cách viết CLAUDE.md hiệu quả cho doanh nghiệp.">
+  <meta property="og:title" content="CLAUDE.md — Sổ tay vận hành | BEUP">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/utilities.css">
+  <style>
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      border-radius: var(--prim-radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .level-badge.level-2 {
+      background: rgba(168,85,247,0.12);
+      color: #7c3aed;
+      border: 1px solid rgba(168,85,247,0.25);
+    }
+    [data-theme="dark"] .level-badge.level-2 {
+      background: rgba(168,85,247,0.12);
+      color: #c084fc;
+      border-color: rgba(168,85,247,0.3);
+    }
+    .sidebar-level {
+      padding: var(--prim-space-3) var(--prim-space-5);
+      border-bottom: 1px solid var(--sidebar-border);
+    }
+    .sidebar-toc h3 {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-text-muted);
+      padding: var(--prim-space-3) var(--prim-space-5) var(--prim-space-1);
+      margin: 0;
+      border: none;
+    }
+    .sidebar-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-toc ul li a {
+      display: block;
+      padding: var(--prim-space-2) var(--prim-space-5);
+      font-size: var(--prim-text-sm);
+      color: var(--sidebar-text);
+      text-decoration: none;
+      transition: background var(--prim-transition-fast), color var(--prim-transition-fast);
+    }
+    .sidebar-toc ul li a:hover {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-hover-bg);
+      text-decoration: none;
+    }
+    .sidebar-toc ul li a.active {
+      color: var(--sidebar-text-active);
+      background: var(--sidebar-active-bg);
+      font-weight: var(--prim-weight-medium);
+    }
+    .sidebar-footer {
+      font-size: var(--prim-text-xs);
+      color: var(--sidebar-text-muted);
+      line-height: 1.6;
+    }
+    .sidebar-footer a { color: var(--prim-teal-600); text-decoration: none; }
+    .lesson-hero {
+      padding: var(--prim-space-10) var(--content-padding-x);
+      background: linear-gradient(140deg, rgba(168,85,247,0.08) 0%, rgba(168,85,247,0.02) 100%);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .lesson-hero-inner { max-width: var(--content-max-width); }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      font-size: var(--prim-text-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--prim-space-4);
+    }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--color-primary); }
+    .lesson-hero h1 {
+      font-size: clamp(var(--prim-text-2xl), 4vw, var(--prim-text-4xl));
+      font-weight: var(--prim-weight-extrabold);
+      color: var(--text-primary);
+      margin: var(--prim-space-3) 0 var(--prim-space-3);
+      letter-spacing: -0.025em;
+    }
+    .lesson-meta {
+      display: flex;
+      gap: var(--prim-space-3);
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: var(--prim-text-xs);
+      font-weight: var(--prim-weight-medium);
+      padding: var(--prim-space-1) var(--prim-space-3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--prim-radius-full);
+      color: var(--text-muted);
+    }
+    .callout {
+      display: flex;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border-radius: var(--callout-radius);
+      border-left: var(--callout-border-width) solid;
+      margin: var(--prim-space-6) 0;
+    }
+    .callout-principle { background: var(--prim-blue-50); border-color: var(--prim-blue-500); }
+    .callout-practice { background: var(--prim-green-50); border-color: var(--prim-green-500); }
+    .callout-warning { background: var(--prim-yellow-50); border-color: var(--prim-yellow-500); }
+    [data-theme="dark"] .callout-principle { background: rgba(59,130,246,0.08); }
+    [data-theme="dark"] .callout-practice { background: rgba(0,208,132,0.08); }
+    [data-theme="dark"] .callout-warning { background: rgba(245,158,11,0.08); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1.5; }
+    .callout-body { flex: 1; min-width: 0; }
+    .callout-body .ct {
+      display: block;
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--prim-space-1);
+    }
+    .callout-principle .ct { color: var(--prim-blue-500); }
+    .callout-practice .ct { color: var(--prim-green-600); }
+    .callout-warning .ct { color: var(--prim-yellow-500); }
+    .callout-body p { margin: 0; font-size: var(--prim-text-sm); line-height: 1.7; }
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: var(--prim-space-4);
+      padding: var(--prim-space-8) var(--content-padding-x);
+      border-top: 1px solid var(--border-default);
+      max-width: var(--content-max-width);
+      margin: 0 auto;
+    }
+    .nav-prev, .nav-next {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--prim-space-4) var(--prim-space-5);
+      border: 1px solid var(--border-default);
+      border-radius: var(--card-radius);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      font-size: var(--prim-text-sm);
+      font-weight: var(--prim-weight-semibold);
+      transition: border-color var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+      flex: 1;
+      max-width: 48%;
+    }
+    .nav-prev:hover, .nav-next:hover {
+      border-color: var(--border-brand);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-next { text-align: right; margin-left: auto; }
+    .btn-complete {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--prim-space-2);
+      padding: 0 var(--prim-space-5);
+      height: var(--btn-height);
+      background: var(--color-primary);
+      color: var(--prim-white);
+      font-weight: var(--prim-weight-semibold);
+      font-size: var(--btn-font-size);
+      border-radius: var(--btn-radius);
+      border: none;
+      cursor: pointer;
+      transition: background var(--prim-transition-fast);
+      white-space: nowrap;
+    }
+    .btn-complete:hover { background: var(--color-primary-dark); }
+    .btn-complete.completed { background: var(--color-success); }
+    .footer-logo { width: 120px; margin: 0 auto var(--prim-space-3); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../"><img class="sidebar-logo" src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP"></a>
+        <div class="sidebar-tagline">Hiểu Gốc — Làm Gọn</div>
+      </div>
+      <div class="sidebar-level">
+        <span class="level-badge level-2">Level 2: Gốc</span>
+      </div>
+      <div class="sidebar-toc">
+        <h3>Bài học trong Level</h3>
+        <ul>
+          <li><a href="claude-md-so-tay.html" class="active">2.1 CLAUDE.md</a></li>
+          <li><a href="claude-md-templates.html">2.2 Templates</a></li>
+          <li><a href="cau-truc-du-an.html">2.3 Cấu trúc dự án</a></li>
+          <li><a href="prompt-hieu-qua.html">2.4 Prompt hiệu quả</a></li>
+          <li><a href="lam-viec-voi-file.html">2.5 Làm việc với file</a></li>
+          <li><a href="quy-trinh-viet-noi-dung.html">2.6 Quy trình viết nội dung</a></li>
+          <li><a href="to-chuc-du-lieu.html">2.7 Tổ chức dữ liệu</a></li>
+          <li><a href="email-bao-cao.html">2.8 Email &amp; Báo cáo</a></li>
+          <li><a href="bai-tap-tong-hop.html">2.9 Bài tập tổng hợp</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        🦫 BEUP Learning Solutions<br>
+        <a href="https://beup.space">beup.space</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="lesson-hero" data-level="2">
+        <div class="lesson-hero-inner">
+          <nav class="breadcrumb">
+            <a href="../../">Trang chủ</a> / <a href="./">Level 2</a> / CLAUDE.md — Sổ tay vận hành
+          </nav>
+          <h1>Bài 2.1: CLAUDE.md — Sổ tay vận hành</h1>
+          <div class="lesson-meta">
+            <span class="tag">⏱ ~8 phút đọc</span>
+            <span class="tag">Level 2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <div class="callout callout-principle">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <b class="ct">Nguyên lý</b>
+            <p>CLAUDE.md là file hướng dẫn Claude Code biết bạn là ai, dự án này là gì, và nên làm việc thế nào. Giống như sổ tay nhân viên mới — không có nó, nhân viên phải đoán mò từng thứ. Có nó, nhân viên bắt tay vào việc ngay mà không cần hỏi vặt.</p>
+          </div>
+        </div>
+
+        <h2>CLAUDE.md là gì?</h2>
+        <p>Khi bạn mở Claude Code trong một folder dự án, việc đầu tiên CC làm là tìm kiếm file <code>CLAUDE.md</code> ở thư mục gốc. Đây là file Markdown bình thường — không có gì đặc biệt về mặt kỹ thuật — nhưng CC được lập trình để đọc và ghi nhớ nội dung file này trước khi làm bất cứ điều gì khác.</p>
+
+        <p>Nói cách khác: <strong>CLAUDE.md là cách bạn "lập trình" ngữ cảnh cho Claude Code</strong>. Thay vì giải thích lại mỗi lần, bạn viết một lần và CC nhớ mãi (trong phạm vi dự án đó).</p>
+
+        <p>Hãy nghĩ đến việc tuyển nhân viên mới. Người giỏi đến làm việc, họ cần biết: công ty làm gì, khách hàng là ai, quy trình nội bộ thế nào, công cụ gì đang dùng, và những "taboo" cần tránh. Bạn không thể ngồi giải thích mỗi ngày. Bạn tạo sổ tay nhân viên. CLAUDE.md là sổ tay đó.</p>
+
+        <h2>Tại sao CLAUDE.md quan trọng?</h2>
+
+        <p><strong>Không có CLAUDE.md:</strong> Claude Code phải đoán mò. Nó không biết bạn đang làm dự án marketing hay website thương mại điện tử. Không biết ngôn ngữ ưa thích là tiếng Việt hay tiếng Anh. Không biết quy ước đặt tên file của bạn. Kết quả: CC làm việc chung chung, không tối ưu cho bạn.</p>
+
+        <p><strong>Có CLAUDE.md tốt:</strong> CC hiểu ngay context. Nó biết dự án bạn là gì, ai là khách hàng, tone of voice mong muốn, cấu trúc folder, và cả những quy tắc đặc thù của bạn. Kết quả: CC làm việc như đồng nghiệp thân quen — ít sai sót, ít cần giải thích lại, nhanh hơn nhiều.</p>
+
+        <h2>Cấu trúc của một CLAUDE.md tốt</h2>
+
+        <p>Không có quy tắc cứng nhắc nào, nhưng một CLAUDE.md hiệu quả thường bao gồm 6 phần:</p>
+
+        <h3>1. Tổng quan dự án (1–2 câu)</h3>
+        <p>Dự án này là gì? Ai dùng nó? Mục đích gì? Ngắn gọn nhưng đủ để CC hiểu ngữ cảnh ngay từ đầu.</p>
+
+        <h3>2. Tech stack (công nghệ đang dùng)</h3>
+        <p>Liệt kê những công cụ và ngôn ngữ đang sử dụng. Ví dụ: ngôn ngữ lập trình, framework, database, dịch vụ cloud... CC cần biết điều này để đề xuất giải pháp phù hợp.</p>
+
+        <h3>3. Cấu trúc file/folder</h3>
+        <p>Mô tả ngắn gọn các folder chính và mục đích của chúng. Giúp CC biết nên đặt file mới ở đâu và tìm file hiện tại ở đâu.</p>
+
+        <h3>4. Quy ước (conventions)</h3>
+        <p>Quy tắc đặt tên file, ngôn ngữ dùng trong code, định dạng date, timezone... Những thứ "mặc định" mà bạn muốn CC tuân theo mà không cần nhắc lại.</p>
+
+        <h3>5. Lệnh thường dùng</h3>
+        <p>Các lệnh terminal quan trọng: build, test, deploy, start server... CC cần biết cách chạy dự án của bạn để hỗ trợ tốt hơn.</p>
+
+        <h3>6. Ngữ cảnh kinh doanh</h3>
+        <p>Ai là người dùng cuối? Vấn đề gì đang giải quyết? Business context giúp CC đưa ra quyết định phù hợp với mục tiêu thực tế, không chỉ về mặt kỹ thuật.</p>
+
+        <h2>Ví dụ thực tế: CLAUDE.md cho website doanh nghiệp nhỏ</h2>
+
+        <p>Đây là ví dụ đầy đủ cho một công ty thương mại nhỏ quản lý website và nội dung marketing:</p>
+
+        <pre><code># CLAUDE.md — Website Công ty Hoa Tươi Lan Anh
+
+## Tổng quan dự án
+Website bán hoa tươi online cho Cửa hàng Lan Anh (TP.HCM).
+Khách hàng chủ yếu là nữ, 25–45 tuổi, đặt hoa dịp lễ và làm quà tặng.
+
+## Tech Stack
+- Website: WordPress + WooCommerce
+- Ngôn ngữ: Tiếng Việt (100%)
+- Email marketing: Mailchimp
+- Hình ảnh: Google Drive (folder: /Marketing/Hình ảnh sản phẩm)
+- Sheet quản lý đơn hàng: Google Sheets
+
+## Cấu trúc folder (dự án này)
+/marketing/
+  /emails/        — Template email marketing
+  /social/        — Nội dung đăng mạng xã hội
+  /blog/          — Bài viết blog
+/reports/         — Báo cáo doanh thu, tồn kho
+/data/
+  /customers/     — Danh sách khách hàng (CSV)
+  /products/      — Catalog sản phẩm
+/templates/       — Template tái sử dụng
+
+## Quy ước
+- Tên file: kebab-case, tiếng Việt không dấu (vd: hoa-hong-do-20-bong.md)
+- Ngày tháng: DD/MM/YYYY
+- Đơn vị tiền tệ: VND, format: 150.000đ
+- Tone of voice: thân thiện, gần gũi, tránh từ ngữ quá kỹ thuật
+
+## Lệnh thường dùng
+- Xem báo cáo tháng: mở /reports/monthly-YYYY-MM.csv
+- Cập nhật sản phẩm: sửa /data/products/catalog.csv
+- Tạo post mạng xã hội: dùng template /templates/social-post-template.md
+
+## Ngữ cảnh kinh doanh
+- Chủ cửa hàng: chị Lan Anh, không có background kỹ thuật
+- Vấn đề cần giải quyết: tiết kiệm thời gian viết nội dung và quản lý data
+- Ưu tiên: đơn giản, nhanh, có thể làm một mình không cần thuê thêm người</code></pre>
+
+        <h2>Kiến trúc 3 tầng: Global → Project → Module</h2>
+
+        <p>Claude Code đọc CLAUDE.md từ 3 vị trí khác nhau, theo thứ tự ưu tiên từ chung đến riêng:</p>
+
+        <ul>
+          <li><strong><code>~/.claude/CLAUDE.md</code> — Global settings:</strong> Áp dụng cho mọi dự án. Đặt ở đây: coding style cá nhân, ngôn ngữ ưa thích, timezone, các quy tắc không đổi dù làm project nào.</li>
+          <li><strong><code>./CLAUDE.md</code> — Project-level:</strong> Áp dụng cho dự án cụ thể. Đây là file quan trọng nhất — tech stack, conventions, lệnh build/test, business context.</li>
+          <li><strong><code>./src/CLAUDE.md</code> — Directory-level:</strong> Áp dụng cho module cụ thể. Dùng khi một subfolder có quy tắc riêng không giống phần còn lại của dự án.</li>
+        </ul>
+
+        <p>Với phần lớn người dùng, chỉ cần <code>./CLAUDE.md</code> ở project root là đủ. Global và directory-level là nâng cao cho power users.</p>
+
+        <h2>Ngân sách 100–150 instructions</h2>
+
+        <p>Đây là insight quan trọng nhất từ cộng đồng: <strong>frontier LLMs (bao gồm Claude) bắt đầu mất tập trung khi vượt ~150–200 instructions</strong>. Claude Code built-in đã dùng khoảng 50 instructions. Ngân sách thực tế còn lại của bạn: khoảng 100–150 dòng hướng dẫn.</p>
+
+        <p>Nguyên tắc: <strong>mỗi dòng phải kiếm được chỗ của nó</strong>. Trước khi thêm bất cứ điều gì vào CLAUDE.md, hỏi: "Nếu không có dòng này, CC sẽ làm sai cụ thể điều gì?" Nếu không có câu trả lời rõ ràng, đừng thêm.</p>
+
+        <h2>Nên và không nên đưa vào CLAUDE.md</h2>
+
+        <p><strong>Nên đưa vào</strong> (từ consensus cộng đồng):</p>
+        <ul>
+          <li>Tên dự án + 1 câu mô tả</li>
+          <li>Tech stack (phiên bản cụ thể)</li>
+          <li>Lệnh thường dùng: build, test, deploy, lint</li>
+          <li>Tổng quan cấu trúc file</li>
+          <li>Quy ước đặt tên</li>
+          <li>Business context: ai dùng, vấn đề gì giải quyết</li>
+        </ul>
+
+        <p><strong>Không nên đưa vào:</strong></p>
+        <ul>
+          <li>Những thứ đã có trong code (CC đọc code trực tiếp)</li>
+          <li>Đoạn văn dài dòng — dùng bullet points</li>
+          <li>Full documentation — link đến file riêng thay vì paste vào</li>
+          <li>Thông tin thay đổi hàng ngày</li>
+          <li>Password, API key, credentials — dùng <code>.env</code> riêng</li>
+        </ul>
+
+        <h2>Prompt caching: lợi thế chi phí ẩn</h2>
+
+        <p>CLAUDE.md được cache tự động — nghĩa là Claude đọc file này một lần rồi giữ trong bộ nhớ cache, không cần gửi lại mỗi request. Kết quả: <strong>giảm ~90% chi phí token cho các lần đọc lặp</strong>.</p>
+
+        <p>Điều kiện để cache hoạt động tốt: CLAUDE.md phải ổn định. Nếu bạn chỉnh sửa file liên tục mỗi session, cache sẽ bị invalidate và lợi thế mất đi. Viết CLAUDE.md cẩn thận một lần, rồi chỉ cập nhật khi thực sự cần thiết.</p>
+
+        <h2>Lệnh <code>/init</code>: tạo CLAUDE.md tự động</h2>
+
+        <p>Không cần viết CLAUDE.md từ đầu. Gõ <code>/init</code> trong Claude Code — CC sẽ phân tích cấu trúc project hiện tại và tự động tạo CLAUDE.md starter phù hợp. Từ đó, bạn chỉ cần:</p>
+        <ol>
+          <li>Xóa những gì CC đoán sai hoặc không cần thiết</li>
+          <li>Thêm business context (thứ CC không thể đoán từ code)</li>
+          <li>Kiểm tra tổng số dòng — mục tiêu dưới 150 dòng hướng dẫn</li>
+        </ol>
+
+        <p>Tham khảo thêm: <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank" rel="noopener">awesome-claude-code</a> (21.6K+ stars) — tổng hợp CLAUDE.md mẫu từ cộng đồng, và <a href="https://docs.anthropic.com/en/docs/claude-code/best-practices" target="_blank" rel="noopener">Claude Code Best Practices</a> từ Anthropic.</p>
+
+        <h2>Best practices khi viết CLAUDE.md</h2>
+
+        <ul>
+          <li><strong>Giữ dưới 150 dòng hướng dẫn.</strong> Anthropic khuyến nghị dưới 300 dòng tổng. Cộng đồng power users nhận thấy dưới 150 instruction lines cho kết quả tốt nhất.</li>
+          <li><strong>Cập nhật khi dự án thay đổi.</strong> CLAUDE.md lỗi thời còn tệ hơn không có. Mỗi khi bạn thay đổi quy ước hoặc thêm tool mới, cập nhật ngay.</li>
+          <li><strong>Ghi rõ LÝ DO, không chỉ ĐIỀU CẦN LÀM.</strong> Thay vì "dùng tiếng Việt", hãy viết "dùng tiếng Việt vì khách hàng không đọc được tiếng Anh". Context giúp CC hiểu sâu hơn và ra quyết định tốt hơn trong những tình huống không được liệt kê.</li>
+          <li><strong>Cụ thể hơn là mơ hồ.</strong> "Tone thân thiện" ít hữu ích hơn "Tone thân thiện như đang nói chuyện với bạn bè, tránh từ ngữ học thuật, dùng ví dụ cụ thể".</li>
+          <li><strong>Đặt ở thư mục gốc dự án.</strong> Không phải trong subfolder. CC tìm CLAUDE.md ở root trước tiên.</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <b class="ct">Cảnh báo</b>
+            <p>Đừng bỏ thông tin nhạy cảm vào CLAUDE.md: password, API key, thông tin ngân hàng, dữ liệu cá nhân của khách hàng. CLAUDE.md là file văn bản bình thường — ai có quyền truy cập folder đó đều đọc được. Dùng file <code>.env</code> riêng cho thông tin bảo mật.</p>
+          </div>
+        </div>
+
+        <h2>So sánh: Có và không có CLAUDE.md</h2>
+
+        <p>Cùng một yêu cầu: <em>"Viết email thông báo giảm giá 20% cho khách hàng thân thiết."</em></p>
+
+        <p><strong>Không có CLAUDE.md:</strong> CC viết email bằng tiếng Anh hoặc tiếng Việt kiểu sách giáo khoa, tone trang trọng, format chung chung, không có tên cửa hàng, không có contact.</p>
+
+        <p><strong>Có CLAUDE.md như ví dụ trên:</strong> CC viết email bằng tiếng Việt thân thiện, đề cập đến "Cửa hàng Lan Anh", format ngày tháng đúng DD/MM/YYYY, giá tiền đúng format VND, tone phù hợp với khách hàng nữ 25–45 tuổi.</p>
+
+        <p>Cùng một prompt, kết quả khác hoàn toàn. CLAUDE.md là khoản đầu tư nhỏ một lần, lợi tức lâu dài.</p>
+
+        <div class="callout callout-practice">
+          <span class="callout-icon">🔧</span>
+          <div class="callout-body">
+            <b class="ct">Thực hành</b>
+            <p>Chạy <code>/init</code> trong project hiện tại của bạn. Đọc CLAUDE.md được tạo ra. Sau đó: (1) Xóa mọi thứ không cần thiết hoặc CC đoán sai, (2) Thêm business context — ai dùng, vấn đề gì giải quyết, (3) Đếm số dòng hướng dẫn — target dưới 150 dòng. Mở Claude Code, thực hiện một yêu cầu nhỏ, và quan sát sự khác biệt so với khi chưa có file này.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="lesson-nav">
+        <a href="./" class="nav-prev">← Level 2 Overview</a>
+        <button class="btn-complete" data-lesson="2-1-claude-md-so-tay">✓ Hoàn thành bài học</button>
+        <a href="claude-md-templates.html" class="nav-next">2.2 Templates →</a>
+      </nav>
+
+      <footer class="site-footer">
+        <img src="https://beup.space/wp-content/uploads/2025/12/logo-final-1536x530-1.png" alt="BEUP" class="footer-logo">
+        <p>© 2026 BEUP Learning Solutions. All rights reserved.</p>
+        <p><a href="https://beup.space">beup.space</a></p>
+      </footer>
+    </div>
+  </div>
+  <script src="../../assets/js/theme-toggle.js" defer></script>
+  <script src="../../assets/js/sidebar-toc.js" defer></script>
+  <script src="../../assets/js/code-copy.js" defer></script>
+  <script src="../../assets/js/progress-tracker.js" defer></script>
+</body>
+</html>
