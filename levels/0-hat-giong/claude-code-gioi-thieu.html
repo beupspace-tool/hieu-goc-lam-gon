@@ -190,34 +190,34 @@
           </div>
         </div>
 
-        <h3>⚡ Claude Code CLI</h3>
-        <p>Terminal-based — gõ <code>claude</code> trong terminal là xong. Đây là công cụ trọng tâm của toàn bộ guide này.</p>
+        <h3>🖥️ Claude Code Desktop App <span style="background:rgba(0,208,132,0.15);color:#059669;font-size:var(--prim-text-xs);padding:2px 8px;border-radius:var(--prim-radius-full);font-weight:var(--prim-weight-semibold);margin-left:var(--prim-space-2);">Khuyến nghị</span></h3>
+        <p>Tải app (<a href="https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect" target="_blank" rel="noopener">macOS</a> | <a href="https://claude.ai/api/desktop/win32/x64/exe/latest/redirect" target="_blank" rel="noopener">Windows</a>), đăng nhập, dùng ngay — không cần biết terminal. Đây là cách dễ nhất để bắt đầu với Claude Code và là công cụ trọng tâm của guide này.</p>
         <div class="use-cases">
           <div class="use-case">
             <div class="use-case-icon">✅</div>
-            <div class="use-case-text"><strong>Tốt cho:</strong> developer workflow, automation, project management, xây dựng website, xử lý dữ liệu. Context window 200K tokens (Sonnet) đến 1M tokens (Opus) — đọc được cả codebase lớn trong một lần.</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> mọi đối tượng — business owner, freelancer, developer. Giao diện trực quan, xem diff bằng mắt, accept/reject thay đổi bằng nút bấm. Hỗ trợ skills, slash commands, MCP, và hầu hết tính năng nâng cao.</div>
           </div>
           <div class="use-case">
             <div class="use-case-icon">🎙️</div>
-            <div class="use-case-text"><strong>Voice mode:</strong> giữ phím cách (spacebar) để nói thay vì gõ. Hữu ích khi đang làm việc tay không rảnh hoặc muốn diễn đạt nhanh hơn.</div>
+            <div class="use-case-text"><strong>Voice mode:</strong> nói thay vì gõ. Giảm rào cản cho người chưa quen gõ lệnh.</div>
           </div>
         </div>
 
-        <h3>🖥️ Claude Code trên GUI (VS Code / JetBrains)</h3>
-        <p>Cùng engine như CLI nhưng tích hợp trực tiếp bên trong IDE. Bạn thấy code changes ngay trong editor, có inline diff và chat panel.</p>
+        <h3>🖥️ Claude Code trên VS Code</h3>
+        <p>Cùng engine nhưng tích hợp trong VS Code. Có chat panel + integrated terminal — khi cần tính năng nâng cao, bấm <kbd>Cmd+`</kbd> mở terminal ngay trong VS Code.</p>
         <div class="use-cases">
           <div class="use-case">
             <div class="use-case-icon">✅</div>
-            <div class="use-case-text"><strong>Tốt cho:</strong> người quen làm việc trong VS Code, muốn thấy thay đổi trực tiếp trên file đang mở, cần codebase awareness sâu hơn.</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> người đã quen VS Code, muốn thấy thay đổi trực tiếp trên file đang mở, cần cả GUI lẫn terminal trong cùng một app.</div>
           </div>
         </div>
 
-        <h3>🤖 Claude Cowork (Desktop)</h3>
-        <p>Chế độ agentic trên Claude Desktop app — Claude tự quản lý file, restructure dữ liệu, tạo report mà không cần bạn ngồi theo dõi từng bước.</p>
+        <h3>⚡ Claude Code CLI (Terminal)</h3>
+        <p>Gõ <code>claude</code> trong terminal. Mạnh nhất, linh hoạt nhất — nhưng yêu cầu biết terminal cơ bản.</p>
         <div class="use-cases">
           <div class="use-case">
             <div class="use-case-icon">✅</div>
-            <div class="use-case-text"><strong>Tốt cho:</strong> non-technical users muốn AI làm việc độc lập. Dispatch mode cho phép điều khiển từ xa qua mobile — quét QR, giao việc, Claude tự làm.</div>
+            <div class="use-case-text"><strong>Tốt cho:</strong> developer, automation, scripting. Tất cả slash commands + agent teams + third-party providers. Context window 200K–1M tokens.</div>
           </div>
         </div>
 
@@ -254,18 +254,18 @@
               </tr>
               <tr>
                 <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Tạo/sửa file, build website</td>
-                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code CLI</td>
-                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Truy cập filesystem trực tiếp</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code Desktop App</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Truy cập filesystem, giao diện trực quan</td>
               </tr>
               <tr style="background: var(--bg-secondary);">
                 <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Code trong IDE</td>
-                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code GUI</td>
-                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Thấy diff inline, context nhất quán</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code VS Code</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Thấy diff inline, có terminal tích hợp</td>
               </tr>
               <tr>
                 <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Tự động hóa báo cáo</td>
-                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Cowork</td>
-                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">AI làm việc độc lập, không cần giám sát</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); font-weight: var(--prim-weight-medium);">Claude Code Desktop App</td>
+                <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Scheduled tasks, AI làm việc độc lập</td>
               </tr>
               <tr style="background: var(--bg-secondary);">
                 <td style="padding: var(--prim-space-3) var(--prim-space-4); border: 1px solid var(--border-default); color: var(--text-secondary);">Build app có AI bên trong</td>
@@ -401,7 +401,7 @@
           <span class="callout-icon">🔧</span>
           <div class="callout-body">
             <b class="ct">Thực hành</b>
-            <p>Vào <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>, tạo tài khoản Pro ($20/tháng). Thử ba bước: (1) Hỏi Claude Chat về ngành của bạn và đánh giá chất lượng câu trả lời. (2) Tạo một Project với brand guidelines của công ty — lưu tone of voice, sản phẩm chính, đối tượng khách hàng. (3) Dùng Artifacts để tạo template email chuẩn cho team. Đây là bước khởi đầu thực tế trước khi chuyển sang Claude Code CLI ở các bài tiếp theo.</p>
+            <p>Vào <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>, tạo tài khoản Pro ($20/tháng). Thử ba bước: (1) Hỏi Claude Chat về ngành của bạn và đánh giá chất lượng câu trả lời. (2) Tạo một Project với brand guidelines của công ty — lưu tone of voice, sản phẩm chính, đối tượng khách hàng. (3) Dùng Artifacts để tạo template email chuẩn cho team. Đây là bước khởi đầu thực tế trước khi chuyển sang Claude Code Desktop App ở các bài tiếp theo.</p>
           </div>
         </div>
 

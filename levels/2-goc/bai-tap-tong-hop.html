@@ -323,15 +323,15 @@
 
             <div class="scenario-section-label">Bước thực hiện</div>
             <ol>
-              <li>Tạo folder và khởi tạo git:<br><code>mkdir my-project &amp;&amp; cd my-project &amp;&amp; git init</code></li>
-              <li>Mở Claude Code: <code>claude</code></li>
+              <li>Tạo folder <code>my-project</code> (qua Finder/File Explorer hoặc terminal). Mở trong Claude Code Desktop App hoặc VS Code.</li>
+              <li>Nói với Claude: "Khởi tạo git repository cho project này" — Claude sẽ tự chạy lệnh cần thiết.</li>
               <li>Chạy <code>/init</code> — CC tự động tạo CLAUDE.md từ cấu trúc hiện tại</li>
               <li>Review CLAUDE.md: xóa những gì không cần, thêm business context, kiểm tra dưới 150 dòng</li>
               <li>Gõ <code>/plan</code> rồi mô tả project — CC lên kế hoạch cấu trúc dự án, bạn review và approve</li>
               <li>Execute plan — CC tạo cấu trúc folder, file khởi đầu</li>
               <li>Gõ <code>/cost</code> — kiểm tra đã dùng bao nhiêu token và chi phí ước tính</li>
               <li>Gõ <code>/compact</code> — nén context để tiếp tục làm việc hiệu quả hơn</li>
-              <li>Commit với meaningful message: <code>git add -A &amp;&amp; git commit -m "feat: initial project setup"</code></li>
+              <li>Nói với Claude: "Commit tất cả thay đổi với message 'feat: initial project setup'" — Claude tự chạy git commit.</li>
             </ol>
 
             <div class="scenario-section-label">Kết quả mong đợi</div>

@@ -231,12 +231,19 @@
         </div>
 
         <h2>Bài tập thực hành — 3 bước cần làm ngay</h2>
-        <p>Mở Terminal và chạy lần lượt các lệnh sau để tạo môi trường thử nghiệm an toàn:</p>
-        <pre><code>mkdir ~/claude-test
+        <p>Đầu tiên, tạo một folder thử nghiệm an toàn — mọi file CC tạo ra sẽ nằm trong đây, bạn có thể xóa bất cứ lúc nào.</p>
+
+        <p><strong>Desktop App:</strong> Tạo folder <code>claude-test</code> trên Desktop bằng Finder/File Explorer. Mở Claude Code Desktop → bấm <strong>Open folder</strong> → chọn folder vừa tạo.</p>
+        <p><strong>VS Code:</strong> Tạo folder <code>claude-test</code>, mở trong VS Code, bấm icon Claude ở sidebar.</p>
+
+        <details style="margin:var(--prim-space-3) 0 var(--prim-space-5);border:1px solid var(--border-default);border-radius:var(--prim-radius-md);overflow:hidden;">
+          <summary style="padding:var(--prim-space-3) var(--prim-space-4);background:var(--bg-secondary);cursor:pointer;font-size:var(--prim-text-sm);">Terminal (cho ai đã quen dòng lệnh)</summary>
+          <div style="padding:var(--prim-space-3) var(--prim-space-4);">
+            <pre><code>mkdir ~/claude-test
 cd ~/claude-test
 claude</code></pre>
-
-        <p>Mọi file CC tạo ra sẽ nằm trong <code>claude-test</code> — bạn có thể xóa sạch folder này bất cứ lúc nào mà không lo ảnh hưởng dữ liệu khác.</p>
+          </div>
+        </details>
 
         <div class="exercise-box">
           <div class="exercise-header">
@@ -245,7 +252,7 @@ claude</code></pre>
           </div>
           <div class="exercise-body">
             <p>Mục tiêu: hiểu cách CLAUDE.md hoạt động — file cấu hình được đọc tự động mỗi lần khởi động CC.</p>
-            <p>Sau khi Claude Code đang chạy trong <code>~/claude-test</code>, gõ:</p>
+            <p>Sau khi Claude Code đang chạy trong folder <code>claude-test</code>, gõ:</p>
             <pre><code>/init</code></pre>
             <p>Claude sẽ tự động tạo file <code>CLAUDE.md</code> dựa trên cấu trúc folder. Mở file đó ra và đọc — đây là "bản hướng dẫn" mà Claude sẽ đọc mỗi khi bạn bắt đầu session mới trong folder này.</p>
             <p>Thử thêm 1 dòng vào file: <em>"Tôi đang học Claude Code. Hãy giải thích bằng tiếng Việt và dùng ví dụ đơn giản."</em> — lần sau Claude sẽ tự động biết điều này.</p>
@@ -294,7 +301,7 @@ claude</code></pre>
           <li><strong>Bạn kiểm tra</strong> và phản hồi nếu cần điều chỉnh</li>
         </ol>
 
-        <p>Điểm khác biệt lớn nhất so với Claude Chat: CC không chỉ "nói" — nó <em>làm</em>. File được tạo thật. Lệnh được chạy thật. Kết quả tồn tại sau khi bạn đóng Terminal.</p>
+        <p>Điểm khác biệt lớn nhất so với Claude Chat: CC không chỉ "nói" — nó <em>làm</em>. File được tạo thật. Lệnh được chạy thật. Kết quả tồn tại sau khi bạn đóng app.</p>
 
         <h2>Mẹo từ người dùng thực tế</h2>
         <div class="tips-grid">

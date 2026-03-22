@@ -148,101 +148,88 @@
           <span class="callout-icon">💡</span>
           <div class="callout-body">
             <b class="ct">Nguyên lý</b>
-            <p>Cài đặt phần mềm giống như lắp ráp dụng cụ trước khi bắt đầu công việc. Làm đúng một lần, dùng mãi. Bài này có 4 bước — hãy làm theo thứ tự, đừng bỏ qua bước nào.</p>
+            <p>Cài đặt phần mềm giống như lắp ráp dụng cụ trước khi bắt đầu công việc. Làm đúng một lần, dùng mãi. Chọn cách phù hợp với bạn bên dưới — Desktop App (3 bước) hoặc Terminal (4 bước).</p>
           </div>
         </div>
 
-        <p>Trước khi bắt đầu, hãy mở Terminal trên máy bạn. Nếu bạn chưa quen Terminal, hãy quay lại Bài 0.4 để ôn lại. Đây là bước duy nhất trong Level 1 mà bạn phải làm trên máy thật.</p>
+        <p>Có hai cách cài đặt Claude Code. Chọn cách phù hợp với bạn:</p>
+
+        <h2>Cách A: Desktop App <span style="font-size:var(--prim-text-sm);font-weight:normal;color:var(--text-muted);">— Khuyến nghị cho người mới</span></h2>
+        <p>Không cần cài gì thêm, không cần biết terminal. Tải app, đăng nhập, dùng ngay.</p>
 
         <div class="install-step">
           <div class="install-step-header">
             <div class="install-step-num">1</div>
-            <div class="install-step-title">Kiểm tra Node.js</div>
+            <div class="install-step-title">Tải Claude Code Desktop</div>
           </div>
           <div class="install-step-body">
-            <p>Claude Code chạy trên nền tảng Node.js — một "môi trường chạy" cho phép các chương trình JavaScript hoạt động ngoài trình duyệt. Hãy nghĩ Node.js như động cơ xe: CC là chiếc xe, Node.js là động cơ bên trong.</p>
-            <p>Mở Terminal và gõ lệnh sau, rồi nhấn Enter:</p>
-            <pre><code>node --version</code></pre>
-            <p>Nếu bạn thấy kết quả như <code>v20.11.0</code> hoặc số phiên bản tương tự, Node.js đã được cài. Bước 1 hoàn thành.</p>
-            <p>Nếu terminal báo <code>command not found</code>, bạn cần cài Node.js:</p>
-            <ol>
-              <li>Vào <strong>nodejs.org</strong> bằng trình duyệt</li>
-              <li>Tải về phiên bản <strong>LTS</strong> (Long-Term Support) — ổn định nhất</li>
-              <li>Cài đặt như phần mềm bình thường (Next → Next → Install)</li>
-              <li>Mở Terminal mới, kiểm tra lại bằng <code>node --version</code></li>
-            </ol>
+            <p>Tải từ trang chính thức: <a href="https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect" target="_blank" rel="noopener"><strong>macOS</strong></a> | <a href="https://claude.ai/api/desktop/win32/x64/exe/latest/redirect" target="_blank" rel="noopener"><strong>Windows</strong></a>. Cài đặt như phần mềm bình thường — kéo vào Applications (Mac) hoặc Next → Install (Windows).</p>
           </div>
         </div>
 
         <div class="install-step">
           <div class="install-step-header">
             <div class="install-step-num">2</div>
-            <div class="install-step-title">Cài Claude Code</div>
+            <div class="install-step-title">Đăng nhập</div>
           </div>
           <div class="install-step-body">
-            <p>Khi đã có Node.js, cài Claude Code chỉ cần một lệnh. Gõ vào Terminal:</p>
-            <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
-            <p>Giải thích từng phần:</p>
-            <ul>
-              <li><code>npm</code> — Node Package Manager, công cụ quản lý phần mềm đi kèm Node.js (như App Store cho phần mềm dòng lệnh)</li>
-              <li><code>install</code> — lệnh cài đặt</li>
-              <li><code>-g</code> — "global", cài đặt toàn hệ thống (dùng được từ bất kỳ thư mục nào)</li>
-              <li><code>@anthropic-ai/claude-code</code> — tên chính xác của gói phần mềm Claude Code</li>
-            </ul>
-            <p>Quá trình cài mất khoảng 1-2 phút. Terminal sẽ hiển thị các dòng log — đó là bình thường. Chờ cho đến khi terminal trở lại hiện dấu nhắc <code>$</code>.</p>
+            <p>Mở app, đăng nhập bằng tài khoản Anthropic (tài khoản bạn dùng cho claude.ai). Xong — bạn đã sẵn sàng.</p>
           </div>
         </div>
 
         <div class="install-step">
           <div class="install-step-header">
             <div class="install-step-num">3</div>
-            <div class="install-step-title">Xác thực tài khoản</div>
+            <div class="install-step-title">Bắt đầu làm việc</div>
           </div>
           <div class="install-step-body">
-            <p>Sau khi cài xong, khởi động Claude Code bằng lệnh:</p>
-            <pre><code>claude</code></pre>
-            <p>Lần đầu tiên chạy, Claude Code sẽ yêu cầu xác thực. Có hai cách:</p>
-            <p><strong>Cách 1 (Đơn giản hơn): Đăng nhập qua trình duyệt</strong></p>
-            <p>Terminal sẽ hiển thị một URL. Copy URL đó, dán vào trình duyệt, đăng nhập bằng tài khoản Anthropic của bạn (tài khoản bạn dùng cho claude.ai). Sau khi đăng nhập thành công trên trình duyệt, quay lại Terminal.</p>
-            <p><strong>Cách 2: Dùng API Key</strong></p>
-            <p>Nếu bạn có API Key từ console.anthropic.com, bạn có thể nhập trực tiếp khi được hỏi. API Key có dạng <code>sk-ant-...</code>.</p>
-            <p>Sau khi xác thực thành công, bạn sẽ thấy giao diện chào mừng của Claude Code trong Terminal.</p>
+            <p>Kéo thư mục dự án vào app (hoặc bấm <strong>Open folder</strong>). Gõ câu đầu tiên:</p>
+            <pre><code>Xin chào! Hãy nói cho tôi biết bạn là ai.</code></pre>
+            <p>Nếu Claude trả lời — cài đặt thành công. Bạn có thể dùng <code>/</code> (slash commands), xem diff trực quan, và accept/reject thay đổi bằng nút bấm.</p>
           </div>
         </div>
 
-        <div class="install-step">
-          <div class="install-step-header">
-            <div class="install-step-num">4</div>
-            <div class="install-step-title">Kiểm tra hoạt động</div>
-          </div>
-          <div class="install-step-body">
-            <p>Kiểm tra phiên bản Claude Code đã cài:</p>
-            <pre><code>claude --version</code></pre>
-            <p>Bạn sẽ thấy số phiên bản như <code>1.x.x</code>. Sau đó, khởi động một phiên làm việc:</p>
+        <h2>Cách B: Qua Terminal <span style="font-size:var(--prim-text-sm);font-weight:normal;color:var(--text-muted);">— Cho ai đã quen dòng lệnh</span></h2>
+
+        <details style="margin:var(--prim-space-4) 0;border:1px solid var(--border-default);border-radius:var(--prim-radius-lg);overflow:hidden;">
+          <summary style="padding:var(--prim-space-4) var(--prim-space-5);background:var(--bg-secondary);cursor:pointer;font-weight:var(--prim-weight-semibold);font-size:var(--prim-text-sm);">Xem hướng dẫn cài qua Terminal (4 bước)</summary>
+          <div style="padding:var(--prim-space-5);">
+            <p><strong>Bước 1: Kiểm tra Node.js</strong></p>
+            <p>Claude Code CLI chạy trên nền tảng Node.js — hãy nghĩ Node.js như động cơ xe: CC là chiếc xe, Node.js là động cơ bên trong. Mở Terminal và gõ:</p>
+            <pre><code>node --version</code></pre>
+            <p>Nếu thấy <code>v20.11.0</code> hoặc tương tự — OK. Nếu <code>command not found</code>, tải từ <strong>nodejs.org</strong> (phiên bản LTS), cài như phần mềm bình thường.</p>
+
+            <p><strong>Bước 2: Cài Claude Code</strong></p>
+            <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
+            <p><code>npm</code> là công cụ quản lý phần mềm đi kèm Node.js (như App Store cho phần mềm dòng lệnh). <code>-g</code> nghĩa là cài toàn hệ thống. Chờ 1-2 phút cho đến khi terminal hiện lại dấu nhắc <code>$</code>.</p>
+
+            <p><strong>Bước 3: Xác thực</strong></p>
             <pre><code>claude</code></pre>
-            <p>Claude sẽ chào bạn và sẵn sàng nhận lệnh. Thử gõ một câu đơn giản:</p>
-            <pre><code>Xin chào! Hãy nói cho tôi biết bạn là ai.</code></pre>
-            <p>Nếu Claude trả lời, cài đặt thành công hoàn toàn. Nhấn <kbd>Ctrl+C</kbd> (hoặc gõ <code>/exit</code>) để thoát khi xong.</p>
+            <p>Lần đầu tiên, Claude Code sẽ hiển thị một URL — copy, dán vào trình duyệt, đăng nhập bằng tài khoản Anthropic. Hoặc nhập API Key (dạng <code>sk-ant-...</code>) nếu có.</p>
+
+            <p><strong>Bước 4: Kiểm tra</strong></p>
+            <pre><code>claude --version</code></pre>
+            <p>Thấy số phiên bản là OK. Gõ <code>claude</code>, rồi thử: "Xin chào! Hãy nói cho tôi biết bạn là ai." Nếu Claude trả lời — thành công.</p>
           </div>
-        </div>
+        </details>
 
         <h2>Xử lý lỗi thường gặp</h2>
         <div class="error-list">
           <div class="error-item">
-            <div class="error-item-title">npm: command not found</div>
-            <div class="error-item-fix">Node.js chưa cài hoặc chưa được nhận dạng. Giải pháp: Cài Node.js từ nodejs.org, sau đó mở Terminal mới (đóng cửa sổ cũ, mở lại). Terminal cũ không nhận cập nhật PATH.</div>
+            <div class="error-item-title">Desktop App: Không đăng nhập được</div>
+            <div class="error-item-fix">Kiểm tra kết nối mạng. Đảm bảo bạn dùng đúng tài khoản Anthropic (tài khoản claude.ai). Nếu vẫn lỗi, thử đóng app hoàn toàn rồi mở lại.</div>
           </div>
           <div class="error-item">
-            <div class="error-item-title">EACCES: permission denied</div>
-            <div class="error-item-fix">Không đủ quyền cài ở cấp global. Giải pháp trên Mac/Linux: thêm <code>sudo</code> trước lệnh: <code>sudo npm install -g @anthropic-ai/claude-code</code>. Nhập mật khẩu máy tính của bạn khi được hỏi (mật khẩu không hiển thị khi gõ — bình thường).</div>
+            <div class="error-item-title">Terminal: npm — command not found</div>
+            <div class="error-item-fix">Node.js chưa cài. Tải từ nodejs.org, cài xong mở Terminal mới (đóng cửa sổ cũ, mở lại).</div>
           </div>
           <div class="error-item">
-            <div class="error-item-title">Authentication failed / Unauthorized</div>
-            <div class="error-item-fix">Tài khoản chưa được xác thực đúng. Giải pháp: Chạy <code>claude</code> lại, chọn phương thức đăng nhập qua trình duyệt (Browser login), đảm bảo bạn đăng nhập đúng tài khoản Anthropic. Nếu dùng API Key, kiểm tra key có bắt đầu bằng <code>sk-ant-</code> không.</div>
+            <div class="error-item-title">Terminal: EACCES — permission denied</div>
+            <div class="error-item-fix">Thêm <code>sudo</code> trước lệnh: <code>sudo npm install -g @anthropic-ai/claude-code</code>. Nhập mật khẩu máy (không hiển thị khi gõ — bình thường).</div>
           </div>
           <div class="error-item">
-            <div class="error-item-title">claude: command not found (sau khi cài xong)</div>
-            <div class="error-item-fix">PATH chưa cập nhật. Giải pháp: Đóng Terminal và mở lại. Trên một số máy Mac, bạn cần thêm <code>export PATH="$HOME/.npm-global/bin:$PATH"</code> vào file <code>~/.zshrc</code> hoặc <code>~/.bash_profile</code>.</div>
+            <div class="error-item-title">Terminal: claude — command not found</div>
+            <div class="error-item-fix">Đóng Terminal và mở lại. Nếu vẫn lỗi, thử dùng Desktop App — đơn giản hơn và không cần cấu hình PATH.</div>
           </div>
         </div>
 
@@ -258,7 +245,7 @@
           <span class="callout-icon">🔧</span>
           <div class="callout-body">
             <b class="ct">Thực hành</b>
-            <p>Hoàn thành cả 4 bước trên. Khi bạn thấy Claude chào bạn trong Terminal và trả lời câu hỏi đầu tiên — chụp ảnh màn hình lại. Đó là khoảnh khắc bắt đầu hành trình mới. Không phải mỗi ngày bạn có một "lần đầu tiên" như thế này.</p>
+            <p>Hoàn thành cài đặt bằng Cách A hoặc Cách B. Khi Claude chào bạn và trả lời câu hỏi đầu tiên — chụp ảnh màn hình lại. Đó là khoảnh khắc bắt đầu hành trình mới.</p>
           </div>
         </div>
 

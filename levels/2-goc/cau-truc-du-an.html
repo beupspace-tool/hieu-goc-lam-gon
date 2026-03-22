@@ -235,27 +235,28 @@
           <li><strong>Tên file dài và mô tả</strong> — Với LLM tools (Grep, Glob, Search), tên file dài như <code>email-marketing-chao-hang-khach-hang-cu.md</code> tốt hơn <code>email.md</code>. File tự mô tả chính nó.</li>
         </ul>
 
-        <h2>Git Worktrees: chạy nhiều Claude Code session song song</h2>
+        <h2>Nâng cao: Git Worktrees — chạy nhiều session song song</h2>
 
-        <p>Power users chạy 5–20 Claude Code sessions cùng lúc. Bí quyết: <strong>git worktrees</strong> — mỗi session trong một worktree riêng biệt, không có merge conflict.</p>
+        <p>Power users chạy 5–20 Claude Code sessions cùng lúc. Bí quyết: <strong>git worktrees</strong> — mỗi session trong một worktree riêng biệt, không bị xung đột file.</p>
 
-        <p>Tại sao cần worktrees? Nếu 2 sessions cùng làm việc trên một folder, chúng có thể sửa cùng file gây conflict. Worktree tạo ra bản copy riêng của codebase cho mỗi branch, mỗi session làm việc độc lập.</p>
-
-        <p><strong>Ví dụ thực tế:</strong> Thay vì làm tuần tự (feature A xong mới làm B), bạn chạy song song:</p>
-
-        <pre><code># Tạo worktree cho feature authentication
+        <details style="margin:var(--prim-space-4) 0;border:1px solid var(--border-default);border-radius:var(--prim-radius-lg);overflow:hidden;">
+          <summary style="padding:var(--prim-space-4) var(--prim-space-5);background:var(--bg-secondary);cursor:pointer;font-weight:var(--prim-weight-semibold);font-size:var(--prim-text-sm);">Xem hướng dẫn Git Worktrees (dành cho người đã biết Git)</summary>
+          <div style="padding:var(--prim-space-5);">
+            <p>Nếu 2 sessions cùng làm việc trên một folder, chúng có thể sửa cùng file gây conflict. Worktree tạo ra bản copy riêng của codebase cho mỗi branch, mỗi session làm việc độc lập.</p>
+            <p><strong>Ví dụ:</strong> Thay vì làm tuần tự (feature A xong mới làm B), bạn chạy song song:</p>
+            <pre><code># Tạo worktree cho feature authentication
 git worktree add ../my-project-auth -b feature/auth
 
 # Tạo worktree cho feature dashboard
 git worktree add ../my-project-dashboard -b feature/dashboard
 
-# Mở 2 Claude Code sessions riêng biệt:
+# Mở 2 Claude Code sessions riêng biệt
 # Terminal 1: cd ../my-project-auth && claude
 # Terminal 2: cd ../my-project-dashboard && claude</code></pre>
-
-        <p>Kết quả: task mất 30 phút tuần tự → 5–10 phút khi chạy song song. Mỗi session có CLAUDE.md, context, và file riêng — không ảnh hưởng lẫn nhau.</p>
-
-        <p>Khi xong, merge về branch chính như bình thường: <code>git merge feature/auth</code>.</p>
+            <p>Kết quả: task mất 30 phút tuần tự → 5–10 phút khi chạy song song. Mỗi session có CLAUDE.md, context, và file riêng — không ảnh hưởng lẫn nhau.</p>
+            <p>Khi xong, merge về branch chính như bình thường: <code>git merge feature/auth</code>.</p>
+          </div>
+        </details>
 
         <div class="callout callout-warning">
           <span class="callout-icon">⚠️</span>

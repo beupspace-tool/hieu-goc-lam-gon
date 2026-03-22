@@ -222,8 +222,17 @@
               <div class="exercise-section-title">📋 Bước thực hiện</div>
               <div class="exercise-section-body">
                 <ol>
-                  <li>Mở Terminal, tạo folder mới và vào trong đó:
-                    <pre><code>mkdir ~/du-an-website && cd ~/du-an-website && claude</code></pre>
+                  <li>Tạo folder <code>du-an-website</code> trên máy:
+                    <ul>
+                      <li><strong>Desktop App:</strong> Tạo folder bằng Finder/File Explorer → mở Claude Code Desktop → bấm <strong>Open folder</strong> → chọn folder vừa tạo.</li>
+                      <li><strong>VS Code:</strong> Tạo folder → mở trong VS Code → bấm icon Claude ở sidebar.</li>
+                    </ul>
+                    <details style="margin:var(--prim-space-2) 0;border:1px solid var(--border-default);border-radius:var(--prim-radius-md);overflow:hidden;">
+                      <summary style="padding:var(--prim-space-2) var(--prim-space-3);background:var(--bg-secondary);cursor:pointer;font-size:var(--prim-text-xs);">Terminal</summary>
+                      <div style="padding:var(--prim-space-2) var(--prim-space-3);">
+                        <pre><code>mkdir ~/du-an-website && cd ~/du-an-website && claude</code></pre>
+                      </div>
+                    </details>
                   </li>
                   <li>Khi Claude Code khởi động, gõ prompt sau (thay tên công ty bằng tên thật của bạn):
                     <pre><code>Tạo cấu trúc folder hoàn chỉnh cho dự án website công ty [TÊN CÔNG TY].
@@ -251,7 +260,7 @@ Sau đó tạo file README.md trong thư mục gốc với nội dung giới thi
               <div class="exercise-section-title">💬 Gợi ý nếu gặp khó khăn</div>
               <div class="exercise-section-body">
                 <div class="hint-box">
-                  <strong>CC không tạo thư mục?</strong> Hãy kiểm tra bạn đang ở đúng thư mục bằng lệnh <code>pwd</code>. Sau đó thử lại với prompt đơn giản hơn: "Tạo thư mục docs, images, reports, templates trong thư mục hiện tại."<br><br>
+                  <strong>CC không tạo thư mục?</strong> Kiểm tra bạn đã mở đúng folder trong app. Thử lại với prompt đơn giản hơn: "Tạo thư mục docs, images, reports, templates trong thư mục hiện tại."<br><br>
                   <strong>README.md nội dung không đúng?</strong> Yêu cầu CC sửa với nhiều context hơn: "Sửa lại README.md. Tôi là [nghề nghiệp], công ty [tên], dự án này để [mục đích]."
                 </div>
               </div>
@@ -280,7 +289,7 @@ Sau đó tạo file README.md trong thư mục gốc với nội dung giới thi
               <div class="exercise-section-title">📋 Bước thực hiện</div>
               <div class="exercise-section-body">
                 <ol>
-                  <li>Tiếp tục trong phiên Claude Code đang mở, hoặc mở mới trong folder <code>du-an-website/templates</code>.</li>
+                  <li>Tiếp tục trong phiên Claude Code đang mở (trong folder <code>du-an-website</code>).</li>
                   <li>Gõ prompt sau — điền đầy đủ thông tin thật của bạn:
                     <pre><code>Tôi là [tên bạn], [chức danh] tại [tên công ty].
 Chúng tôi cung cấp [mô tả sản phẩm/dịch vụ ngắn gọn].
