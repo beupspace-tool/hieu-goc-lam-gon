@@ -460,6 +460,85 @@
 }
 
 /* ============================================================
+   SECTIONS & CONTAINER (Landing page)
+   ============================================================ */
+.section {
+  padding: var(--prim-space-12) var(--content-padding-x);
+}
+
+.container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.section__header {
+  text-align: center;
+  margin-bottom: var(--prim-space-8);
+}
+
+.section__title {
+  font-size: clamp(var(--prim-text-xl), 3vw, var(--prim-text-3xl));
+  font-weight: var(--prim-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--prim-space-2);
+  letter-spacing: -0.02em;
+}
+
+.section__subtitle {
+  font-size: var(--prim-text-md);
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* CTA buttons (landing page hero) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--prim-space-2);
+  padding: 0 var(--prim-space-6);
+  height: 44px;
+  background: var(--prim-white);
+  color: var(--prim-navy-800);
+  font-weight: var(--prim-weight-semibold);
+  font-size: var(--prim-text-sm);
+  border-radius: var(--btn-radius);
+  text-decoration: none;
+  transition: background var(--prim-transition-fast), box-shadow var(--prim-transition-fast);
+}
+
+.btn-primary:hover {
+  background: rgba(255,255,255,0.9);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  color: var(--prim-navy-800);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--prim-space-2);
+  padding: 0 var(--prim-space-6);
+  height: 44px;
+  background: transparent;
+  color: var(--prim-white);
+  font-weight: var(--prim-weight-semibold);
+  font-size: var(--prim-text-sm);
+  border-radius: var(--btn-radius);
+  border: 1px solid rgba(255,255,255,0.35);
+  text-decoration: none;
+  transition: background var(--prim-transition-fast), border-color var(--prim-transition-fast);
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  color: var(--prim-white);
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 
