@@ -1,52 +1,34 @@
 /*
- * tree-navigation.css — Simple Timeline Layout
- * Hiểu Gốc — Làm Gọn | Depends on tokens.css
+ * tree-navigation.css — Simple vertical timeline
  */
 
-/* Container */
 .tree-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
   max-width: 520px;
   margin: 0 auto;
-  padding: var(--prim-space-6) var(--prim-space-4);
   position: relative;
+  padding-left: 60px;
 }
 
-/* Vertical line on the left side */
+/* Vertical line */
 .tree-nav__spine {
   position: absolute;
-  left: 27px;
-  top: var(--prim-space-6);
-  bottom: var(--prim-space-6);
+  left: 25px;
+  top: 0;
+  bottom: 0;
   width: 3px;
-  background: linear-gradient(
-    180deg,
-    var(--prim-gold-400) 0%,
-    var(--prim-green-500) 40%,
-    var(--prim-teal-500) 70%,
-    var(--prim-teal-300) 100%
-  );
+  background: linear-gradient(180deg, var(--prim-teal-300), var(--prim-green-500), var(--prim-gold-400));
   border-radius: 99px;
-  z-index: 0;
 }
 
-/* Each level node — simple flexbox row */
-article.tree-node,
-article.tree-node.tree-node--right,
-article.tree-node.tree-node--left {
+/* Each node */
+article.tree-node {
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
-  gap: var(--prim-space-4);
-  padding: var(--prim-space-4) 0;
+  gap: 16px;
+  padding: 16px 0;
   position: relative;
-  z-index: 1;
-  text-decoration: none;
   cursor: pointer;
-  border-radius: var(--prim-radius-lg);
-  transition: background 0.2s;
+  border-radius: 8px;
 }
 
 article.tree-node:hover {
@@ -55,42 +37,38 @@ article.tree-node:hover {
 
 /* Circle */
 .tree-node__link {
-  text-decoration: none;
   flex-shrink: 0;
-  z-index: 2;
+  text-decoration: none;
+  margin-left: -36px;
 }
 
 .tree-node__circle {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary, #fff);
-  border: 3px solid var(--level-accent, var(--color-primary));
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: 3px solid var(--level-accent, #3fb7b6);
   position: relative;
+  transition: transform 0.2s;
 }
 
 article.tree-node:hover .tree-node__circle {
   transform: scale(1.1);
-  box-shadow: 0 0 0 5px rgba(63,183,182,0.12);
 }
 
-.tree-node__emoji {
-  font-size: 1.3rem;
-  line-height: 1;
-}
+.tree-node__emoji { font-size: 1.2rem; }
 
 .tree-node__number {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
+  bottom: -3px;
+  right: -3px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--level-accent, var(--color-primary));
+  background: var(--level-accent, #3fb7b6);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -105,7 +83,6 @@ article.tree-node:hover .tree-node__circle {
   flex: 1;
   min-width: 0;
   padding-top: 2px;
-  text-align: left;
 }
 
 .tree-node__level-badge {
@@ -153,15 +130,13 @@ article.tree-node:hover .tree-node__circle {
 
 .tree-node__progress-fill {
   height: 100%;
-  background: var(--level-accent, var(--color-primary));
+  background: var(--level-accent, #3fb7b6);
   border-radius: 99px;
-  transition: width 0.5s ease;
 }
 
 .tree-node__progress-pct {
   font-size: 11px;
   color: var(--text-muted);
-  font-weight: 500;
 }
 
 /* Level colors */
@@ -172,24 +147,12 @@ article.tree-node[data-level="3"] { --level-accent: var(--level-3-color, #16a34a
 article.tree-node[data-level="4"] { --level-accent: var(--level-4-color, #16a34a); }
 article.tree-node[data-level="5"] { --level-accent: var(--level-5-color, #d97706); }
 
-/* ============================================================
-   MOBILE
-   ============================================================ */
+/* Mobile */
 @media (max-width: 640px) {
-  .tree-nav__spine {
-    left: 22px;
-  }
-
-  .tree-node__circle {
-    width: 42px;
-    height: 42px;
-  }
-
-  .tree-node__name {
-    font-size: 1rem;
-  }
-
-  .tree-node__desc {
-    display: none;
-  }
+  .tree-nav { padding-left: 50px; }
+  .tree-nav__spine { left: 20px; }
+  .tree-node__link { margin-left: -30px; }
+  .tree-node__circle { width: 40px; height: 40px; }
+  .tree-node__desc { display: none; }
+  .tree-node__name { font-size: 1rem; }
 }
