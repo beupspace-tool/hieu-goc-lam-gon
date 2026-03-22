@@ -3,14 +3,14 @@
 ## Project
 - **Name**: Hiểu Gốc — Làm Gọn
 - **Type**: Static educational website
-- **URL**: guide.beup.space
+- **URL**: claude-guide.beup.space
 - **Brand**: BEUP Learning Solutions
 
 ## Tech Stack
 - Pure HTML/CSS/JS (no framework, no build step)
 - CSS: 3-layer token system (tokens.css → base.css → layout.css → components.css)
 - JS: Vanilla, self-initializing on DOMContentLoaded
-- Deploy: GitHub Pages + CNAME to guide.beup.space
+- Deploy: GitHub Pages + CNAME to claude-guide.beup.space
 
 ## File Structure
 ```
