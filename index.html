@@ -268,99 +268,33 @@
         <!-- Tree navigation component (enhanced by tree-navigation.js) -->
         <div class="tree-nav" id="treeNavigation" role="navigation" aria-label="Cây lộ trình học tập">
 
-          <!-- SVG vertical connector line (decorative, handled by CSS/JS) -->
+          <!-- Vertical connector line -->
           <div class="tree-nav__spine" aria-hidden="true"></div>
 
-          <!-- Level 5: Ngọn — top of tree -->
-          <article class="tree-node tree-node--right" data-level="5" data-href="levels/5-ngon/index.html">
-            <a href="levels/5-ngon/index.html" class="tree-node__link" aria-label="Level 5: Ngọn — Thành thạo và chia sẻ">
+          <!-- Level 0: Hạt Giống — start here -->
+          <article class="tree-node" data-level="0" data-href="levels/0-hat-giong/index.html">
+            <a href="levels/0-hat-giong/index.html" class="tree-node__link" aria-label="Level 0: Hạt Giống — Bắt đầu từ đây">
               <div class="tree-node__circle" aria-hidden="true">
-                <span class="tree-node__emoji">🏔️</span>
-                <span class="tree-node__number">5</span>
+                <span class="tree-node__emoji">🌱</span>
+                <span class="tree-node__number">0</span>
               </div>
             </a>
             <div class="tree-node__label">
-              <div class="tree-node__level-badge">Level 5</div>
-              <h3 class="tree-node__name">Ngọn</h3>
-              <p class="tree-node__en">Mastery &amp; Teaching</p>
-              <p class="tree-node__desc">Thiết kế hệ thống cho team, enterprise patterns, và dạy người khác.</p>
-              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 5">
+              <div class="tree-node__level-badge">Bắt đầu tại đây</div>
+              <h3 class="tree-node__name">Hạt Giống</h3>
+              <p class="tree-node__en">The Seed</p>
+              <p class="tree-node__desc">Hiểu khái niệm phần mềm, AI, và Claude Code — không cần biết code.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 0">
                 <div class="tree-node__progress-bar">
-                  <div class="tree-node__progress-fill" data-level-progress="5" style="width: 0%"></div>
+                  <div class="tree-node__progress-fill" data-level-progress="0" style="width: 0%"></div>
                 </div>
-                <span class="tree-node__progress-pct" data-level-pct="5">0%</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Level 4: Cành -->
-          <article class="tree-node tree-node--left" data-level="4" data-href="levels/4-canh/index.html">
-            <a href="levels/4-canh/index.html" class="tree-node__link" aria-label="Level 4: Cành — Mở rộng và tùy chỉnh">
-              <div class="tree-node__circle" aria-hidden="true">
-                <span class="tree-node__emoji">🌲</span>
-                <span class="tree-node__number">4</span>
-              </div>
-            </a>
-            <div class="tree-node__label">
-              <div class="tree-node__level-badge">Level 4</div>
-              <h3 class="tree-node__name">Cành</h3>
-              <p class="tree-node__en">Expand &amp; Customize</p>
-              <p class="tree-node__desc">Custom skills, hooks, multi-agent, và marketing stack đầy đủ.</p>
-              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 4">
-                <div class="tree-node__progress-bar">
-                  <div class="tree-node__progress-fill" data-level-progress="4" style="width: 0%"></div>
-                </div>
-                <span class="tree-node__progress-pct" data-level-pct="4">0%</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Level 3: Thân -->
-          <article class="tree-node tree-node--right" data-level="3" data-href="levels/3-than/index.html">
-            <a href="levels/3-than/index.html" class="tree-node__link" aria-label="Level 3: Thân — Xây dựng quy trình">
-              <div class="tree-node__circle" aria-hidden="true">
-                <span class="tree-node__emoji">🪵</span>
-                <span class="tree-node__number">3</span>
-              </div>
-            </a>
-            <div class="tree-node__label">
-              <div class="tree-node__level-badge">Level 3</div>
-              <h3 class="tree-node__name">Thân</h3>
-              <p class="tree-node__en">Build Workflows</p>
-              <p class="tree-node__desc">MCP, Git, Skills, và xây dựng quy trình tự động cho team.</p>
-              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 3">
-                <div class="tree-node__progress-bar">
-                  <div class="tree-node__progress-fill" data-level-progress="3" style="width: 0%"></div>
-                </div>
-                <span class="tree-node__progress-pct" data-level-pct="3">0%</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Level 2: Gốc -->
-          <article class="tree-node tree-node--left" data-level="2" data-href="levels/2-goc/index.html">
-            <a href="levels/2-goc/index.html" class="tree-node__link" aria-label="Level 2: Gốc — Thực hành cốt lõi">
-              <div class="tree-node__circle" aria-hidden="true">
-                <span class="tree-node__emoji">🌳</span>
-                <span class="tree-node__number">2</span>
-              </div>
-            </a>
-            <div class="tree-node__label">
-              <div class="tree-node__level-badge">Level 2</div>
-              <h3 class="tree-node__name">Gốc</h3>
-              <p class="tree-node__en">Core Practice</p>
-              <p class="tree-node__desc">CLAUDE.md, prompt hiệu quả, quản lý file, và quy trình viết nội dung.</p>
-              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 2">
-                <div class="tree-node__progress-bar">
-                  <div class="tree-node__progress-fill" data-level-progress="2" style="width: 0%"></div>
-                </div>
-                <span class="tree-node__progress-pct" data-level-pct="2">0%</span>
+                <span class="tree-node__progress-pct" data-level-pct="0">0%</span>
               </div>
             </div>
           </article>
 
           <!-- Level 1: Rễ -->
-          <article class="tree-node tree-node--right" data-level="1" data-href="levels/1-re/index.html">
+          <article class="tree-node" data-level="1" data-href="levels/1-re/index.html">
             <a href="levels/1-re/index.html" class="tree-node__link" aria-label="Level 1: Rễ — Hiểu nền tảng">
               <div class="tree-node__circle" aria-hidden="true">
                 <span class="tree-node__emoji">🌿</span>
@@ -381,24 +315,90 @@
             </div>
           </article>
 
-          <!-- Level 0: Hạt Giống — root of tree -->
-          <article class="tree-node tree-node--left tree-node--seed" data-level="0" data-href="levels/0-hat-giong/index.html">
-            <a href="levels/0-hat-giong/index.html" class="tree-node__link" aria-label="Level 0: Hạt Giống — Bắt đầu từ đây">
-              <div class="tree-node__circle tree-node__circle--seed" aria-hidden="true">
-                <span class="tree-node__emoji">🌱</span>
-                <span class="tree-node__number">0</span>
+          <!-- Level 2: Gốc -->
+          <article class="tree-node" data-level="2" data-href="levels/2-goc/index.html">
+            <a href="levels/2-goc/index.html" class="tree-node__link" aria-label="Level 2: Gốc — Thực hành cốt lõi">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🌳</span>
+                <span class="tree-node__number">2</span>
               </div>
             </a>
             <div class="tree-node__label">
-              <div class="tree-node__level-badge tree-node__level-badge--start">Bắt đầu tại đây</div>
-              <h3 class="tree-node__name">Hạt Giống</h3>
-              <p class="tree-node__en">The Seed</p>
-              <p class="tree-node__desc">Hiểu khái niệm phần mềm, AI, và Claude Code — không cần biết code.</p>
-              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 0">
+              <div class="tree-node__level-badge">Level 2</div>
+              <h3 class="tree-node__name">Gốc</h3>
+              <p class="tree-node__en">Core Practice</p>
+              <p class="tree-node__desc">CLAUDE.md, prompt hiệu quả, quản lý file, và quy trình viết nội dung.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 2">
                 <div class="tree-node__progress-bar">
-                  <div class="tree-node__progress-fill" data-level-progress="0" style="width: 0%"></div>
+                  <div class="tree-node__progress-fill" data-level-progress="2" style="width: 0%"></div>
                 </div>
-                <span class="tree-node__progress-pct" data-level-pct="0">0%</span>
+                <span class="tree-node__progress-pct" data-level-pct="2">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 3: Thân -->
+          <article class="tree-node" data-level="3" data-href="levels/3-than/index.html">
+            <a href="levels/3-than/index.html" class="tree-node__link" aria-label="Level 3: Thân — Xây dựng quy trình">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🪵</span>
+                <span class="tree-node__number">3</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 3</div>
+              <h3 class="tree-node__name">Thân</h3>
+              <p class="tree-node__en">Build Workflows</p>
+              <p class="tree-node__desc">MCP, Git, Skills, và xây dựng quy trình tự động cho team.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 3">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="3" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="3">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 4: Cành -->
+          <article class="tree-node" data-level="4" data-href="levels/4-canh/index.html">
+            <a href="levels/4-canh/index.html" class="tree-node__link" aria-label="Level 4: Cành — Mở rộng và tùy chỉnh">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🌲</span>
+                <span class="tree-node__number">4</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 4</div>
+              <h3 class="tree-node__name">Cành</h3>
+              <p class="tree-node__en">Expand &amp; Customize</p>
+              <p class="tree-node__desc">Custom skills, hooks, multi-agent, và marketing stack đầy đủ.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 4">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="4" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="4">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Level 5: Ngọn -->
+          <article class="tree-node" data-level="5" data-href="levels/5-ngon/index.html">
+            <a href="levels/5-ngon/index.html" class="tree-node__link" aria-label="Level 5: Ngọn — Thành thạo và chia sẻ">
+              <div class="tree-node__circle" aria-hidden="true">
+                <span class="tree-node__emoji">🏔️</span>
+                <span class="tree-node__number">5</span>
+              </div>
+            </a>
+            <div class="tree-node__label">
+              <div class="tree-node__level-badge">Level 5</div>
+              <h3 class="tree-node__name">Ngọn</h3>
+              <p class="tree-node__en">Mastery &amp; Teaching</p>
+              <p class="tree-node__desc">Thiết kế hệ thống cho team, enterprise patterns, và dạy người khác.</p>
+              <div class="tree-node__progress-wrap" aria-label="Tiến độ Level 5">
+                <div class="tree-node__progress-bar">
+                  <div class="tree-node__progress-fill" data-level-progress="5" style="width: 0%"></div>
+                </div>
+                <span class="tree-node__progress-pct" data-level-pct="5">0%</span>
               </div>
             </div>
           </article>

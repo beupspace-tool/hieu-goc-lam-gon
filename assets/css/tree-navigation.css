@@ -1,93 +1,92 @@
 /*
- * tree-navigation.css — Landing Page Tree Visual
+ * tree-navigation.css — Simple Timeline Layout
  * Hiểu Gốc — Làm Gọn | Depends on tokens.css
  */
 
-/* ============================================================
-   TREE CONTAINER
-   ============================================================ */
+/* Container */
 .tree-nav {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: var(--prim-space-10) var(--prim-space-4);
-  position: relative;
-  max-width: 680px;
+  gap: 0;
+  max-width: 520px;
   margin: 0 auto;
+  padding: var(--prim-space-6) var(--prim-space-4);
+  position: relative;
 }
 
-/* ============================================================
-   VERTICAL TRUNK LINE
-   ============================================================ */
+/* Vertical line on the left side */
 .tree-nav__spine {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: var(--prim-space-10);
-  bottom: var(--prim-space-10);
+  left: 27px;
+  top: var(--prim-space-6);
+  bottom: var(--prim-space-6);
   width: 3px;
   background: linear-gradient(
     180deg,
     var(--prim-gold-400) 0%,
-    var(--prim-green-500) 30%,
-    var(--prim-teal-500) 60%,
+    var(--prim-green-500) 40%,
+    var(--prim-teal-500) 70%,
     var(--prim-teal-300) 100%
   );
-  border-radius: var(--prim-radius-full);
+  border-radius: 99px;
   z-index: 0;
 }
 
-/* ============================================================
-   TREE NODE (article) — each level row
-   ============================================================ */
-article.tree-node {
-  position: relative;
-  width: 100%;
-  min-height: 90px;
+/* Each level node — simple flexbox row */
+article.tree-node,
+article.tree-node.tree-node--right,
+article.tree-node.tree-node--left {
   display: flex;
-  align-items: center;
-  margin: var(--prim-space-4) 0;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--prim-space-4);
+  padding: var(--prim-space-4) 0;
+  position: relative;
   z-index: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--prim-radius-lg);
+  transition: background 0.2s;
 }
 
-/* ============================================================
-   NODE CIRCLE — positioned at center of trunk
-   ============================================================ */
+article.tree-node:hover {
+  background: rgba(63,183,182,0.04);
+}
+
+/* Circle */
 .tree-node__link {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
   text-decoration: none;
+  flex-shrink: 0;
+  z-index: 2;
 }
 
 .tree-node__circle {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
   background: var(--bg-primary, #fff);
-  border: 2px solid var(--level-accent, var(--color-primary));
+  border: 3px solid var(--level-accent, var(--color-primary));
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
-.tree-node__circle:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 6px rgba(63,183,182,0.15);
+article.tree-node:hover .tree-node__circle {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 5px rgba(63,183,182,0.12);
 }
 
 .tree-node__emoji {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   line-height: 1;
 }
 
 .tree-node__number {
   position: absolute;
-  bottom: -3px;
-  right: -3px;
+  bottom: -4px;
+  right: -4px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -101,83 +100,51 @@ article.tree-node {
   border: 2px solid var(--bg-primary, #fff);
 }
 
-/* Level accent colors */
-article.tree-node[data-level="0"] { --level-accent: var(--level-0-color, #3fb7b6); }
-article.tree-node[data-level="1"] { --level-accent: var(--level-1-color, #6d28d9); }
-article.tree-node[data-level="2"] { --level-accent: var(--level-2-color, #3fb7b6); }
-article.tree-node[data-level="3"] { --level-accent: var(--level-3-color, #16a34a); }
-article.tree-node[data-level="4"] { --level-accent: var(--level-4-color, #16a34a); }
-article.tree-node[data-level="5"] { --level-accent: var(--level-5-color, #d97706); }
-
-/* ============================================================
-   NODE LABEL — positioned on left or right of trunk
-   ============================================================ */
+/* Label */
 .tree-node__label {
+  flex: 1;
   min-width: 0;
-}
-
-/* Right nodes: label on the right side */
-article.tree-node--right .tree-node__label {
-  margin-left: calc(50% + 40px);
-  padding-left: var(--prim-space-3);
+  padding-top: 2px;
   text-align: left;
-}
-
-/* Left nodes: label on the left side */
-article.tree-node--left .tree-node__label {
-  width: calc(50% - 40px);
-  padding-right: var(--prim-space-3);
-  text-align: right;
-  margin-left: 0;
 }
 
 .tree-node__level-badge {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--level-accent, var(--text-muted));
-  margin-bottom: 2px;
 }
 
 .tree-node__name {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.3;
-  margin: 0 0 2px;
+  margin: 2px 0;
 }
 
 .tree-node__en {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
-  margin: 0 0 2px;
-}
-
-.tree-node__desc {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
   margin: 0 0 4px;
 }
 
-/* ============================================================
-   PROGRESS BAR
-   ============================================================ */
+.tree-node__desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0 0 6px;
+}
+
+/* Progress */
 .tree-node__progress-wrap {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 2px;
-}
-
-article.tree-node--left .tree-node__progress-wrap {
-  justify-content: flex-end;
 }
 
 .tree-node__progress-bar {
-  flex: 1;
-  max-width: 100px;
+  width: 100px;
   height: 4px;
   background: var(--bg-secondary, #e5e7eb);
   border-radius: 99px;
@@ -195,76 +162,31 @@ article.tree-node--left .tree-node__progress-wrap {
   font-size: 11px;
   color: var(--text-muted);
   font-weight: 500;
-  min-width: 24px;
 }
+
+/* Level colors */
+article.tree-node[data-level="0"] { --level-accent: var(--level-0-color, #3fb7b6); }
+article.tree-node[data-level="1"] { --level-accent: var(--level-1-color, #6d28d9); }
+article.tree-node[data-level="2"] { --level-accent: var(--level-2-color, #3fb7b6); }
+article.tree-node[data-level="3"] { --level-accent: var(--level-3-color, #16a34a); }
+article.tree-node[data-level="4"] { --level-accent: var(--level-4-color, #16a34a); }
+article.tree-node[data-level="5"] { --level-accent: var(--level-5-color, #d97706); }
 
 /* ============================================================
-   PULSE ANIMATION
-   ============================================================ */
-@keyframes tree-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(63,183,182,0.3); }
-  50%       { box-shadow: 0 0 0 8px rgba(63,183,182,0); }
-}
-
-.tree-node__circle {
-  animation: tree-pulse 2.5s ease-in-out infinite;
-}
-
-.tree-node__circle:hover {
-  animation: none;
-}
-
-/* ============================================================
-   RESPONSIVE — MOBILE
+   MOBILE
    ============================================================ */
 @media (max-width: 640px) {
-  .tree-nav {
-    padding: var(--prim-space-6) var(--prim-space-3);
-  }
-
   .tree-nav__spine {
-    left: 28px;
-    transform: none;
-  }
-
-  .tree-node__link {
-    position: relative;
-    left: auto;
-    transform: none;
-    flex-shrink: 0;
-  }
-
-  article.tree-node {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--prim-space-3);
-    min-height: auto;
-    margin: var(--prim-space-3) 0;
-  }
-
-  /* Override left/right positioning for mobile */
-  article.tree-node--right .tree-node__label,
-  article.tree-node--left .tree-node__label {
-    margin-left: 0;
-    width: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-    flex: 1;
-  }
-
-  article.tree-node--left .tree-node__progress-wrap {
-    justify-content: flex-start;
+    left: 22px;
   }
 
   .tree-node__circle {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
   }
 
   .tree-node__name {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .tree-node__desc {
