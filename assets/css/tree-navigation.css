@@ -1,7 +1,6 @@
 /*
  * tree-navigation.css — Landing Page Tree Visual
  * Hiểu Gốc — Làm Gọn | Depends on tokens.css
- * Class names match index.html BEM convention
  */
 
 /* ============================================================
@@ -11,9 +10,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--prim-space-12) var(--prim-space-6);
+  padding: var(--prim-space-10) var(--prim-space-4);
   position: relative;
-  max-width: 600px;
+  max-width: 680px;
   margin: 0 auto;
 }
 
@@ -24,16 +23,15 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(var(--prim-space-12) + 24px);
-  bottom: calc(var(--prim-space-12) + 24px);
-  width: var(--tree-line-width, 3px);
+  top: var(--prim-space-10);
+  bottom: var(--prim-space-10);
+  width: 3px;
   background: linear-gradient(
     180deg,
-    var(--prim-teal-300) 0%,
-    var(--prim-teal-500) 30%,
-    var(--prim-teal-600) 55%,
-    var(--prim-green-500) 80%,
-    var(--prim-gold-500) 100%
+    var(--prim-gold-400) 0%,
+    var(--prim-green-500) 30%,
+    var(--prim-teal-500) 60%,
+    var(--prim-teal-300) 100%
   );
   border-radius: var(--prim-radius-full);
   z-index: 0;
@@ -43,52 +41,42 @@
    TREE NODE (article) — each level row
    ============================================================ */
 article.tree-node {
+  position: relative;
+  width: 100%;
+  min-height: 90px;
   display: flex;
   align-items: center;
-  width: 100%;
-  position: relative;
+  margin: var(--prim-space-4) 0;
   z-index: 1;
-  margin: var(--prim-space-6) 0;
-  text-decoration: none;
-}
-
-/* Left-aligned nodes: label on left, circle on right */
-article.tree-node--left {
-  flex-direction: row-reverse;
 }
 
 /* ============================================================
-   NODE CIRCLE
+   NODE CIRCLE — positioned at center of trunk
    ============================================================ */
 .tree-node__link {
-  text-decoration: none;
-  flex-shrink: 0;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
+  text-decoration: none;
 }
 
 .tree-node__circle {
-  width: var(--tree-node-size, 48px);
-  height: var(--tree-node-size, 48px);
-  border-radius: var(--prim-radius-full);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  position: relative;
   cursor: pointer;
-  transition: transform var(--prim-transition-fast),
-              box-shadow var(--prim-transition-fast);
-  background: var(--bg-primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: var(--bg-primary, #fff);
   border: 2px solid var(--level-accent, var(--color-primary));
-  color: var(--level-accent, var(--color-primary));
 }
 
 .tree-node__circle:hover {
-  transform: scale(1.12);
-  box-shadow: 0 0 0 6px rgba(63,183,182,0.15), var(--shadow-md);
+  transform: scale(1.15);
+  box-shadow: 0 0 0 6px rgba(63,183,182,0.15);
 }
 
 .tree-node__emoji {
@@ -98,87 +86,79 @@ article.tree-node--left {
 
 .tree-node__number {
   position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 18px;
-  height: 18px;
+  bottom: -3px;
+  right: -3px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--level-accent, var(--color-primary));
-  color: var(--prim-white);
-  font-size: 10px;
-  font-weight: var(--prim-weight-bold);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid var(--bg-primary, #fff);
 }
 
-/* Level-specific accent colors */
-article.tree-node[data-level="0"] { --level-accent: var(--level-0-color); }
-article.tree-node[data-level="1"] { --level-accent: var(--level-1-color); }
-article.tree-node[data-level="2"] { --level-accent: var(--level-2-color); }
-article.tree-node[data-level="3"] { --level-accent: var(--level-3-color); }
-article.tree-node[data-level="4"] { --level-accent: var(--level-4-color); }
-article.tree-node[data-level="5"] { --level-accent: var(--level-5-color); }
+/* Level accent colors */
+article.tree-node[data-level="0"] { --level-accent: var(--level-0-color, #3fb7b6); }
+article.tree-node[data-level="1"] { --level-accent: var(--level-1-color, #6d28d9); }
+article.tree-node[data-level="2"] { --level-accent: var(--level-2-color, #3fb7b6); }
+article.tree-node[data-level="3"] { --level-accent: var(--level-3-color, #16a34a); }
+article.tree-node[data-level="4"] { --level-accent: var(--level-4-color, #16a34a); }
+article.tree-node[data-level="5"] { --level-accent: var(--level-5-color, #d97706); }
 
 /* ============================================================
-   HORIZONTAL BRANCH (pseudo-element connecting circle to label)
-   ============================================================ */
-article.tree-node::before {
-  content: "";
-  height: var(--tree-line-width, 3px);
-  width: var(--tree-branch-width, 32px);
-  background: var(--border-default);
-  flex-shrink: 0;
-  transition: background var(--prim-transition-fast);
-}
-
-article.tree-node:hover::before {
-  background: var(--level-accent, var(--color-primary));
-}
-
-/* ============================================================
-   NODE LABEL — text area beside circle
+   NODE LABEL — positioned on left or right of trunk
    ============================================================ */
 .tree-node__label {
-  flex: 1;
-  padding: 0 var(--prim-space-4);
   min-width: 0;
 }
 
-/* Right-side labels: left-aligned text (default) */
-/* Left-side labels: right-aligned text */
+/* Right nodes: label on the right side */
+article.tree-node--right .tree-node__label {
+  margin-left: calc(50% + 40px);
+  padding-left: var(--prim-space-3);
+  text-align: left;
+}
+
+/* Left nodes: label on the left side */
 article.tree-node--left .tree-node__label {
+  width: calc(50% - 40px);
+  padding-right: var(--prim-space-3);
   text-align: right;
+  margin-left: 0;
 }
 
 .tree-node__level-badge {
-  font-size: var(--prim-text-xs);
-  font-weight: var(--prim-weight-semibold);
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--level-accent, var(--text-muted));
-  margin-bottom: var(--prim-space-1);
+  margin-bottom: 2px;
 }
 
 .tree-node__name {
-  font-size: var(--prim-text-lg);
-  font-weight: var(--prim-weight-bold);
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-primary);
   line-height: 1.3;
-  margin: 0 0 var(--prim-space-1);
+  margin: 0 0 2px;
 }
 
 .tree-node__en {
-  font-size: var(--prim-text-sm);
+  font-size: 0.8rem;
   color: var(--text-muted);
-  margin: 0 0 var(--prim-space-1);
+  margin: 0 0 2px;
 }
 
 .tree-node__desc {
-  font-size: var(--prim-text-sm);
+  font-size: 0.8rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin: 0 0 var(--prim-space-2);
+  margin: 0 0 4px;
 }
 
 /* ============================================================
@@ -187,8 +167,8 @@ article.tree-node--left .tree-node__label {
 .tree-node__progress-wrap {
   display: flex;
   align-items: center;
-  gap: var(--prim-space-2);
-  margin-top: var(--prim-space-1);
+  gap: 6px;
+  margin-top: 2px;
 }
 
 article.tree-node--left .tree-node__progress-wrap {
@@ -197,25 +177,25 @@ article.tree-node--left .tree-node__progress-wrap {
 
 .tree-node__progress-bar {
   flex: 1;
-  max-width: 120px;
+  max-width: 100px;
   height: 4px;
-  background: var(--bg-secondary);
-  border-radius: var(--prim-radius-full);
+  background: var(--bg-secondary, #e5e7eb);
+  border-radius: 99px;
   overflow: hidden;
 }
 
 .tree-node__progress-fill {
   height: 100%;
   background: var(--level-accent, var(--color-primary));
-  border-radius: var(--prim-radius-full);
+  border-radius: 99px;
   transition: width 0.5s ease;
 }
 
 .tree-node__progress-pct {
-  font-size: var(--prim-text-xs);
+  font-size: 11px;
   color: var(--text-muted);
-  font-weight: var(--prim-weight-medium);
-  min-width: 28px;
+  font-weight: 500;
+  min-width: 24px;
 }
 
 /* ============================================================
@@ -235,42 +215,59 @@ article.tree-node--left .tree-node__progress-wrap {
 }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE — MOBILE
    ============================================================ */
 @media (max-width: 640px) {
   .tree-nav {
-    padding: var(--prim-space-8) var(--prim-space-4);
+    padding: var(--prim-space-6) var(--prim-space-3);
+  }
+
+  .tree-nav__spine {
+    left: 28px;
+    transform: none;
+  }
+
+  .tree-node__link {
+    position: relative;
+    left: auto;
+    transform: none;
+    flex-shrink: 0;
   }
 
   article.tree-node {
-    margin: var(--prim-space-4) 0;
-    /* On mobile: always same direction for readability */
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--prim-space-3);
+    min-height: auto;
+    margin: var(--prim-space-3) 0;
   }
 
+  /* Override left/right positioning for mobile */
+  article.tree-node--right .tree-node__label,
   article.tree-node--left .tree-node__label {
+    margin-left: 0;
+    width: auto;
+    padding-left: 0;
+    padding-right: 0;
     text-align: left;
+    flex: 1;
   }
 
   article.tree-node--left .tree-node__progress-wrap {
     justify-content: flex-start;
   }
 
-  .tree-node__name {
-    font-size: var(--prim-text-md);
-  }
-
-  .tree-node__en,
-  .tree-node__desc {
-    font-size: var(--prim-text-xs);
-  }
-
   .tree-node__circle {
-    width: var(--tree-node-size-sm, 36px);
-    height: var(--tree-node-size-sm, 36px);
+    width: 40px;
+    height: 40px;
   }
 
-  article.tree-node::before {
-    width: 16px;
+  .tree-node__name {
+    font-size: 0.95rem;
+  }
+
+  .tree-node__desc {
+    display: none;
   }
 }
